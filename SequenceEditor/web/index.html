@@ -12,23 +12,27 @@ and open the template in the editor.
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
     </head>
     <body>
-        <table style="height:100%; width:100%; position: absolute; top: 0; bottom: 0; left: 0; right: 0;">
-            <tr style="height:10%; width:100%">
-                <td colspan="2" style="background-color:#fff3c6">
-                    <h1 style="text-transform:uppercase; color:black; text-align:center; font-weight:bold">Sequence Editor</h1>
-                </td>
-            </tr>
-        <!--<h2 style="color:darkslategray;text-align:center;border:solid;border-color:#00ffff">Button Add/Delete</h2>-->
-            <tr style="height:90%; width:100%">
-                <td colspan="2" style="background-color:#f4f4f4">
-                    <button id="button" class="btn btn-primary" style="font-weight:bold">Click Here</button>
-                    <button id="reset" class="btn btn-danger" style="font-weight:bold">Reset</button>
+        <div id="container" style="height: 100%; width: 100%; position: absolute; top: 0; left: 0">
+            <div id="header" style="background-color: #fff3c6; position: absolute; top: 0; left: 0; height: 100px; width: 100%">  
+                <h1 style="line-height: 75px; text-transform: uppercase; color: black; text-align: center; font-weight: bold">Sequence Editor</h1>    
+            </div>
+
+            <div id="main" style="background-color:#f4f4f4; position: absolute; top:100px; bottom: 100%; width:100%">
+                <table style="width: 100%">
+                    <tr>
+                        <td colspan="4" style="background-color:#ffe993;">
+                            <div style="text-align: center">
+                                <button id="button" class="btn btn-primary" style="font-weight:bold">Click Here</button>
+                                <button id="reset" class="btn btn-danger" style="font-weight:bold">Reset</button>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+
                     <p id ="bPAR"></p>
-                    <p>Create a button. Bind a function to this button using jquery. Whenever this button is clicked, generate a new button. The text of this new button
-                        will be an incremented number. Also included a reset button, that removes all new buttons except the original buttons. Each button should have a unique uuid.</p>
-                </td>
-            </tr>  
-        </table>
+            </div>  
+        </div>
         <!--javascript libraries-->
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 

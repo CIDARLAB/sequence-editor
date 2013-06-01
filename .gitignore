@@ -6,3 +6,4 @@
 *.ear
 /SequenceEditor/nbproject/private/
 /SequenceEditor/build/
+/SequenceEditor/dist/
