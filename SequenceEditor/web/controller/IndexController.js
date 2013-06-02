@@ -23,25 +23,30 @@ $(document).ready(function() { //don't run javascript until page is loaded
         //I noticed you do a lot of positioning and sizing for styling; don't worry about this. We can use the bootstrap grid system for this
         //http://twitter.github.io/bootstrap/scaffolding.html
         
-        $("#bPAR").append("<table id=" + i++ + " class='myBOX' style='background-color:lightgrey; height: 320px; width: 400px; border: 3px solid black; display: inline-table'>\n\
+        $("#bPAR").append("<table id='table" + i++ + "' class='myBOX' style='background-color:lightgrey; height: 320px; width: 400px; border: 3px solid black; display: inline-table'>\n\
             <tr>\n\
                 <td>\n\
-                    <button id=" + i + " class='btn btn-danger' style='font-weight:bold; position: relative; left: 90.7%'>X</button>\n\
+                    <button id='close" + i + "' class='btn btn-danger' style='font-weight:bold; position: relative; left: 90.7%'>X</button>\n\
                 </td>\n\
             </tr>\n\
             <tr>\n\
-                <td id=" + i + " style='text-align: center'>\n\
+                <td id='textArea" + i + "' style='text-align: center'>\n\
                     <textarea rows='8' cols='100' style='width: 320px; height: 200px; vertical-align: 50px'></textarea>\n\
                 </td>\n\
             </tr>\n\
         </table>"); //if your button, table and cells all have the same id; how can you identify them individually?
         
         //don't bind functions to buttons until the html has been written; you can now bind a function to your buttons
-        $('#BUTTONID').click(function(){
+        $('button').click(function(){
             //I'll leave it up to you to figure out what the proper IDs are
             var id = $(this).attr("id"); //why do I do this instead of the following?
-//            var id = '#BUTTONID';
-            $('#TABLESELECTOR').remove();
+            id = 'table'+(id.charAt(id.length-1));
+            id = '#'+id;
+            alert(this);
+            
+            $("#table3").remove();
+            // var id = '#BUTTONID';
+            $("" + id + "").removeTable();
         });
     });
 
