@@ -42,11 +42,13 @@ $(document).ready(function() { //don't run javascript until page is loaded
             var id = $(this).attr("id"); //why do I do this instead of the following?
             id = 'table'+(id.charAt(id.length-1));
             id = '#'+id;
-            alert(this);
+            id = '"'+id;
+            id = id+'"';
+            alert(id);
             
             $("#table3").remove();
             // var id = '#BUTTONID';
-            $("" + id + "").removeTable();
+            $(id).removeTable();
         });
     });
 
