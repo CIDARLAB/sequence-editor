@@ -53,16 +53,13 @@ $(document).ready(function() { //don't run javascript until page is loaded
         </table>'); //if your button, table and cells all have the same id; how can you identify them individually?
         
         var mytextbox = document.getElementById('textArea' + i);
-        alert(data.value[1].seq);
-        if (count < Object.keys(sequences).length) {
+        if (count < data.key.length) {
             mytextbox.value += data.value[count].seq;
-            //mytextbox.value += sequences["start"];
             count++;
         }
         else {
             mytextbox.value += "No more sequences in json object";
         }
-        
         i++;
         
         //don't bind functions to buttons until the html has been written; you can now bind a function to your buttons
