@@ -26,16 +26,26 @@ $(document).ready(function() { //don't run javascript until page is loaded
                 '<tr><td><button val="' + i + '" id="close' + i + '" class="btn btn-danger" style="font-weight:bold; position: relative; left: 90.7%">X</button>' +
                 '</td></tr><tr><td style="text-align:center">' +
                 '<textarea id="textArea' + i + '" rows="8" cols="100" style="width: 320px; height: 200px; vertical-align: 50px"></textarea>' +
-                '</td></tr></table>'
+                '</td></tr><tr><td><button val="' + i + '" id="reverseButton' + i + '" class="btn btn-primary" style="font-weight:bold; position: relative; left:25%; top:80%">Reverse</button></td></tr>' +
+                '</table>'
                 );
         $('#textArea' + i).text(data.value[count].seq);
 
         $('#close' + i).click(function() {
-            var id = $(this).attr("val"); 
-            $("#table" + id).remove();
-            count++;
-            i++;
+            var closeId = $(this).attr("val"); 
+            $("#table" + closeId).remove();
         });
+        
+        $('#reverseButton' + i).click(function() {
+            var reverseId = $(this).attr("val");
+            reverseId = "textArea" + reverseId;
+            //var revText = ($("#" + reverseId).val()).split('').reverse().join('');
+            var revText = "whatever";
+            alert($("#" + reverseId).val());
+            $('#textArea' + reverseId).text(revText);
+        });
+        count++;
+        i++;
     });
 
     var classname = 'textBOX';
