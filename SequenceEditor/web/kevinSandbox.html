@@ -10,9 +10,38 @@ and open the template in the editor.
         <!--CSS style sheets-->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <style>
+            .bigInterface{
+                background-color: #ffcc99;
+                height:400px;
+                border: solid black 3px;
+            }
+            .menuText{
+                font-weight: bold;
+            }
+            .textBox{
+                background-color: cornsilk;
+                font-weight: normal;
+                color: #333333;
+                border: solid black 2px;
+            }
+        </style>
     </head>
     <body>
-        
+        <div class="container bigInterface">
+            <div class="row-fluid">
+                <div class="span12 menuText">
+                    Menu
+                    <button>Rev</button>
+                    <button>Translate</button>
+                    <button class="btn btn-danger offset9">X</button>
+                    <div class="row-fluid">
+                        <!--<div class="span6 box">Box 1</div>-->
+                        <div class="span10 offset1 textBox">Sequence Text</div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <!--javascript libraries-->
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 
