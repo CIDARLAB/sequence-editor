@@ -39,10 +39,42 @@ $(document).ready(function() { //don't run javascript until page is loaded
         $('#reverseButton' + i).click(function() {
             var reverseId = $(this).attr("val");
             reverseId = "textArea" + reverseId;
-            //var revText = ($("#" + reverseId).val()).split('').reverse().join('');
-            var revText = "whatever";
-            alert($("#" + reverseId).val());
-            $('#textArea' + reverseId).text(revText);
+            var revText = ($("#" + reverseId).val()).split('').reverse().join('');
+            
+            var jj = 0;
+
+            while (jj < revText.length) {
+                if (revText[jj] === "a") {
+                    revText[jj] = "t";
+                }
+                else if (revText[jj] === "t") {
+                    revText[jj] = "a";
+                }
+                else if (revText[jj] === "c") {
+                    revText[jj] = "g";
+                }
+                else if (revText[jj] === "g") {
+                    revText[jj] = "c";
+                }
+                else if (revText[jj] === "A") {
+                    revText[jj] = "T";
+                }
+                else if (revText[jj] === "T") {
+                    revText[jj] = "A";
+                }
+                else if (revText[jj] === "C") {
+                    revText[jj] = "G";
+                }
+                else if (revText[jj] === "G") {
+                    revText[jj] = "C";
+                }
+                else {
+                    revText[jj] = "X";
+                }
+                jj++;
+            };
+            
+            $("#" + reverseId).text(revText);
         });
         count++;
         i++;
