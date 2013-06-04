@@ -40,41 +40,41 @@ $(document).ready(function() { //don't run javascript until page is loaded
             var reverseId = $(this).attr("val");
             reverseId = "textArea" + reverseId;
             var revText = ($("#" + reverseId).val()).split('').reverse().join('');
-            
+            var reverseComp = "";
             var jj = 0;
 
             while (jj < revText.length) {
                 if (revText[jj] === "a") {
-                    revText[jj] = "t";
+                    reverseComp += "t";
                 }
                 else if (revText[jj] === "t") {
-                    revText[jj] = "a";
+                    reverseComp += "a";
                 }
                 else if (revText[jj] === "c") {
-                    revText[jj] = "g";
+                    reverseComp += "g";
                 }
                 else if (revText[jj] === "g") {
-                    revText[jj] = "c";
+                    reverseComp += "c";
                 }
                 else if (revText[jj] === "A") {
-                    revText[jj] = "T";
+                    reverseComp += "T";
                 }
                 else if (revText[jj] === "T") {
-                    revText[jj] = "A";
+                    reverseComp += "A";
                 }
                 else if (revText[jj] === "C") {
-                    revText[jj] = "G";
+                    reverseComp += "G";
                 }
                 else if (revText[jj] === "G") {
-                    revText[jj] = "C";
+                    reverseComp += "C";
                 }
                 else {
-                    revText[jj] = "X";
+                    reverseComp += "X";
                 }
                 jj++;
             };
             
-            $("#" + reverseId).text(revText);
+            $("#" + reverseId).text(reverseComp);
         });
         count++;
         i++;
