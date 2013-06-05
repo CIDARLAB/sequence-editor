@@ -23,9 +23,12 @@ and open the template in the editor.
                 background-color: cornsilk;
                 font-weight: normal;
                 color: #333333;
-                border: solid black 2px;
-                max-height:300px;
-                max-width:970px;
+               border: solid black 2px;
+                height: 300px;
+                width: 970px;
+                max-height: 300px;
+                max-width: 970px;
+                border-style: inset;
             }
         </style>
     </head>
@@ -33,13 +36,13 @@ and open the template in the editor.
         <div class="container bigInterface">
             <div class="row-fluid">
                 <div class="span12 menuText">
-                    Menu
-                    <button>Rev</button>
-                    <button>Translate</button>
+                    Menu: 
+                    <button class="btn">Rev</button>
+                    <button class="btn">Translate</button>
                     <button class="btn btn-danger offset9">X</button>
-                    <div class="row-fluid">
-                        <textarea class="span10 offset1 textBox">Sequence Text</textarea>
-                    </div>
+                </div>
+                <div class="row-fluid">
+                    <textarea class="span10 offset1 textBox">Sequence Text</textarea>
                 </div>
             </div>
         </div>
