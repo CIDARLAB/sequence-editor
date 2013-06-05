@@ -23,7 +23,7 @@ and open the template in the editor.
                 background-color: cornsilk;
                 font-weight: normal;
                 color: #333333;
-               border: solid black 2px;
+                border: solid black 2px;
                 height: 300px;
                 width: 970px;
                 max-height: 300px;
@@ -37,9 +37,24 @@ and open the template in the editor.
             <div class="row-fluid">
                 <div class="span12 menuText">
                     Menu: 
-                    <button class="btn">Rev</button>
+                    <button class="btn">Rev. Comp.</button>
+                    <button class="btn">Complement</button>
                     <button class="btn">Translate</button>
-                    <button class="btn btn-danger offset9">X</button>
+                    <button class="btn">Upper</button>
+                    <button class="btn">Lower</button>
+                    <div class="btn-group">
+                        <button class="btn dropdown-toggle" data-toggle="dropdown">
+                            Highlight
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>ORF</li>
+                            <li>Features</li>
+                            <li>Selection</li>
+                            <li>Search</li>
+                        </ul>
+                     </div>
+                    <button class="btn btn-danger offset1">X</button>
                 </div>
                 <div class="row-fluid">
                     <textarea class="span10 offset1 textBox">Sequence Text</textarea>
