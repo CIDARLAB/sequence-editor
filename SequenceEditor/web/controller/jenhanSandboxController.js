@@ -10,10 +10,12 @@ $(document).ready(function() {
             minHeight: 150,
             minWidth: 200
         });
-        $('#resizable' + count).draggable();
+        $('#resizable' + count).draggable({
+            stack:".resizable"
+        });
         $('#resizable' + count).droppable({
             drop: function(event, ui) {
-                alert("aligning sequence "+$(this).attr("id")+" and "+ui.draggable.attr("id"));
+                alert("aligning sequence " + $(this).attr("id") + " and " + ui.draggable.attr("id"));
             },
             accept: ".sequenceWidget"
         });
