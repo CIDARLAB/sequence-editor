@@ -280,6 +280,7 @@ $(document).ready(function() {
         return translatedSeq;
     };
 
+
     /***************************************************************************************/
     /* Event Handlers */
 
@@ -307,5 +308,6 @@ $(document).ready(function() {
         var sequence = $('#seqTextArea').text().toLowerCase();
         $('#seqTextArea').text(sequence);
     });
+
 });
 
