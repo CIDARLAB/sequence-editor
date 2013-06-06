@@ -83,5 +83,15 @@ $(document).ready(function() {
         var revCompOut = revComp(sequence); 
        $('#seqTextArea').text(revCompOut);
     });
+    
+    $('#uppercase').click(function(){
+        var sequence = $('#seqTextArea').text().toUpperCase();
+        $('#seqTextArea').text(sequence);
+    });
+    
+    $('#lowercase').click(function(){
+        var sequence = $('#seqTextArea').text().toLowerCase();
+        $('#seqTextArea').text(sequence);
+    });
 });
 
