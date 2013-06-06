@@ -66,8 +66,7 @@ $(document).ready(function() {
             jj++;
         }
         return reverseComp;
-    }
-    ;
+    };
 
     function translate(sequence) {
         var translatedSeq = "";
