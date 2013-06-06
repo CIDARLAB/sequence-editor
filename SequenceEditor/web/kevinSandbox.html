@@ -43,9 +43,14 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <div class="bigInterface">
+            <div id="bigInterface" class="bigInterface">
                 <div class="row-fluid">
-                    <div class="offset1 span7">
+                    <div class="span1">
+                        <div class="pull-left">
+                            <button id="colorChanger" class="btn"><i class="icon-tint"></i></button>
+                        </div>
+                    </div>
+                    <div class="span7">
                         <ul class="menu pull-left">
                             <li class="btn-group" style="margin-left:0px;">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -113,7 +118,7 @@ and open the template in the editor.
                     </div>
                 </div>
                 <div class="row-fluid">
-                    <div class="offset1 span10">
+                    <div class="offset1 span10" style="padding-right:15px">
                         <textarea id="seqTextArea" class="textBox">atgaccccgtggta</textarea>
                     </div>
                 </div>
@@ -121,7 +126,7 @@ and open the template in the editor.
                     <div class="offset2 span8">
                         <div class="span4">
                             <table class="table-bordered infoTable">
-                                <tr>
+                                <tr style="line-height:25px">
                                     <th class="tableCell">Temp</th>
                                     <td class="tableCell">F/C</td>
                                 </tr>
@@ -129,7 +134,7 @@ and open the template in the editor.
                         </div>
                         <div class="span4">
                             <table class="table-bordered infoTable">
-                                <tr>
+                                <tr style="line-height:25px">
                                     <th class="tableCell">Melt</th>
                                     <td class="tableCell">value</td>
                                 </tr>
@@ -137,7 +142,7 @@ and open the template in the editor.
                         </div>
                         <div class="span4">
                             <table class="table-bordered infoTable">
-                                <tr>
+                                <tr style="line-height:25px">
                                     <th class="tableCell">G-C</th>
                                     <td class="tableCell">value</td>
                                 </tr>                                
