@@ -308,6 +308,10 @@ $(document).ready(function() {
         var sequence = $('#seqTextArea').text().toLowerCase();
         $('#seqTextArea').text(sequence);
     });
+    
+    $('#colorChanger').click(function() {
+        $('.colorpicker').colorpicker();
+    });
 
 });
 
