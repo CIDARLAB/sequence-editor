@@ -10,6 +10,7 @@ and open the template in the editor.
         <!--CSS style sheets-->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
         <style>
             .smallInterface{
                 background-color: #ffcc99;
@@ -44,11 +45,11 @@ and open the template in the editor.
 
     <body>
         <div class="container"> 
-            <div class="smallInterface"> 
+            <div id="smallInterface" class="smallInterface"> 
                 <div class="row-fluid">
                     <div class="span1">
                         <div class="pull-left">
-                            <button class="btn"><i class="icon-tint"></i></button>
+                            <button id="colorChanger" class="btn"><i class="icon-tint"></i></button>
                         </div>
                     </div>
                     <div class="span4">
@@ -159,6 +160,7 @@ and open the template in the editor.
         <!--javascript libraries-->
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 
+        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
         <!--javascript goes here-->
         <script type="text/javascript" src ="controller/kevinSandboxController2.js"></script> 
     </body>

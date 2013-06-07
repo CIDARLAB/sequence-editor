@@ -311,7 +311,10 @@ $(document).ready(function() {
         $('#seqTextArea').text(sequence);
     });
 
-        $('#colorChanger').colorpicker();        
+    $('#colorChanger').colorpicker().on('changeColor', function(ev){
+        var color = ev.color.toHex().toString();
+        $('#bigInterface').css("background-color", color);
+    });        
     
 });
 
