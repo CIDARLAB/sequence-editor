@@ -66,7 +66,8 @@ $(document).ready(function() {
             jj++;
         }
         return reverseComp;
-    };
+    }
+    ;
 
     function translate(sequence) {
         var translatedSeq = "";
@@ -261,7 +262,7 @@ $(document).ready(function() {
                 case "GGG":
                     translatedSeq += "G";
                     break;
-                // Stop Sequences
+                    // Stop Sequences
                 case "TAA":
                     translatedSeq += "STOP";
                     break;
@@ -278,7 +279,8 @@ $(document).ready(function() {
             ii += 3;
         }
         return translatedSeq;
-    };
+    }
+    ;
 
 
     /***************************************************************************************/
@@ -308,10 +310,8 @@ $(document).ready(function() {
         var sequence = $('#seqTextArea').text().toLowerCase();
         $('#seqTextArea').text(sequence);
     });
-    
-    $('#colorChanger').click(function() {
-        $('.colorpicker').colorpicker();
-    });
+
+        $('.colorChanger').colorpicker();
 
 });
 
