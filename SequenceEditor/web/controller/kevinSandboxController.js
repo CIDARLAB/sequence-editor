@@ -311,7 +311,7 @@ $(document).ready(function() {
         $('#seqTextArea').text(sequence);
     });
 
-        $('.colorChanger').colorpicker();
-
+        $('#colorChanger').colorpicker();        
+    
 });
 
