@@ -90,23 +90,9 @@ $(document).ready(function() { //don't run javascript until page is loaded
 
 
 
-
-    var getSelText = function() {
-        var text = '';
-        if (window.getSelection) {
-            text = window.getSelection();
-        } else if (document.getSelection) {
-            text = document.getSelection();
-        } else if (document.selection) {
-            text = document.selection.createRange().text;
-        } else {
-            return;
-        }
-        return text;
-    };
-
     document.onmouseup = function() {
-        $('#bPAR').text(getSelText());
+        var textArea = $('#testArea')[0];
+        $('#bPAR').text("start: "+textArea.selectionStart+" end: "+textArea.selectionEnd+" total:"+textArea.value.length+" columns: "+textArea.cols);
     };
 //**************************************************/
 
