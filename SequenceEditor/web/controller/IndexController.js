@@ -32,10 +32,10 @@ $(document).ready(function() { //don't run javascript until page is loaded
         $('#textArea' + i).text(data.value[count].seq);
 
         $('#close' + i).click(function() {
-            var closeId = $(this).attr("val"); 
+            var closeId = $(this).attr("val");
             $("#table" + closeId).remove();
         });
-        
+
         $('#reverseButton' + i).click(function() {
             var reverseId = $(this).attr("val");
             reverseId = "textArea" + reverseId;
@@ -72,8 +72,9 @@ $(document).ready(function() { //don't run javascript until page is loaded
                     reverseComp += "X";
                 }
                 jj++;
-            };
-            
+            }
+            ;
+
             $("#" + reverseId).text(reverseComp);
         });
         count++;
@@ -86,6 +87,27 @@ $(document).ready(function() { //don't run javascript until page is loaded
         i = 0;
         count = 0;
     });
+
+
+
+
+    var getSelText = function() {
+        var text = '';
+        if (window.getSelection) {
+            text = window.getSelection();
+        } else if (document.getSelection) {
+            text = document.getSelection();
+        } else if (document.selection) {
+            text = document.selection.createRange().text;
+        } else {
+            return;
+        }
+        return text;
+    };
+
+    document.onmouseup = function() {
+        $('#bPAR').text(getSelText());
+    };
 //**************************************************/
 
 });
