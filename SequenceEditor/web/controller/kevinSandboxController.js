@@ -3,11 +3,6 @@
  * and open the template in the editor.
  */
 $(document).ready(function() {
-
-    var seqText = "";
-    var highlightedText = "";
-    var textArea = $('#seqTextArea')[0];
-
     /***************************************************************************************/
     /* Functions */
 
@@ -295,18 +290,14 @@ $(document).ready(function() {
      * Binds the Reverse Complement function (revComp()) to the revComp button click. 
      */
     $('#revComp').click(function() {
-        textArea = $('#seqTextArea')[0];
-        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
-        if (highlightedText.length === 0) {
-            // Do nothing. Nothing highlighted, so change nothing.
-            alert("Nothing to reverse complement");
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value;
         }
-        else {
-            var revCompOut = revComp(highlightedText);
-            $('#seqTextArea').text(revCompOut);
-            seqText = $('#seqTextArea').val().toString();
-            alert(seqText);
-        }
+        var revCompOut = revComp(sequence);
+        $('#seqTextArea').text(revCompOut);
     });
 
     $('#translate').click(function() {
@@ -331,21 +322,20 @@ $(document).ready(function() {
     });
 
     document.onmouseup = function() {
-        textArea = $('#seqTextArea')[0];
-        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
-        if (textArea.selectionStart === textArea.selectionEnd) {
-            // Do nothing if nothing is highlighted
-            highlightedText = "";
-        }
-        else {
-            //$('#seqTextArea').text("start: "+textArea.selectionStart+" end: "+textArea.selectionEnd+" total:"+textArea.value.length+" columns: "+textArea.cols);
-            highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
-            alert(highlightedText + " .... " + seqText);
-        }
+//        textArea = $('#seqTextArea')[0];
+//        seqText = textArea.value;
+//        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
+//        if (textArea.selectionStart === textArea.selectionEnd) {
+//            // Do nothing if nothing is highlighted
+//            highlightedText = "";
+//        }
+//        else {
+//            //$('#seqTextArea').text("start: "+textArea.selectionStart+" end: "+textArea.selectionEnd+" total:"+textArea.value.length+" columns: "+textArea.cols);
+//            highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
+//            alert(highlightedText + " .... " + seqText);
+//        }
     };
+//
 
-    document.onkeyup = function() {
-        seqText = $('#seqTextArea').val().toString();
-    };
 });
 
