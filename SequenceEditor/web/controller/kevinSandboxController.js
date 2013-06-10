@@ -3,6 +3,11 @@
  * and open the template in the editor.
  */
 $(document).ready(function() {
+
+    var seqText = "";
+    var highlightedText = "";
+    var textArea = $('#seqTextArea')[0];
+
     /***************************************************************************************/
     /* Functions */
 
@@ -290,9 +295,18 @@ $(document).ready(function() {
      * Binds the Reverse Complement function (revComp()) to the revComp button click. 
      */
     $('#revComp').click(function() {
-        var sequence = $('#seqTextArea').text();
-        var revCompOut = revComp(sequence);
-        $('#seqTextArea').text(revCompOut);
+        textArea = $('#seqTextArea')[0];
+        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (highlightedText.length === 0) {
+            // Do nothing. Nothing highlighted, so change nothing.
+            alert("Nothing to reverse complement");
+        }
+        else {
+            var revCompOut = revComp(highlightedText);
+            $('#seqTextArea').text(revCompOut);
+            seqText = $('#seqTextArea').val().toString();
+            alert(seqText);
+        }
     });
 
     $('#translate').click(function() {
@@ -311,10 +325,27 @@ $(document).ready(function() {
         $('#seqTextArea').text(sequence);
     });
 
-    $('#colorChanger').colorpicker().on('changeColor', function(ev){
+    $('#colorChanger').colorpicker().on('changeColor', function(ev) {
         var color = ev.color.toHex().toString();
         $('#bigInterface').css("background-color", color);
-    });        
-    
+    });
+
+    document.onmouseup = function() {
+        textArea = $('#seqTextArea')[0];
+        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            // Do nothing if nothing is highlighted
+            highlightedText = "";
+        }
+        else {
+            //$('#seqTextArea').text("start: "+textArea.selectionStart+" end: "+textArea.selectionEnd+" total:"+textArea.value.length+" columns: "+textArea.cols);
+            highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
+            alert(highlightedText + " .... " + seqText);
+        }
+    };
+
+    document.onkeyup = function() {
+        seqText = $('#seqTextArea').val().toString();
+    };
 });
 
