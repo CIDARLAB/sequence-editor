@@ -295,9 +295,16 @@ $(document).ready(function() {
         if (sequence.length === 0) {
             //Nothing highlighted, so change everything.
             sequence = textArea.value;
+            var revCompOut = revComp(sequence);
+            $('#seqTextArea').text(revCompOut);
         }
-        var revCompOut = revComp(sequence);
-        $('#seqTextArea').text(revCompOut);
+        else {
+            var revCompOut = revComp(sequence);
+            revCompOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + revCompOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
+            $('#seqTextArea').text(revCompOut);
+        }
+        textArea.selectionStart = 0;
+        textArea.selectionEnd = 0;
     });
 
     $('#translate').click(function() {
@@ -322,18 +329,6 @@ $(document).ready(function() {
     });
 
     document.onmouseup = function() {
-//        textArea = $('#seqTextArea')[0];
-//        seqText = textArea.value;
-//        highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
-//        if (textArea.selectionStart === textArea.selectionEnd) {
-//            // Do nothing if nothing is highlighted
-//            highlightedText = "";
-//        }
-//        else {
-//            //$('#seqTextArea').text("start: "+textArea.selectionStart+" end: "+textArea.selectionEnd+" total:"+textArea.value.length+" columns: "+textArea.cols);
-//            highlightedText = seqText.substring(textArea.selectionStart, textArea.selectionEnd);
-//            alert(highlightedText + " .... " + seqText);
-//        }
     };
 //
 
