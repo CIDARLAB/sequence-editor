@@ -66,7 +66,8 @@ $(document).ready(function() {
             jj++;
         }
         return reverseComp;
-    };
+    }
+    ;
 
     function translate(sequence) {
         var translatedSeq = "";
@@ -261,7 +262,7 @@ $(document).ready(function() {
                 case "GGG":
                     translatedSeq += "G";
                     break;
-                // Stop Sequences
+                    // Stop Sequences
                 case "TAA":
                     translatedSeq += "STOP";
                     break;
@@ -278,7 +279,9 @@ $(document).ready(function() {
             ii += 3;
         }
         return translatedSeq;
-    };
+    }
+    ;
+
 
     /***************************************************************************************/
     /* Event Handlers */
@@ -307,5 +310,11 @@ $(document).ready(function() {
         var sequence = $('#seqTextArea').text().toLowerCase();
         $('#seqTextArea').text(sequence);
     });
+
+    $('#colorChanger').colorpicker().on('changeColor', function(ev){
+        var color = ev.color.toHex().toString();
+        $('#bigInterface').css("background-color", color);
+    });        
+    
 });
 

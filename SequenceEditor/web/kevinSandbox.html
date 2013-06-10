@@ -10,6 +10,7 @@ and open the template in the editor.
         <!--CSS style sheets-->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
         <style>
             .bigInterface{
                 background-color: #ffcc99;
@@ -32,96 +33,106 @@ and open the template in the editor.
         </style>
     </head>
     <body>
-        <div class="bigInterface">
-            <div class="row-fluid">
-                <div class="offset1 span5">
-                    <ul>
-                        <li class="btn-group">
-                            <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                <i class="icon-align-justify"></i>
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href='#'>New Sequence</a></li>
-                                <li><a href='#'>Save Sequence</a></li>
-                                <li><a href='#'>Close</a></li>
-                            </ul>
-                        </li>
-                        <li class="btn-group" style="margin-left:0px">
-                            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-edit"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href='#'>Undo</a></li>
-                                <li><a href='#'>Redo</a></li>
-                                <li><a href='#'>Cut</a></li>
-                                <li><a href='#'>Copy</a></li>
-                                <li><a href='#'>Paste</a></li>
-                                <li><a href='#'>Delete</a></li>
-                            </ul>
-                        </li>
-                        <li class="btn-group" style="margin-left:0px">
-                            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-search"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href='#'>Next Forward ORF</a></li>
-                                <li><a href='#'>Previous Forward ORF</a></li>
-                                <li><a href='#'>Next Reverse ORF</a></li>
-                                <li><a href='#'>Previous Reverse ORF</a></li>
-                                <li><a href='#'>Search</a></li>
-                            </ul>
-                        </li>
-                        <li class="btn-group" style="margin-left:0px">
-                            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                <i class="icon-pencil"></i>
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href='#'>Features</a></li>
-                                <li><a href='#'>Selection</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-                <div class="span3">
-                    <div class="btn-group">
-                        <button id="revComp" class="btn"><i class="icon-backward"></i></button>
-                        <button id="translate" class="btn"><i class="icon-text-width"></i></button>
-                        <button id="uppercase" class="btn"><i class="icon-arrow-up"></i></button>
-                        <button id="lowercase" class="btn"><i class="icon-arrow-down"></i></button>
+        <div class="container">
+            <div id="bigInterface" class="bigInterface">
+                <div class="row-fluid">
+                    <div class="span1">
+                        <div class="pull-left">
+                            <button id="colorChanger" class="btn"><i class="icon-tint"></i></button>
+                        </div>
+                    </div>
+                    <div class="span7">
+                        <ul class="menu pull-left">
+                            <li class="btn-group" style="margin-left:0px;">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                    File
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href='#'>New Sequence</a></li>
+                                    <li><a href='#'>Save Sequence</a></li>
+                                    <li><a href='#'>Close</a></li>
+                                </ul>
+                            </li>
+                            <li class="btn-group" style="margin-left:0px">
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    Edit
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href='#'>Undo</a></li>
+                                    <li><a href='#'>Redo</a></li>
+                                    <li><a href='#'>Cut</a></li>
+                                    <li><a href='#'>Copy</a></li>
+                                    <li><a href='#'>Paste</a></li>
+                                    <li><a href='#'>Delete</a></li>
+                                </ul>
+                            </li>
+                            <li class="btn-group" style="margin-left:0px">
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    Find
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href='#'>Next Forward ORF</a></li>
+                                    <li><a href='#'>Previous Forward ORF</a></li>
+                                    <li><a href='#'>Next Reverse ORF</a></li>
+                                    <li><a href='#'>Previous Reverse ORF</a></li>
+                                    <li><a href='#'>Search</a></li>
+                                </ul>
+                            </li>
+                            <li class="btn-group" style="margin-left:0px">
+                                <button class="btn dropdown-toggle" data-toggle="dropdown">
+                                    Highlight
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href='#'>Features</a></li>
+                                    <li><a href='#'>Selection</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="span2">
+                        <div class="btn-group pull-right">
+                            <button id="revComp" class="btn"><i class="icon-backward"></i></button>
+                            <button id="translate" class="btn"><i class="icon-text-width"></i></button>
+                            <button id="uppercase" class="btn"><i class="icon-arrow-up"></i></button>
+                            <button id="lowercase" class="btn"><i class="icon-arrow-down"></i></button>
+                        </div>
+                    </div>
+                    <div class="span2">
+                        <div class="btn-group pull-right">
+                            <button class="btn"><i class="icon-fullscreen"></i></button>
+                            <button class="btn"><i class="icon-remove"></i></button>
+                        </div>
                     </div>
                 </div>
-                <div class="span2">
-                    <div class="btn-group pull-right">
-                        <button class="btn"><i class="icon-fullscreen"></i></button>
-                        <button class="btn"><i class="icon-remove"></i></button>
+                <div class="row-fluid">
+                    <div class="offset1 span10">
+                        <textarea id="seqTextArea" class="textBox" style="resize:none">atgaccccgtggta</textarea>
                     </div>
                 </div>
-            </div>
-            <div class="row-fluid">
-                <div class="offset1 span10">
-                    <textarea id="seqTextArea" class="textBox" style="resize:none">atgaccccgtggta</textarea>
-                </div>
-            </div>
-            <div class='row-fluid'>
-                <div class="offset4 span4">
-                    <table style="width:100%">
-                        <tr>
-                            <th>Position:</th><td id="positionCell">0(0)</td><th>Temp:</th><td id="tempCell">0 C</td><th>Feature:</th><td id="featureCell">XbaI</td>
-                        </tr>
-                        <tr>
-                            <th>Length:</th><td id="lengthCell">100</td><th>% GC</th><td id="gcCell">50</td>
-                        </tr>
-                    </table>
+                <div class='row-fluid'>
+                    <div class="offset4 span4">
+                        <table style="width:100%">
+                            <tr>
+                                <th>Position:</th><td id="positionCell">0(0)</td><th>Temp:</th><td id="tempCell">0 C</td><th>Feature:</th><td id="featureCell">XbaI</td>
+                            </tr>
+                            <tr>
+                                <th>Length:</th><td id="lengthCell">100</td><th>% GC</th><td id="gcCell">50</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+
+
         <!--javascript libraries-->
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 
+        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
         <!--javascript goes here-->
         <script type="text/javascript" src ="controller/kevinSandboxController.js"></script> 
     </body>
