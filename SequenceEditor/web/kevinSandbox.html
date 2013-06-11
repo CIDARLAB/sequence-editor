@@ -24,7 +24,23 @@ and open the template in the editor.
                 border: solid black 2px;
                 min-height: 250px;
                 border-style: inset;
-                width:100%;
+                width:90%;
+            }
+            .rowsTextArea{
+                background-color: cornsilk;
+                color: #333333;
+                border: solid black 2px;
+                min-height: 250px;
+                border-style: inset;
+                width:5%;
+            }
+            .colsTextArea{
+                background-color: cornsilk;
+                color: #333333;
+                border: solid black 2px;
+                min-height: 45px;
+                border-style: inset;
+                width:90%;
             }
             .infoTable{
                 background-color: cornsilk;
@@ -110,7 +126,13 @@ and open the template in the editor.
                 </div>
                 <div class="row-fluid">
                     <div class="offset1 span10">
-                        <textarea id="seqTextArea" class="textBox" style="resize:none">atgaccccgtggta</textarea>
+                        <textarea class="colsTextArea pull-right" style="resize:none"></textarea>
+                    </div>
+                </div>
+                <div class="row-fluid">
+                    <div class="offset1 span10">
+                        <textarea class="rowsTextArea" style="resize:none"></textarea>
+                        <textarea id="seqTextArea" class="textBox pull-right" style="resize:none">atgaccccgtggta</textarea>
                     </div>
                 </div>
                 <div class='row-fluid'>

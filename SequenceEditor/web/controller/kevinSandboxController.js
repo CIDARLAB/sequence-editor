@@ -4,6 +4,9 @@
  */
 $(document).ready(function() {
     /***************************************************************************************/
+    var seqLength = $('#seqTextArea').text().length;
+    $('#lengthCell').html(seqLength);
+    
     /* Functions */
 
     /*
@@ -69,6 +72,11 @@ $(document).ready(function() {
     }
     ;
 
+    /*
+     * Translate function returns codon representation of sequence
+     * @param {type} sequence
+     * @returns {String}
+     */
     function translate(sequence) {
         var translatedSeq = "";
         var ii = 0;
@@ -386,6 +394,11 @@ $(document).ready(function() {
 
     document.onkeyup = function() {
         var textArea = $('#seqTextArea')[0];
+        // Grab current sequence length
+        seqLength = $('#seqTextArea').val().length;
+
+        $('#lengthCell').html(seqLength);
+        
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
         if (textArea.selectionStart === textArea.selectionEnd) {
