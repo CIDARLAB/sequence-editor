@@ -386,9 +386,16 @@ $(document).ready(function() {
 
     document.onkeyup = function() {
         var textArea = $('#seqTextArea')[0];
-        var inCodonPos = (textArea.selectionStart % 3);
-        var posDisplay = textArea.selectionStart + "(" + inCodonPos + ")";
-        $('#positionCell').html(posDisplay);
+        var inCodonPosStart = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            $('#positionCell').html(posDisplay);
+        }
+        else {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+            $('#positionCell').html(posDisplay);
+        }
     };
 });
 
