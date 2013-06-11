@@ -307,30 +307,81 @@ $(document).ready(function() {
         textArea.selectionEnd = 0;
     });
 
+    /*
+     * Translate function displays the sequence's codon representation.
+     */
     $('#translate').click(function() {
-        var sequence = $('#seqTextArea').text();
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value;
+        }
         var transOut = translate(sequence);
-        $('#seqTextArea').text(transOut);
+        alert(transOut);
+        textArea.selectionStart = 0;
+        textArea.selectionEnd = 0;
     });
 
+    /*
+     * Uppercase function makes all selected text uppercase.
+     */
     $('#uppercase').click(function() {
-        var sequence = $('#seqTextArea').text().toUpperCase();
-        $('#seqTextArea').text(sequence);
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value.toUpperCase();
+            $('#seqTextArea').text(sequence);
+        }
+        else {
+            var upperOut = sequence.toUpperCase();
+            upperOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + upperOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
+            $('#seqTextArea').text(upperOut);
+        }
+        textArea.selectionStart = 0;
+        textArea.selectionEnd = 0;
     });
 
+    /*
+     * Lowercase function makes all selected text lowercase.
+     */
     $('#lowercase').click(function() {
-        var sequence = $('#seqTextArea').text().toLowerCase();
-        $('#seqTextArea').text(sequence);
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value.toLowerCase();
+            $('#seqTextArea').text(sequence);
+        }
+        else {
+            var upperOut = sequence.toLowerCase();
+            upperOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + upperOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
+            $('#seqTextArea').text(upperOut);
+        }
+        textArea.selectionStart = 0;
+        textArea.selectionEnd = 0;
     });
+
 
     $('#colorChanger').colorpicker().on('changeColor', function(ev) {
         var color = ev.color.toHex().toString();
         $('#bigInterface').css("background-color", color);
     });
 
-    document.onmouseup = function() {
-    };
-//
 
+    document.onmouseup = function() {
+        var textArea = $('#seqTextArea')[0];
+        var inCodonPos = (textArea.selectionStart % 3);
+        var posDisplay = textArea.selectionStart + "(" + inCodonPos + ")";
+        $('#positionCell').html(posDisplay);
+    };
+
+    document.onkeyup = function() {
+        var textArea = $('#seqTextArea')[0];
+        var inCodonPos = (textArea.selectionStart % 3);
+        var posDisplay = textArea.selectionStart + "(" + inCodonPos + ")";
+        $('#positionCell').html(posDisplay);
+    };
 });
 
