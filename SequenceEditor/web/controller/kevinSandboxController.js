@@ -5,10 +5,17 @@
 $(document).ready(function() {
     /***************************************************************************************/
     var seqLength = $('#seqTextArea').text().length;
+    
+    //i've added a hidden span on kevinSandbox.html with 0px padding; 
+    //this span contains 10 characters.
+    var charWidth = $('#measureSpan').width() / 10;
     $('#lengthCell').html(seqLength);
-
-    var columns = ($('#seqTextArea').width());
-    //alert(columns);
+    //initialize column width text
+    $('.colsTextArea').text(Math.floor($('#seqTextArea').width() / charWidth));
+    //update column width whenever window is resized
+    $(window).resize(function() {
+        $('.colsTextArea').text(Math.floor($('#seqTextArea').width() / charWidth));
+    });
 
     /* Functions */
 
@@ -400,7 +407,7 @@ $(document).ready(function() {
         // Grab current sequence length
         seqLength = $('#seqTextArea').val().length;
         $('#lengthCell').html(seqLength);
-        
+
         // Update columns variable
         columns = textArea.cols;        // TODO: Fix this!
 
