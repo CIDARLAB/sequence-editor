@@ -373,7 +373,7 @@ $(document).ready(function() {
     document.onmouseup = function() {
         var textArea = $('#seqTextArea')[0];
         var inCodonPosStart = (textArea.selectionStart % 3);
-        var inCodonPosEnd = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
         if (textArea.selectionStart === textArea.selectionEnd) {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
             $('#positionCell').html(posDisplay);
