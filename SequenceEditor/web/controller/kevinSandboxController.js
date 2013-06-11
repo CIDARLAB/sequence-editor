@@ -6,7 +6,10 @@ $(document).ready(function() {
     /***************************************************************************************/
     var seqLength = $('#seqTextArea').text().length;
     $('#lengthCell').html(seqLength);
-    
+
+    var columns = ($('#seqTextArea').width());
+    //alert(columns);
+
     /* Functions */
 
     /*
@@ -396,9 +399,11 @@ $(document).ready(function() {
         var textArea = $('#seqTextArea')[0];
         // Grab current sequence length
         seqLength = $('#seqTextArea').val().length;
-
         $('#lengthCell').html(seqLength);
         
+        // Update columns variable
+        columns = textArea.cols;        // TODO: Fix this!
+
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
         if (textArea.selectionStart === textArea.selectionEnd) {
