@@ -316,8 +316,12 @@ $(document).ready(function() {
         return translatedSeq;
     }
     ;
-
-
+    //checks to see if an element has a scrollbar
+    (function($) {
+        $.fn.hasScrollBar = function() {
+            return this.get(0).scrollHeight > this.innerHeight();
+        };
+    })(jQuery);
     /***************************************************************************************/
     /* Event Handlers */
 
@@ -325,7 +329,11 @@ $(document).ready(function() {
      * Updates column width whenever window is resized
      */
     $(window).resize(function() {
-        $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth));
+        var scrollBar = 0;
+        if ($('#seqTextArea').hasScrollBar()) {
+            scrollBar = scrollBar + 1;
+        }
+        $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - scrollBar));
         //TODO: Implement rows listing upon resizing
     });
 
@@ -396,7 +404,7 @@ $(document).ready(function() {
         }
         else {
             var lowerOut = sequence.toLowerCase();
-            $('#seqTextArea').replaceSelectedText(lowerOut,"select");
+            $('#seqTextArea').replaceSelectedText(lowerOut, "select");
         }
     });
 
@@ -446,6 +454,9 @@ $(document).ready(function() {
                     $('#rowsTextArea').text(lineNumber);
                     kk++;
                 }
+            }
+            if ($('#seqTextArea').hasScrollBar()) {
+                $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - 1));
             }
         }
 
