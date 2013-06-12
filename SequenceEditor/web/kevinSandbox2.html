@@ -70,12 +70,12 @@ and open the template in the editor.
                                 <li class="dropdown-submenu" role="menuitem">
                                     <a tabindex="-1" href='#'>Edit</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Undo</a></li>
-                                        <li><a href="#">Redo</a></li>
-                                        <li><a href="#">Cut</a></li>
-                                        <li><a href="#">Copy</a></li>
-                                        <li><a href="#">Paste</a></li>
-                                        <li><a href="#">Delete</a></li>
+                                        <li><a href="#">Undo<span class="pull-right">ctrl+z</span></a></li>
+                                        <li><a href="#">Redo<span class="pull-right">ctrl+y</span></a></li>
+                                        <li><a href="#">Cut<span class="pull-right">ctrl+x</span></a></li>
+                                        <li><a href="#">Copy<span class="pull-right">ctrl+c</span></a></li>
+                                        <li><a href="#">Paste<span class="pull-right">ctrl+v</span></a></li>
+                                        <li><a href="#">Delete<span class="pull-right">Del</span></a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu" role="menuitem">
@@ -109,33 +109,33 @@ and open the template in the editor.
                         </ul>
                     </div>
                 </div>
-                        <div class="row-fluid">
-                            <div class="offset1 span10" style="padding-right:15px">
-                                <textarea id="seqTextArea" class="textBox">atgaccccgtggta</textarea>
-                            </div>
-                        </div>
-
-                        <div class='row-fluid'>
-                            <div class="offset1 span10">
-                                <table style="width:100%">
-                                    <tr>
-                                        <th>Position:</th><td id="positionCell">0(0)</td><th>Temp:</th><td id="tempCell">0 C</td><th>Feature:</th><td id="featureCell">XbaI</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Length:</th><td id="lengthCell">100</td><th>% GC</th><td id="gcCell">50</td>
-                                    </tr>
-                                </table>
-                    
-                            </div>
-                        </div>
+                <div class="row-fluid">
+                    <div class="offset1 span10" style="padding-right:15px">
+                        <textarea id="seqTextArea" class="textBox">atgaccccgtggta</textarea>
                     </div>
                 </div>
 
-                <!--javascript libraries-->
-                <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
-                <script src="jsLibraries/bootstrap.min.js"></script> 
-                <script src="jsLibraries/bootstrap-colorpicker.js"></script>
-                <!--javascript goes here-->
-                <script type="text/javascript" src ="controller/kevinSandboxController2.js"></script> 
-                </body>
-                </html>
+                <div class='row-fluid'>
+                    <div class="offset1 span10">
+                        <table style="width:100%">
+                            <tr>
+                                <th>Position:</th><td id="positionCell">0(0)</td><th>Temp:</th><td id="tempCell">0 C</td><th>Feature:</th><td id="featureCell">XbaI</td>
+                            </tr>
+                            <tr>
+                                <th>Length:</th><td id="lengthCell">100</td><th>% GC</th><td id="gcCell">50</td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--javascript libraries-->
+        <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
+        <script src="jsLibraries/bootstrap.min.js"></script> 
+        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
+        <!--javascript goes here-->
+        <script type="text/javascript" src ="controller/kevinSandboxController2.js"></script> 
+    </body>
+</html>
