@@ -7,16 +7,33 @@ $(document).ready(function() {
     var seqLength = $('#seqTextArea').text().length;
 
     //i've added a hidden span on kevinSandbox.html with 0px padding; 
+    $('#lengthCell').html(seqLength);
+
     //this span contains 10 characters.
     var charWidth = $('#measureSpan').width() / 10;
-    $('#lengthCell').html(seqLength);
+    var numberOfCols = Math.floor($('#seqTextArea').width() / charWidth);
     //initialize column width text
-    $('.colsTextArea').text(Math.floor($('#seqTextArea').width() / charWidth));
-    //update column width whenever window is resized
-    $(window).resize(function() {
-        $('.colsTextArea').text(Math.floor($('#seqTextArea').width() / charWidth));
-    });
+    $('#columnLast').text(numberOfCols);
 
+    if (seqLength > 0) {
+        var kk = 0;
+        var lineNumber = "";
+        var numberOfRows = Math.ceil(seqLength / numberOfCols);
+        while (kk < numberOfRows) {
+            if (kk === 0) {
+                lineNumber += kk + 1;
+                $('#rowsTextArea').text(lineNumber);
+                kk++;
+            }
+            else {
+                lineNumber += "\r\n" + kk + 1;
+                $('#rowsTextArea').text(lineNumber);
+                kk++;
+            }
+        }
+    }
+
+    /***************************************************************************************/
     /* Functions */
 
     /*
@@ -304,6 +321,15 @@ $(document).ready(function() {
     /***************************************************************************************/
     /* Event Handlers */
 
+    /* 
+     * Updates column width whenever window is resized
+     */
+    $(window).resize(function() {
+        $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth));
+        //TODO: Implement rows listing upon resizing
+    });
+
+
     /*
      * Binds the Reverse Complement function (revComp()) to the revComp button click. 
      */
@@ -322,6 +348,7 @@ $(document).ready(function() {
         }
     });
 
+
     /*
      * Translate function displays the sequence's codon representation.
      */
@@ -336,6 +363,7 @@ $(document).ready(function() {
         $('#seqTextArea').setSelection(textArea.selectionStart, textArea.selectionEnd);
         alert(transOut);
     });
+
 
     /*
      * Uppercase function makes all selected text uppercase.
@@ -353,6 +381,7 @@ $(document).ready(function() {
             $('#seqTextArea').replaceSelectedText(upperOut, "select");
         }
     });
+
 
     /*
      * Lowercase function makes all selected text lowercase.
@@ -398,8 +427,27 @@ $(document).ready(function() {
         seqLength = $('#seqTextArea').val().length;
         $('#lengthCell').html(seqLength);
 
-        // Update columns variable
-        columns = textArea.cols;        // TODO: Fix this!
+        // Update rows display
+        if (seqLength === 0) {
+            $('#rowsTextArea').text("");
+        }
+        else {
+            var kk = 0;
+            var lineNumber = "";
+            var numberOfRows = Math.ceil(seqLength / numberOfCols);
+            while (kk < numberOfRows) {
+                if (kk === 0) {
+                    lineNumber += (kk + 1);
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+                else {
+                    lineNumber += "\r\n" + (kk + 1);
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+            }
+        }
 
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
