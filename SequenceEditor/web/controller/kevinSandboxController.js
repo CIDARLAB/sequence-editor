@@ -21,12 +21,12 @@ $(document).ready(function() {
         var numberOfRows = Math.ceil(seqLength / numberOfCols);
         while (kk < numberOfRows) {
             if (kk === 0) {
-                lineNumber += kk + 1;
+                lineNumber += "1";
                 $('#rowsTextArea').text(lineNumber);
                 kk++;
             }
             else {
-                lineNumber += "\r\n" + kk + 1;
+                lineNumber += "\r\n" + (numberOfCols * (kk));
                 $('#rowsTextArea').text(lineNumber);
                 kk++;
             }
@@ -445,12 +445,12 @@ $(document).ready(function() {
             var numberOfRows = Math.ceil(seqLength / numberOfCols);
             while (kk < numberOfRows) {
                 if (kk === 0) {
-                    lineNumber += (kk + 1);
+                    lineNumber += "1";
                     $('#rowsTextArea').text(lineNumber);
                     kk++;
                 }
                 else {
-                    lineNumber += "\r\n" + (kk + 1);
+                    lineNumber += "\r\n" + (numberOfCols * (kk));
                     $('#rowsTextArea').text(lineNumber);
                     kk++;
                 }
