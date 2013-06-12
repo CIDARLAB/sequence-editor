@@ -33,6 +33,11 @@ $(document).ready(function() {
         }
     }
 
+    //link scrollbars together
+    $('#seqTextArea').scroll(function() {
+        $('#rowsTextArea').scrollTop($(this).scrollTop());
+    })
+
     /***************************************************************************************/
     /* Functions */
 
@@ -440,14 +445,14 @@ $(document).ready(function() {
             $('#rowsTextArea').text("");
         }
         else {
-            var hasScrollBar=0;
+            var hasScrollBar = 0;
             if ($('#seqTextArea').hasScrollBar()) {
                 $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - 1));
-                hasScrollBar=1;
+                hasScrollBar = 1;
             }
             var kk = 0;
             var lineNumber = "";
-            var numberOfRows = Math.ceil(seqLength / (numberOfCols-hasScrollBar));
+            var numberOfRows = Math.ceil(seqLength / (numberOfCols - hasScrollBar));
             while (kk < numberOfRows) {
                 if (kk === 0) {
                     lineNumber += "1";
@@ -455,7 +460,7 @@ $(document).ready(function() {
                     kk++;
                 }
                 else {
-                    lineNumber += "\r\n" + ((numberOfCols-hasScrollBar) * (kk));
+                    lineNumber += "\r\n" + ((numberOfCols - hasScrollBar) * (kk));
                     $('#rowsTextArea').text(lineNumber);
                     kk++;
                 }
