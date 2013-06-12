@@ -5,7 +5,7 @@
 $(document).ready(function() {
     /***************************************************************************************/
     var seqLength = $('#seqTextArea').text().length;
-    
+
     //i've added a hidden span on kevinSandbox.html with 0px padding; 
     //this span contains 10 characters.
     var charWidth = $('#measureSpan').width() / 10;
@@ -318,11 +318,8 @@ $(document).ready(function() {
         }
         else {
             var revCompOut = revComp(sequence);
-            revCompOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + revCompOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
-            $('#seqTextArea').text(revCompOut);
+            $('#seqTextArea').replaceSelectedText(revCompOut, "select");
         }
-        textArea.selectionStart = 0;
-        textArea.selectionEnd = 0;
     });
 
     /*
@@ -336,9 +333,8 @@ $(document).ready(function() {
             sequence = textArea.value;
         }
         var transOut = translate(sequence);
+        $('#seqTextArea').setSelection(textArea.selectionStart, textArea.selectionEnd);
         alert(transOut);
-        textArea.selectionStart = 0;
-        textArea.selectionEnd = 0;
     });
 
     /*
@@ -354,11 +350,8 @@ $(document).ready(function() {
         }
         else {
             var upperOut = sequence.toUpperCase();
-            upperOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + upperOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
-            $('#seqTextArea').text(upperOut);
+            $('#seqTextArea').replaceSelectedText(upperOut, "select");
         }
-        textArea.selectionStart = 0;
-        textArea.selectionEnd = 0;
     });
 
     /*
@@ -373,12 +366,9 @@ $(document).ready(function() {
             $('#seqTextArea').text(sequence);
         }
         else {
-            var upperOut = sequence.toLowerCase();
-            upperOut = $('#seqTextArea').text().substring(0, textArea.selectionStart) + upperOut + $('#seqTextArea').text().substring(textArea.selectionEnd, $('#seqTextArea').text().length);
-            $('#seqTextArea').text(upperOut);
+            var lowerOut = sequence.toLowerCase();
+            $('#seqTextArea').replaceSelectedText(lowerOut,"select");
         }
-        textArea.selectionStart = 0;
-        textArea.selectionEnd = 0;
     });
 
 
