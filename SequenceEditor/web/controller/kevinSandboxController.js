@@ -36,7 +36,7 @@ $(document).ready(function() {
     //link scrollbars together
     $('#seqTextArea').scroll(function() {
         $('#rowsTextArea').scrollTop($(this).scrollTop());
-    })
+    });
 
     /***************************************************************************************/
     /* Functions */
@@ -321,12 +321,15 @@ $(document).ready(function() {
         return translatedSeq;
     }
     ;
+
     //checks to see if an element has a scrollbar
     (function($) {
         $.fn.hasScrollBar = function() {
             return this.get(0).scrollHeight > this.innerHeight();
         };
     })(jQuery);
+
+
     /***************************************************************************************/
     /* Event Handlers */
 
@@ -434,6 +437,7 @@ $(document).ready(function() {
         }
     };
 
+
     document.onkeyup = function() {
         var textArea = $('#seqTextArea')[0];
         // Grab current sequence length
@@ -479,5 +483,155 @@ $(document).ready(function() {
             $('#positionCell').html(posDisplay);
         }
     };
+
+    /***************************************************************************************/
+    /* Hotkey Event Handlers */
+
+    jwerty.key('ctrl+z', false);        // Suppress default action
+    jwerty.key('ctrl+z', function() {   // Add custom action
+        alert('ID: undo');
+    });
+
+    jwerty.key('ctrl+shift+z', false);
+    jwerty.key('ctrl+shift+z', function() {
+        alert('ID: redo');
+    });
+
+    jwerty.key('ctrl+x', false);
+    jwerty.key('ctrl+x', function() {
+        alert('ID: cut');
+    });
+
+    jwerty.key('ctrl+c', false);
+    jwerty.key('ctrl+c', function() {
+        alert('ID: copy');
+    });
+
+    jwerty.key('ctrl+v', false);
+    jwerty.key('ctrl+v', function() {
+        alert('ID: paste');
+    });
+
+    jwerty.key('ctrl+d', false);
+    jwerty.key('ctrl+d', function() {
+        alert('ID: delete');
+    });
+
+    jwerty.key('ctrl+q', false);
+    jwerty.key('ctrl+q', function() {
+        alert('ID: newSequence');
+    });
+
+    jwerty.key('ctrl+e', false);
+    jwerty.key('ctrl+e', function() {
+        alert('ID: saveSequence');
+    });
+
+    jwerty.key('esc', false);
+    jwerty.key('esc', function() {
+        alert('ID: close');
+    });
+
+    jwerty.key('ctrl+j', false);
+    jwerty.key('ctrl+j', function() {
+        alert('ID: nextForwardORF');
+    });
+
+    jwerty.key('ctrl+shift+j', false);
+    jwerty.key('ctrl+shift+j', function() {
+        alert('ID: previousForwardORF');
+    });
+
+    jwerty.key('ctrl+k', false);
+    jwerty.key('ctrl+k', function() {
+        alert('ID: nextReverseORF');
+    });
+
+    jwerty.key('ctrl+shift+k', false);
+    jwerty.key('ctrl+shift+k', function() {
+        alert('ID: previousReverseORF');
+    });
+
+    jwerty.key('ctrl+/', false);
+    jwerty.key('ctrl+/', function() {
+        alert('ID: search');
+    });
+
+    jwerty.key('ctrl+shift+f', false);
+    jwerty.key('ctrl+shift+f', function() {
+        alert('ID: features');
+    });
+
+    jwerty.key('ctrl+shift+h', false);
+    jwerty.key('ctrl+shift+h', function() {
+        alert('ID: selection');
+    });
+
+    /***************************************************************************************/
+    /* Menu Item Event Handlers */
+
+    $('#newSequence').click(function() {
+        alert('New Sequence menu item chosen');
+    });
+
+    $('#saveSequence').click(function() {
+        alert('Save Sequence menu item chosen');
+    });
+
+    $('#close').click(function() {
+        alert('Close menu item chosen');
+    });
+
+    $('#undo').click(function() {
+        alert('Undo menu item chosen');
+    });
+
+    $('#redo').click(function() {
+        alert('Redo menu item chosen');
+    });
+
+    $('#cut').click(function() {
+        alert('Cut menu item chosen');
+    });
+
+    $('#copy').click(function() {
+        alert('Copy menu item chosen');
+    });
+
+    $('#paste').click(function() {
+        alert('Paste menu item chosen');
+    });
+
+    $('#delete').click(function() {
+        alert('Delete menu item chosen');
+    });
+
+    $('#nextForwardORF').click(function() {
+        alert('Next Forward ORF item chosen');
+    });
+
+    $('#previousForwardORF').click(function() {
+        alert('Previous Forward ORF item chosen');
+    });
+
+    $('#nextReverseORF').click(function() {
+        alert('Next Reverse ORF item chosen');
+    });
+
+    $('#previousReverseORF').click(function() {
+        alert('Previous Reverse ORF item chosen');
+    });
+
+    $('#search').click(function() {
+        alert('Search item chosen');
+    });
+
+    $('#features').click(function() {
+        alert('Features item chosen');
+    });
+
+    $('#selection').click(function() {
+        alert('Selection item chosen');
+    });
 });
 
