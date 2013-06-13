@@ -4,6 +4,42 @@
  */
 $(document).ready(function() {
     /***************************************************************************************/
+        /***************************************************************************************/
+    var seqLength = $('#seqTextArea').text().length;
+
+    //i've added a hidden span on kevinSandbox.html with 0px padding; 
+    $('#lengthCell').html(seqLength);
+
+    //this span contains 10 characters.
+    var charWidth = $('#measureSpan').width() / 10;
+    var numberOfCols = Math.floor($('#seqTextArea').width() / charWidth);
+    //initialize column width text
+    $('#columnLast').text(numberOfCols);
+
+    if (seqLength > 0) {
+        var kk = 0;
+        var lineNumber = "";
+        var numberOfRows = Math.ceil(seqLength / numberOfCols);
+        while (kk < numberOfRows) {
+            if (kk === 0) {
+                lineNumber += "1";
+                $('#rowsTextArea').text(lineNumber);
+                kk++;
+            }
+            else {
+                lineNumber += "\r\n" + (numberOfCols * (kk));
+                $('#rowsTextArea').text(lineNumber);
+                kk++;
+            }
+        }
+    }
+
+    //link scrollbars together
+    $('#seqTextArea').scroll(function() {
+        $('#rowsTextArea').scrollTop($(this).scrollTop());
+    });
+    
+    
     /* Functions */
 
     /*
@@ -282,37 +318,317 @@ $(document).ready(function() {
     }
     ;
 
+    //checks to see if an element has a scrollbar
+    (function($) {
+        $.fn.hasScrollBar = function() {
+            return this.get(0).scrollHeight > this.innerHeight();
+        };
+    })(jQuery);
+
+
     /***************************************************************************************/
     /* Event Handlers */
+
+    /* 
+     * Updates column width whenever window is resized
+     */
+    $(window).resize(function() {
+        var scrollBar = 0;
+        if ($('#seqTextArea').hasScrollBar()) {
+            scrollBar = scrollBar + 1;
+        }
+        $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - scrollBar));
+        //TODO: Implement rows listing upon resizing
+    });
+
 
     /*
      * Binds the Reverse Complement function (revComp()) to the revComp button click. 
      */
     $('#revComp').click(function() {
-        var sequence = $('#seqTextArea').text();
-        var revCompOut = revComp(sequence);
-        $('#seqTextArea').text(revCompOut);
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value;
+            var revCompOut = revComp(sequence);
+            $('#seqTextArea').text(revCompOut);
+        }
+        else {
+            var revCompOut = revComp(sequence);
+            $('#seqTextArea').replaceSelectedText(revCompOut, "select");
+        }
     });
 
+
+    /*
+     * Translate function displays the sequence's codon representation.
+     */
     $('#translate').click(function() {
-        var sequence = $('#seqTextArea').text();
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value;
+        }
         var transOut = translate(sequence);
-        $('#seqTextArea').text(transOut);
+        $('#seqTextArea').setSelection(textArea.selectionStart, textArea.selectionEnd);
+        alert(transOut);
     });
 
+
+    /*
+     * Uppercase function makes all selected text uppercase.
+     */
     $('#uppercase').click(function() {
-        var sequence = $('#seqTextArea').text().toUpperCase();
-        $('#seqTextArea').text(sequence);
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value.toUpperCase();
+            $('#seqTextArea').text(sequence);
+        }
+        else {
+            var upperOut = sequence.toUpperCase();
+            $('#seqTextArea').replaceSelectedText(upperOut, "select");
+        }
     });
 
+
+    /*
+     * Lowercase function makes all selected text lowercase.
+     */
     $('#lowercase').click(function() {
-        var sequence = $('#seqTextArea').text().toLowerCase();
-        $('#seqTextArea').text(sequence);
+        var textArea = $('#seqTextArea')[0];
+        var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
+        if (sequence.length === 0) {
+            //Nothing highlighted, so change everything.
+            sequence = textArea.value.toLowerCase();
+            $('#seqTextArea').text(sequence);
+        }
+        else {
+            var lowerOut = sequence.toLowerCase();
+            $('#seqTextArea').replaceSelectedText(lowerOut, "select");
+        }
     });
+
 
     $('#colorChanger').colorpicker().on('changeColor', function(ev) {
         var color = ev.color.toHex().toString();
-        $('#smallInterface').css("background-color", color);
+        $('#bigInterface').css("background-color", color);
+    });
+
+
+    document.onmouseup = function() {
+        var textArea = $('#seqTextArea')[0];
+        var inCodonPosStart = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            $('#positionCell').html(posDisplay);
+        }
+        else {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+            $('#positionCell').html(posDisplay);
+        }
+    };
+
+
+    document.onkeyup = function() {
+        var textArea = $('#seqTextArea')[0];
+        // Grab current sequence length
+        seqLength = $('#seqTextArea').val().length;
+        $('#lengthCell').html(seqLength);
+
+        // Update rows display
+        if (seqLength === 0) {
+            $('#rowsTextArea').text("");
+        }
+        else {
+            var hasScrollBar = 0;
+            if ($('#seqTextArea').hasScrollBar()) {
+                $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - 1));
+                hasScrollBar = 1;
+            }
+            var kk = 0;
+            var lineNumber = "";
+            var numberOfRows = Math.ceil(seqLength / (numberOfCols - hasScrollBar));
+            while (kk < numberOfRows) {
+                if (kk === 0) {
+                    lineNumber += "1";
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+                else {
+                    lineNumber += "\r\n" + ((numberOfCols - hasScrollBar) * (kk));
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+            }
+
+        }
+
+        var inCodonPosStart = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            $('#positionCell').html(posDisplay);
+        }
+        else {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+            $('#positionCell').html(posDisplay);
+        }
+    };
+
+    /***************************************************************************************/
+    /* Hotkey Event Handlers */
+
+    jwerty.key('ctrl+z', function() {
+        alert('ID: undo');
+    });
+
+    jwerty.key('ctrl+y', function() {
+        alert('ID: redo');
+    });
+
+    jwerty.key('ctrl+x', function() {
+        alert('ID: cut');
+    });
+
+    jwerty.key('ctrl+c', function() {
+        alert('ID: copy');
+    });
+
+    jwerty.key('ctrl+v', function() {
+        alert('ID: paste');
+    });
+
+    jwerty.key('del', function() {
+        alert('ID: delete');
+    });
+
+    jwerty.key('alt+n', false);
+    jwerty.key('alt+n', function() {
+        alert('ID: newSequence');
+    });
+
+    jwerty.key('alt+s', false);
+    jwerty.key('alt+s', function() {
+        alert('ID: saveSequence');
+    });
+
+    jwerty.key('esc', false);
+    jwerty.key('esc', function() {
+        alert('ID: close');
+    });
+
+    jwerty.key('alt+q', false);
+    jwerty.key('alt+q', function() {
+        alert('ID: nextForwardORF');
+    });
+
+    jwerty.key('alt+w', false);
+    jwerty.key('alt+w', function() {
+        alert('ID: previousForwardORF');
+    });
+
+    jwerty.key('alt+e', false);
+    jwerty.key('alt+e', function() {
+        alert('ID: nextReverseORF');
+    });
+
+    jwerty.key('alt+r', false);
+    jwerty.key('alt+r', function() {
+        alert('ID: previousReverseORF');
+    });
+
+    jwerty.key('ctrl+/', false);
+    jwerty.key('ctrl+/', function() {
+        alert('ID: search');
+    });
+
+    jwerty.key('alt+2', false);
+    jwerty.key('alt+2', function() {
+        alert('ID: features');
+    });
+
+    jwerty.key('alt+3', false);
+    jwerty.key('alt+3', function() {
+        alert('ID: selection');
+    });
+
+    /***************************************************************************************/
+    /* Menu Item Event Handlers */
+
+    $('#newSequence').click(function() {
+        alert('New Sequence menu item chosen');
+    });
+
+    $('#saveSequence').click(function() {
+        alert('Save Sequence menu item chosen');
+    });
+
+    $('#close').click(function() {
+        alert('Close menu item chosen');
+    });
+
+    $('#undo').click(function() {
+        alert('Undo menu item chosen');
+    });
+
+    $('#redo').click(function() {
+        alert('Redo menu item chosen');
+    });
+
+    $('#cut').click(function() {
+        alert('Cut menu item chosen');
+    });
+
+    $('#copy').click(function() {
+        alert('Copy menu item chosen');
+    });
+
+    $('#paste').click(function() {
+        alert('Paste menu item chosen');
+    });
+
+    $('#delete').click(function() {
+        alert('Delete menu item chosen');
+    });
+
+    $('#nextForwardORF').click(function() {
+        alert('Next Forward ORF item chosen');
+    });
+
+    $('#previousForwardORF').click(function() {
+        alert('Previous Forward ORF item chosen');
+    });
+
+    $('#nextReverseORF').click(function() {
+        alert('Next Reverse ORF item chosen');
+    });
+
+    $('#previousReverseORF').click(function() {
+        alert('Previous Reverse ORF item chosen');
+    });
+
+    $('#search').click(function() {
+        alert('Search item chosen');
+    });
+
+    $('#features').click(function() {
+        alert('Features item chosen');
+    });
+
+    $('#selection').click(function() {
+        alert('Selection item chosen');
+    });
+    
+    $('#resize').click(function() {
+        alert('Resize button chosen');
+    });
+
+    $('#closeWindow').click(function() {
+        alert('Close Window button chosen');
     });
 });
-

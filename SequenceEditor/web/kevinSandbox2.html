@@ -12,6 +12,9 @@ and open the template in the editor.
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
         <style>
+            .shortcut{
+                color: #afafaf;
+            } 
             .smallInterface{
                 background-color: #ffcc99;
                 height:400px;
@@ -23,7 +26,7 @@ and open the template in the editor.
                 font-weight: normal;
                 color: #333333;
                 border: solid black 2px;
-                min-height: 300px;
+                min-height: 250px;
                 border-style: inset;
                 width:100%;
             }
@@ -52,7 +55,7 @@ and open the template in the editor.
                             <button id="colorChanger" class="btn"><i class="icon-tint"></i></button>
                         </div>
                     </div>
-                    <div class="span10">
+                    <div class="span1">
                         <div class="btn-group" style="margin-left:0px;">
                             <button class="btn dropdown-toggle" data-toggle="dropdown">
                                 <i class="icon-th-list"></i>
@@ -61,50 +64,52 @@ and open the template in the editor.
                             <ul class="dropdown-menu" role="menu">
                                 <li class="dropdown-submenu" role="menuitem">
                                     <a tabindex="-1" href="#">File</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">New Sequence</a></li>
-                                        <li><a href="#">Save Sequence</a></li>
-                                        <li><a href="#">Close</a></li>
+                                    <ul class="dropdown-menu" style="width:225px">
+                                        <li><a id="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li>
+                                        <li><a id="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li>
+                                        <li><a id="close" href="#">Close<span class="shortcut pull-right">Esc</span></a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu" role="menuitem">
                                     <a tabindex="-1" href='#'>Edit</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Undo<span class="pull-right">ctrl+z</span></a></li>
-                                        <li><a href="#">Redo<span class="pull-right">ctrl+y</span></a></li>
-                                        <li><a href="#">Cut<span class="pull-right">ctrl+x</span></a></li>
-                                        <li><a href="#">Copy<span class="pull-right">ctrl+c</span></a></li>
-                                        <li><a href="#">Paste<span class="pull-right">ctrl+v</span></a></li>
-                                        <li><a href="#">Delete<span class="pull-right">Del</span></a></li>
+                                        <li><a id="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li>
+                                        <li><a id="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li>
+                                        <li><a id="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li>
+                                        <li><a id="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li>
+                                        <li><a id="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li>
+                                        <li><a id="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu" role="menuitem">
                                     <a tabindex="-1" href='#'>Find</a>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="#">Next Forward ORF</a></li>
-                                        <li><a href="#">Previous Forward ORF</a></li>
-                                        <li><a href="#">Next Reverse ORF</a></li>
-                                        <li><a href="#">Previous Forward ORF</a></li>
-                                        <li><a href="#">Search</a></li>
+                                    <ul class="dropdown-menu" style="width:250px">
+                                        <li><a id="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li>
+                                        <li><a id="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li>
+                                        <li><a id="nextReverseORF" href="#">Next Reverse ORF<span class="shortcut pull-right">Alt+E</span></a></li>
+                                        <li><a id="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li>
+                                        <li><a id="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li>
                                     </ul>
                                 </li>
                                 <li class="dropdown-submenu" role="menuitem">
                                     <a tabindex="-1" href='#'>Highlight</a>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Features</a></li>
-                                        <li><a href="#">Selection</a></li>
+                                        <li><a id="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li>
+                                        <li><a id="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Reverse Complement</a></li>
-                                <li><a href="#">Translate</a></li>
-                                <li><a href="#">To Uppercase</a></li>
-                                <li><a href="#">To Lowercase</a></li>
+                                <li><a id="revComp" href="#">Reverse Complement</a></li>
+                                <li><a id="translate" href="#">Translate</a></li>
+                                <li><a id="uppercase" href="#">To Uppercase</a></li>
+                                <li><a id="lowercase" href="#">To Lowercase</a></li>
                             </ul>
                         </div>
+                    </div>
+                    <div class="offset8 span2">
                         <ul class="menu pull-right">
                             <li class="btn-group">
-                                <button class="btn"><i class="icon-fullscreen"></i></button>
-                                <button class="btn"><i class="icon-remove"></i></button>
+                                <button id="resize" class="btn"><i class="icon-fullscreen"></i></button>
+                                <button id="closeWindow" class="btn"><i class="icon-remove"></i></button>
                             </li>
                         </ul>
                     </div>
@@ -135,6 +140,8 @@ and open the template in the editor.
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 
         <script src="jsLibraries/bootstrap-colorpicker.js"></script>
+        <script type="text/javascript" src ="jsLibraries/rangyinputs_jquery.min.js"></script>
+        <script src="jsLibraries/jwerty.js"></script> 
         <!--javascript goes here-->
         <script type="text/javascript" src ="controller/kevinSandboxController2.js"></script> 
     </body>

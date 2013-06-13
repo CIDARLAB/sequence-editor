@@ -487,6 +487,30 @@ $(document).ready(function() {
     /***************************************************************************************/
     /* Hotkey Event Handlers */
 
+    jwerty.key('ctrl+z', function() {
+        alert('ID: undo');
+    });
+
+    jwerty.key('ctrl+y', function() {
+        alert('ID: redo');
+    });
+
+    jwerty.key('ctrl+x', function() {
+        alert('ID: cut');
+    });
+
+    jwerty.key('ctrl+c', function() {
+        alert('ID: copy');
+    });
+
+    jwerty.key('ctrl+v', function() {
+        alert('ID: paste');
+    });
+
+    jwerty.key('del', function() {
+        alert('ID: delete');
+    });
+
     jwerty.key('alt+n', false);
     jwerty.key('alt+n', function() {
         alert('ID: newSequence');
@@ -602,6 +626,14 @@ $(document).ready(function() {
 
     $('#selection').click(function() {
         alert('Selection item chosen');
+    });
+
+    $('#resize').click(function() {
+        alert('Resize button chosen');
+    });
+
+    $('#closeWindow').click(function() {
+        alert('Close Window button chosen');
     });
 });
 
