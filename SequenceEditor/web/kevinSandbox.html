@@ -12,6 +12,9 @@ and open the template in the editor.
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
         <style>
+            .shortcut{
+                color: #afafaf;
+            }
             textArea {
                 font-size: 12pt;
                 font-family: monospace;
@@ -69,10 +72,10 @@ and open the template in the editor.
                                     File
                                     <span class="caret"></span>
                                 </a>
-                                <ul class="dropdown-menu">
-                                    <li><a id="newSequence" href='#'>New Sequence</a></li>
-                                    <li><a id="saveSequence" href='#'>Save Sequence</a></li>
-                                    <li><a id="close" href='#'>Close</a></li>
+                                <ul class="dropdown-menu" style="width:225px;">
+                                    <li><a id="newSequence" href='#'>New Sequence<span class="shortcut pull-right">Alt+N</span></a></li>
+                                    <li><a id="saveSequence" href='#'>Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li>
+                                    <li><a id="close" href='#'>Close<span class="shortcut pull-right">Esc</span></a></li>
                                 </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -81,12 +84,12 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </button>
                                     <ul class="dropdown-menu">
-                                        <li><a href="#">Undo<span class="pull-right">ctrl+z</span></a></li>
-                                        <li><a href="#">Redo<span class="pull-right">ctrl+y</span></a></li>
-                                        <li><a href="#">Cut<span class="pull-right">ctrl+x</span></a></li>
-                                        <li><a href="#">Copy<span class="pull-right">ctrl+c</span></a></li>
-                                        <li><a href="#">Paste<span class="pull-right">ctrl+v</span></a></li>
-                                        <li><a href="#">Delete<span class="pull-right">Del</span></a></li>
+                                        <li><a href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li>
+                                        <li><a href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li>
+                                        <li><a href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li>
+                                        <li><a href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li>
+                                        <li><a href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li>
+                                        <li><a href="#">Delete<span class="shortcut pull-right">Del</span></a></li>
                                     </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -94,12 +97,12 @@ and open the template in the editor.
                                     Find
                                     <span class="caret"></span>
                                 </button>
-                                <ul class="dropdown-menu">
-                                    <li><a id="nextForwardORF" href='#'>Next Forward ORF</a></li>
-                                    <li><a id="previousForwardORF" href='#'>Previous Forward ORF</a></li>
-                                    <li><a id="nextReverseORF" href='#'>Next Reverse ORF</a></li>
-                                    <li><a id="previousReverseORF" href='#'>Previous Reverse ORF</a></li>
-                                    <li><a id="search" href='#'>Search</a></li>
+                                <ul class="dropdown-menu" style="width:250px;">
+                                    <li><a id="nextForwardORF" href='#'>Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li>
+                                    <li><a id="previousForwardORF" href='#'>Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li>
+                                    <li><a id="nextReverseORF" href='#'>Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li>
+                                    <li><a id="previousReverseORF" href='#'>Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li>
+                                    <li><a id="search" href='#'>Search<span class="shortcut pull-right">Ctrl+/</span></a></li>
                                 </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -108,8 +111,8 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a id="features" href='#'>Features</a></li>
-                                    <li><a id="selection" href='#'>Selection</a></li>
+                                    <li><a id="features" href='#'>Features<span class="shortcut pull-right">Alt+2</span></a></li>
+                                    <li><a id="selection" href='#'>Selection<span class="shortcut pull-right">Alt+3</span></a></li>
                                 </ul>
                             </li>
                         </ul>

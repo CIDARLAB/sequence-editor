@@ -487,43 +487,13 @@ $(document).ready(function() {
     /***************************************************************************************/
     /* Hotkey Event Handlers */
 
-    jwerty.key('ctrl+z', false);        // Suppress default action
-    jwerty.key('ctrl+z', function() {   // Add custom action
-        alert('ID: undo');
-    });
-
-    jwerty.key('ctrl+shift+z', false);
-    jwerty.key('ctrl+shift+z', function() {
-        alert('ID: redo');
-    });
-
-    jwerty.key('ctrl+x', false);
-    jwerty.key('ctrl+x', function() {
-        alert('ID: cut');
-    });
-
-    jwerty.key('ctrl+c', false);
-    jwerty.key('ctrl+c', function() {
-        alert('ID: copy');
-    });
-
-    jwerty.key('ctrl+v', false);
-    jwerty.key('ctrl+v', function() {
-        alert('ID: paste');
-    });
-
-    jwerty.key('ctrl+d', false);
-    jwerty.key('ctrl+d', function() {
-        alert('ID: delete');
-    });
-
-    jwerty.key('ctrl+q', false);
-    jwerty.key('ctrl+q', function() {
+    jwerty.key('alt+n', false);
+    jwerty.key('alt+n', function() {
         alert('ID: newSequence');
     });
 
-    jwerty.key('ctrl+e', false);
-    jwerty.key('ctrl+e', function() {
+    jwerty.key('alt+s', false);
+    jwerty.key('alt+s', function() {
         alert('ID: saveSequence');
     });
 
@@ -532,23 +502,23 @@ $(document).ready(function() {
         alert('ID: close');
     });
 
-    jwerty.key('ctrl+j', false);
-    jwerty.key('ctrl+j', function() {
+    jwerty.key('alt+q', false);
+    jwerty.key('alt+q', function() {
         alert('ID: nextForwardORF');
     });
 
-    jwerty.key('ctrl+shift+j', false);
-    jwerty.key('ctrl+shift+j', function() {
+    jwerty.key('alt+w', false);
+    jwerty.key('alt+w', function() {
         alert('ID: previousForwardORF');
     });
 
-    jwerty.key('ctrl+k', false);
-    jwerty.key('ctrl+k', function() {
+    jwerty.key('alt+e', false);
+    jwerty.key('alt+e', function() {
         alert('ID: nextReverseORF');
     });
 
-    jwerty.key('ctrl+shift+k', false);
-    jwerty.key('ctrl+shift+k', function() {
+    jwerty.key('alt+r', false);
+    jwerty.key('alt+r', function() {
         alert('ID: previousReverseORF');
     });
 
@@ -557,13 +527,13 @@ $(document).ready(function() {
         alert('ID: search');
     });
 
-    jwerty.key('ctrl+shift+f', false);
-    jwerty.key('ctrl+shift+f', function() {
+    jwerty.key('alt+2', false);
+    jwerty.key('alt+2', function() {
         alert('ID: features');
     });
 
-    jwerty.key('ctrl+shift+h', false);
-    jwerty.key('ctrl+shift+h', function() {
+    jwerty.key('alt+3', false);
+    jwerty.key('alt+3', function() {
         alert('ID: selection');
     });
 
