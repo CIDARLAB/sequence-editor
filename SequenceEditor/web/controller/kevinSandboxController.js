@@ -17,17 +17,17 @@ $(document).ready(function() {
 
     if (seqLength > 0) {
         var kk = 0;
-        var lineNumber = "";
+        var lineStartingChar = "";
         var numberOfRows = Math.ceil(seqLength / numberOfCols);
         while (kk < numberOfRows) {
             if (kk === 0) {
-                lineNumber += "1";
-                $('#rowsTextArea').text(lineNumber);
+                lineStartingChar += "1";
+                $('#rowsTextArea').text(lineStartingChar);
                 kk++;
             }
             else {
-                lineNumber += "\r\n" + (numberOfCols * (kk));
-                $('#rowsTextArea').text(lineNumber);
+                lineStartingChar += "\r\n" + (numberOfCols * (kk));
+                $('#rowsTextArea').text(lineStartingChar);
                 kk++;
             }
         }
@@ -316,18 +316,19 @@ $(document).ready(function() {
         return translatedSeq;
     }
     ;
+
     //checks to see if an element has a scrollbar
     (function($) {
         $.fn.hasScrollBar = function() {
             return this.get(0).scrollHeight > this.innerHeight();
         };
     })(jQuery);
+
+
     /***************************************************************************************/
     /* Event Handlers */
 
-    /* 
-     * Updates column width whenever window is resized
-     */
+    /* Updates column width whenever window is resized */
     $(window).resize(function() {
         var scrollBar = 0;
         if ($('#seqTextArea').hasScrollBar()) {
@@ -338,9 +339,7 @@ $(document).ready(function() {
     });
 
 
-    /*
-     * Binds the Reverse Complement function (revComp()) to the revComp button click. 
-     */
+    /* Binds the Reverse Complement function (revComp()) to the revComp button click */
     $('#revComp').click(function() {
         var textArea = $('#seqTextArea')[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -357,9 +356,7 @@ $(document).ready(function() {
     });
 
 
-    /*
-     * Translate function displays the sequence's codon representation.
-     */
+    /* Translate function displays the sequence's codon representation */
     $('#translate').click(function() {
         var textArea = $('#seqTextArea')[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -373,9 +370,7 @@ $(document).ready(function() {
     });
 
 
-    /*
-     * Uppercase function makes all selected text uppercase.
-     */
+    /* Uppercase function makes all selected text uppercase */
     $('#uppercase').click(function() {
         var textArea = $('#seqTextArea')[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -391,9 +386,7 @@ $(document).ready(function() {
     });
 
 
-    /*
-     * Lowercase function makes all selected text lowercase.
-     */
+    /* Lowercase function makes all selected text lowercase */
     $('#lowercase').click(function() {
         var textArea = $('#seqTextArea')[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -440,27 +433,26 @@ $(document).ready(function() {
             $('#rowsTextArea').text("");
         }
         else {
-            var hasScrollBar=0;
+            var hasScrollBar = 0;
             if ($('#seqTextArea').hasScrollBar()) {
                 $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - 1));
-                hasScrollBar=1;
+                hasScrollBar = 1;
             }
             var kk = 0;
-            var lineNumber = "";
-            var numberOfRows = Math.ceil(seqLength / (numberOfCols-hasScrollBar));
+            var lineStartingChar = "";
+            var numberOfRows = Math.ceil(seqLength / (numberOfCols - hasScrollBar));
             while (kk < numberOfRows) {
                 if (kk === 0) {
-                    lineNumber += "1";
-                    $('#rowsTextArea').text(lineNumber);
+                    lineStartingChar += "1";
+                    $('#rowsTextArea').text(lineStartingChar);
                     kk++;
                 }
                 else {
-                    lineNumber += "\r\n" + ((numberOfCols-hasScrollBar) * (kk));
-                    $('#rowsTextArea').text(lineNumber);
+                    lineStartingChar += "\r\n" + ((numberOfCols - hasScrollBar) * (kk));
+                    $('#rowsTextArea').text(lineStartingChar);
                     kk++;
                 }
             }
-
         }
 
         var inCodonPosStart = (textArea.selectionStart % 3);
@@ -474,5 +466,96 @@ $(document).ready(function() {
             $('#positionCell').html(posDisplay);
         }
     };
-});
 
+
+    /***************************************************************************************/
+    /* Menu Item Handlers */
+
+    /* File: New Sequence */
+    $('#newSequence').click(function() {
+        alert("New Sequence selected");
+    });
+
+    /* File: Save Sequence */
+    $('#saveSequence').click(function() {
+        alert("Save Sequence selected");
+    });
+
+    /* File: Close */
+    $('#close').click(function() {
+        alert("Close selected");
+    });
+
+    /* Edit: Undo */
+    $('#undo').click(function() {
+        alert("Undo selected");
+    });
+
+    /* Edit: Redo */
+    $('#redo').click(function() {
+        alert("Redo selected");
+    });
+
+    /* Edit: Cut */
+    $('#cut').click(function() {
+        alert("Cut selected");
+    });
+
+    /* Edit: Copy */
+    $('#copy').click(function() {
+        alert("Copy selected");
+    });
+
+    /* Edit: Paste */
+    $('#paste').click(function() {
+        alert("Paste selected");
+    });
+
+    /* Edit: Delete */
+    $('#delete').click(function() {
+        alert("Delete selected");
+    });
+
+    /* Find: Next Forward ORF */
+    $('#nextForwardORF').click(function() {
+        alert("Next Forward ORF selected");
+    });
+
+    /* Find: Previous Forward ORF */
+    $('#previousForwardORF').click(function() {
+        alert("Previous Forward ORF selected");
+    });
+
+    /* Find: Next Reverse ORF */
+    $('#nextReverseORF').click(function() {
+        alert("Next Reverse ORF selected");
+    });
+
+    /* Find: Previous Reverse ORF */
+    $('#previousReverseORF').click(function() {
+        alert("Previous Reverse ORF selected");
+    });
+
+    /* Find: Searcg */
+    $('#search').click(function() {
+        alert("Search selected");
+    });
+
+    /* Highlight: Features */
+    $('#features').click(function() {
+        alert("Features selected");
+    });
+
+    /* Highlight: Selection */
+    $('#selection').click(function() {
+        alert("Selection selected");
+    });
+
+    /***************************************************************************************/
+    /* Menu Item Hotkey Handlers */
+    
+//    $(document).bind('keyup', 'Alt+q', function() {
+//        alert("HotKey");
+//    });
+    
+});
