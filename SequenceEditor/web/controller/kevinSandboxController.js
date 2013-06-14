@@ -344,20 +344,16 @@ $(document).ready(function() {
      */
     var needToResetORFList = 0;     // Boolean: True if a change in the sequence is detected. Otherwise, 0.
     var loopCountORF = 0;
-    var currentORF = "";
-    var numORF = 0;
     var arrayAndIndex = getForwardORFS();
-    currentORF = arrayAndIndex[0];
-    numORF = arrayAndIndex[1];
-    alert(numORF);
-    
+    var currentORF = arrayAndIndex[0];
+    var numORF = arrayAndIndex[1];
+
     function nextForwardORF() {
-        alert(loopCountORF);
-        alert(currentORF.length);
         if (needToResetORFList) {
-            var arrayAndIndex = getForwardORFS();
-            var currentORF = arrayAndIndex[0];
-            var numORF = arrayAndIndex[1];
+            arrayAndIndex = getForwardORFS();
+            currentORF = arrayAndIndex[0];
+            numORF = arrayAndIndex[1];
+            needToResetORFList = 0;
         }
         if (loopCountORF < numORF) {
             alert(currentORF[loopCountORF]);
@@ -584,6 +580,21 @@ $(document).ready(function() {
         alert('ID: selection');
     });
 
+    jwerty.key('a', function() {
+        needToResetORFList = 1;
+    });
+
+    jwerty.key('c', function() {
+        needToResetORFList = 1;
+    });
+
+    jwerty.key('t', function() {
+        needToResetORFList = 1;
+    });
+
+    jwerty.key('g', function() {
+        needToResetORFList = 1;
+    });
     /***************************************************************************************/
     /* Menu Item Event Handlers */
 
