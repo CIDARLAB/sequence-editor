@@ -601,7 +601,11 @@ $(document).ready(function() {
     });
 
     $('#nextForwardORF').click(function() {
-        alert('Next Forward ORF item chosen');
+        //alert('Next Forward ORF item chosen');
+        var text = ($('#seqTextArea')[0]).value.toString();
+        var seqPattern = /^atg([atgc]{3})+(taa|tag|tga)$/ig;
+        alert(seqPattern.exec(text));
+
     });
 
     $('#previousForwardORF').click(function() {
