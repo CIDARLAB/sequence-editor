@@ -329,6 +329,54 @@ $(document).ready(function() {
         };
     })(jQuery);
 
+    function getForwardORFS() {
+        var text = ($('#seqTextArea')[0]).value.toString();
+        var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
+        var arrayForwardORF = text.match(seqPattern);
+        var numORF = arrayForwardORF.length;
+        return [arrayForwardORF, numORF];
+    }
+    ;
+
+    /*
+     * Next Forward ORF function
+     * @returns Alert with all forward ORFs found. TODO: highlight ORFs in consecutive order.
+     */
+    var needToResetORFList = 0;     // Boolean: True if a change in the sequence is detected. Otherwise, 0.
+    var loopCountORF = 0;
+    var currentORF = "";
+    var numORF = 0;
+    var arrayAndIndex = getForwardORFS();
+    currentORF = arrayAndIndex[0];
+    numORF = arrayAndIndex[1];
+    alert(numORF);
+    
+    function nextForwardORF() {
+        alert(loopCountORF);
+        alert(currentORF.length);
+        if (needToResetORFList) {
+            var arrayAndIndex = getForwardORFS();
+            var currentORF = arrayAndIndex[0];
+            var numORF = arrayAndIndex[1];
+        }
+        if (loopCountORF < numORF) {
+            alert(currentORF[loopCountORF]);
+            loopCountORF++;
+        }
+        else {
+            loopCountORF = 0;
+            alert(currentORF[loopCountORF]);
+            loopCountORF++;
+        }
+    }
+    ;
+
+    function nextReverseORF() {
+        var text = ($('#seqTextArea')[0]).value.toString();
+        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!tta|cta|tca))*(?:[atcg]{3})(?:cat)/ig;
+        alert(text.match(seqPattern));
+    }
+    ;
 
     /***************************************************************************************/
     /* Event Handlers */
@@ -487,29 +535,6 @@ $(document).ready(function() {
     /***************************************************************************************/
     /* Hotkey Event Handlers */
 
-    jwerty.key('ctrl+z', function() {
-        alert('ID: undo');
-    });
-
-    jwerty.key('ctrl+y', function() {
-        alert('ID: redo');
-    });
-
-    jwerty.key('ctrl+x', function() {
-        alert('ID: cut');
-    });
-
-    jwerty.key('ctrl+c', function() {
-        alert('ID: copy');
-    });
-
-    jwerty.key('ctrl+v', function() {
-        alert('ID: paste');
-    });
-
-    jwerty.key('del', function() {
-        alert('ID: delete');
-    });
 
     jwerty.key('alt+n', false);
     jwerty.key('alt+n', function() {
@@ -527,9 +552,7 @@ $(document).ready(function() {
     });
 
     jwerty.key('alt+q', false);
-    jwerty.key('alt+q', function() {
-        alert('ID: nextForwardORF');
-    });
+    jwerty.key('alt+q', nextForwardORF);        // When shortcut Alt+q is pressed, call nextForwardORF function
 
     jwerty.key('alt+w', false);
     jwerty.key('alt+w', function() {
@@ -600,20 +623,13 @@ $(document).ready(function() {
         alert('Delete menu item chosen');
     });
 
-    $('#nextForwardORF').click(function() {
-        //alert('Next Forward ORF item chosen');
-        var text = ($('#seqTextArea')[0]).value.toString();
-        var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
-        alert(text.match(seqPattern));
-    });
+    $('#nextForwardORF').click(nextForwardORF);         // Upon click call nextForwardORF function
 
     $('#previousForwardORF').click(function() {
         alert('Previous Forward ORF item chosen');
     });
 
-    $('#nextReverseORF').click(function() {
-        alert('Next Reverse ORF item chosen');
-    });
+    $('#nextReverseORF').click(nextReverseORF);
 
     $('#previousReverseORF').click(function() {
         alert('Previous Reverse ORF item chosen');
