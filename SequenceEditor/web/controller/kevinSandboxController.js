@@ -332,6 +332,10 @@ $(document).ready(function() {
     function getForwardORFS() {
         var text = ($('#seqTextArea')[0]).value.toString();
         var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
+        var forwardIndeces = [];
+        while (seqPattern.test(text) === true) {
+            forwardIndeces.push(seqPattern.lastIndex);
+        }
         var arrayForwardORF = text.match(seqPattern);
         if (arrayForwardORF === null) {
             return ["", 0];
@@ -339,13 +343,17 @@ $(document).ready(function() {
         else {
             var numORF = arrayForwardORF.length;
         }
-        return [arrayForwardORF, numORF];
+        return [arrayForwardORF, numORF, forwardIndeces];
     }
     ;
 
     function getReverseORFS() {
         var text = ($('#seqTextArea')[0]).value.toString();
         var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
+        var reverseIndeces = [];
+        while (seqPattern.test(text) === true) {
+            reverseIndeces.push(seqPattern.lastIndex);
+        }
         var arrayReverseORF = text.match(seqPattern);
         if (arrayReverseORF === null) {
             return ["", 0];
@@ -353,7 +361,7 @@ $(document).ready(function() {
         else {
             var numORF = arrayReverseORF.length;
         }
-        return [arrayReverseORF, numORF];
+        return [arrayReverseORF, numORF, reverseIndeces];
     }
     ;
 
@@ -366,21 +374,25 @@ $(document).ready(function() {
     var forwardArrayAndIndex = getForwardORFS();
     var forwardCurrentORF = forwardArrayAndIndex[0];
     var forwardNumORF = forwardArrayAndIndex[1];
+    var forwardIndex = forwardArrayAndIndex[2];
 
     function nextForwardORF() {
         if (needToResetORFList) {
             forwardArrayAndIndex = getForwardORFS();
             forwardCurrentORF = forwardArrayAndIndex[0];
             forwardNumORF = forwardArrayAndIndex[1];
+            forwardIndex = forwardArrayAndIndex[2];
             needToResetORFList = 0;
         }
         if (forwardLoopCountORF < forwardNumORF) {
-            alert(forwardCurrentORF[forwardLoopCountORF]);
+            //alert(forwardCurrentORF[forwardLoopCountORF]);
+            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
             forwardLoopCountORF++;
         }
         else {
             forwardLoopCountORF = 0;
-            alert(forwardCurrentORF[forwardLoopCountORF]);
+            //alert(forwardCurrentORF[forwardLoopCountORF]);
+            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
             forwardLoopCountORF++;
         }
     }
@@ -390,21 +402,25 @@ $(document).ready(function() {
     var reverseArrayAndIndex = getReverseORFS();
     var reverseCurrentORF = reverseArrayAndIndex[0];
     var reverseNumORF = reverseArrayAndIndex[1];
+    var reverseIndex = reverseArrayAndIndex[2];
 
     function nextReverseORF() {
         if (needToResetORFList) {
             reverseArrayAndIndex = getReverseORFS();
             reverseCurrentORF = reverseArrayAndIndex[0];
             reverseNumORF = reverseArrayAndIndex[1];
+            reverseIndex = reverseArrayAndIndex[2];
             needToResetORFList = 0;
         }
         if (reverseLoopCountORF < reverseNumORF) {
-            alert(reverseCurrentORF[reverseLoopCountORF]);
+            //alert(reverseCurrentORF[reverseLoopCountORF]);
+            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
             reverseLoopCountORF++;
         }
         else {
             reverseLoopCountORF = 0;
-            alert(reverseCurrentORF[reverseLoopCountORF]);
+            //alert(reverseCurrentORF[reverseLoopCountORF]);
+            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
             reverseLoopCountORF++;
         }
     }
