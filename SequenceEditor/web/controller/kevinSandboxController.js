@@ -322,7 +322,7 @@ $(document).ready(function() {
     }
     ;
 
-    //checks to see if an element has a scrollbar
+    // Checks to see if an element has a scrollbar
     (function($) {
         $.fn.hasScrollBar = function() {
             return this.get(0).scrollHeight > this.innerHeight();
@@ -365,10 +365,7 @@ $(document).ready(function() {
     }
     ;
 
-    /*
-     * Next Forward ORF function
-     * @returns Alert with all forward ORFs found. TODO: highlight ORFs in consecutive order.
-     */
+    var forwardNextOrPrevious = 1;       // Integer: 2 if no iteration has been processed yet, 1 if iterating to next forward ORF, 0 if iterating to previous forward ORF
     var needToResetORFList = 0;     // Boolean: True if a change in the sequence is detected. Otherwise, 0.
     var forwardLoopCountORF = 0;
     var forwardArrayAndIndex = getForwardORFS();
@@ -376,6 +373,10 @@ $(document).ready(function() {
     var forwardNumORF = forwardArrayAndIndex[1];
     var forwardIndex = forwardArrayAndIndex[2];
 
+    /*
+     * Next Forward ORF function
+     * @return: Highlights Next Forward ORF
+     */
     function nextForwardORF() {
         if (needToResetORFList) {
             forwardArrayAndIndex = getForwardORFS();
@@ -384,26 +385,46 @@ $(document).ready(function() {
             forwardIndex = forwardArrayAndIndex[2];
             needToResetORFList = 0;
         }
-        if (forwardLoopCountORF < forwardNumORF) {
-            //alert(forwardCurrentORF[forwardLoopCountORF]);
+
+        if (forwardNextOrPrevious === 2 || forwardNextOrPrevious === 1) {
             $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
             forwardLoopCountORF++;
+            if (forwardLoopCountORF >= forwardNumORF) {
+                forwardLoopCountORF = 0;
+            } else {
+                // Do nothing
+            }
         }
-        else {
-            forwardLoopCountORF = 0;
-            //alert(forwardCurrentORF[forwardLoopCountORF]);
+        else if (forwardNextOrPrevious === 0) {
+            forwardLoopCountORF += 2;
+            if (forwardLoopCountORF >= forwardNumORF) {
+                forwardLoopCountORF = (forwardLoopCountORF - (forwardNumORF - 1)) - 1;
+            } else {
+                // Do nothing
+            }
             $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
             forwardLoopCountORF++;
+            if (forwardLoopCountORF >= forwardNumORF) {
+                forwardLoopCountORF = 0;
+            } else {
+                // Do nothing
+            }
         }
+        forwardNextOrPrevious = 1;
     }
     ;
 
+    var reverseNextOrPrevious = 2;          // Integer: 2 if no iteration has been processed yet, 1 if iterating to next forward ORF, 0 if iterating to previous forward ORF
     var reverseLoopCountORF = 0;
     var reverseArrayAndIndex = getReverseORFS();
     var reverseCurrentORF = reverseArrayAndIndex[0];
     var reverseNumORF = reverseArrayAndIndex[1];
     var reverseIndex = reverseArrayAndIndex[2];
 
+    /*
+     * Next Reverse ORF function
+     * @return: Highlights Next Reverse ORF
+     */
     function nextReverseORF() {
         if (needToResetORFList) {
             reverseArrayAndIndex = getReverseORFS();
@@ -412,17 +433,104 @@ $(document).ready(function() {
             reverseIndex = reverseArrayAndIndex[2];
             needToResetORFList = 0;
         }
-        if (reverseLoopCountORF < reverseNumORF) {
-            //alert(reverseCurrentORF[reverseLoopCountORF]);
+        if (reverseNextOrPrevious === 2 || reverseNextOrPrevious === 1) {
             $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
             reverseLoopCountORF++;
+            if (reverseLoopCountORF >= reverseNumORF) {
+                reverseLoopCountORF = 0;
+            } else {
+                // Do nothing
+            }
         }
-        else {
-            reverseLoopCountORF = 0;
-            //alert(reverseCurrentORF[reverseLoopCountORF]);
+        else if (reverseNextOrPrevious === 0) {
+            reverseLoopCountORF += 2;
+            if (reverseLoopCountORF >= reverseNumORF) {
+                reverseLoopCountORF = (reverseLoopCountORF - (reverseNumORF - 1)) - 1;
+            } else {
+                // Do nothing
+            }
             $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
             reverseLoopCountORF++;
+            if (reverseLoopCountORF >= reverseNumORF) {
+                reverseLoopCountORF = 0;
+            } else {
+                // Do nothing
+            }
         }
+        reverseNextOrPrevious = 1;
+    }
+    ;
+
+    function previousForwardORF() {
+        if (needToResetORFList) {
+            forwardArrayAndIndex = getForwardORFS();
+            forwardCurrentORF = forwardArrayAndIndex[0];
+            forwardNumORF = forwardArrayAndIndex[1];
+            forwardIndex = forwardArrayAndIndex[2];
+            needToResetORFList = 0;
+        }
+        if (forwardNextOrPrevious === 0 || forwardNextOrPrevious === 2) {
+            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+            forwardLoopCountORF--;
+            if (forwardLoopCountORF < 0) {
+                forwardLoopCountORF = forwardNumORF - 1;
+            } else {
+                // Do nothing
+            }
+        }
+        else if (forwardNextOrPrevious === 1) {
+            forwardLoopCountORF -= 2;
+            if (forwardLoopCountORF < 0) {
+                forwardLoopCountORF = forwardNumORF + forwardLoopCountORF;
+            } else {
+                // Do nothing
+            }
+            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+            forwardLoopCountORF--;
+            if (forwardLoopCountORF < 0) {
+                forwardLoopCountORF = forwardNumORF - 1;
+            } else {
+                // Do nothing
+            }
+        }
+        forwardNextOrPrevious = 0;
+    }
+    ;
+
+    function previousReverseORF() {
+        if (needToResetORFList) {
+            reverseArrayAndIndex = getReverseORFS();
+            reverseCurrentORF = reverseArrayAndIndex[0];
+            reverseNumORF = reverseArrayAndIndex[1];
+            reverseIndex = reverseArrayAndIndex[2];
+            needToResetORFList = 0;
+        }
+
+        if (reverseNextOrPrevious === 0 || reverseNextOrPrevious === 2) {
+            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+            reverseLoopCountORF--;
+            if (reverseLoopCountORF < 0) {
+                reverseLoopCountORF = reverseNumORF - 1;
+            } else {
+                // Do nothing
+            }
+        }
+        else if (reverseNextOrPrevious === 1) {
+            reverseLoopCountORF -= 2;
+            if (reverseLoopCountORF < 0) {
+                reverseLoopCountORF = reverseNumORF + reverseLoopCountORF;
+            } else {
+                // Do nothing
+            }
+            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+            reverseLoopCountORF--;
+            if (reverseLoopCountORF < 0) {
+                reverseLoopCountORF = reverseNumORF - 1;
+            } else {
+                // Do nothing
+            }
+        }
+        reverseNextOrPrevious = 0;
     }
     ;
 
@@ -603,17 +711,13 @@ $(document).ready(function() {
     jwerty.key('alt+q', nextForwardORF);        // When shortcut Alt+q is pressed, call nextForwardORF function
 
     jwerty.key('alt+w', false);
-    jwerty.key('alt+w', function() {
-        alert('ID: previousForwardORF');
-    });
+    jwerty.key('alt+w', previousForwardORF);    // When shortcut Alt+w is pressed, call previousForwardORF function
 
     jwerty.key('alt+a', false);
     jwerty.key('alt+a', nextReverseORF);        // When shortcut Alt+e is pressed, call nextReverseORF function
 
     jwerty.key('alt+r', false);
-    jwerty.key('alt+r', function() {
-        alert('ID: previousReverseORF');
-    });
+    jwerty.key('alt+r', previousReverseORF);    // When shortcut Alt+r is pressed, call previousReverseORF function
 
     jwerty.key('ctrl+/', false);
     jwerty.key('ctrl+/', function() {
