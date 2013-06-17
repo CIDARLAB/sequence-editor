@@ -629,15 +629,30 @@ $(document).ready(function() {
 
     document.onmouseup = function() {
         var textArea = $('#seqTextArea')[0];
+        var gcPattern = /[gc]/ig;
+        var gcContent = 0;
+        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
         if (textArea.selectionStart === textArea.selectionEnd) {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
             $('#positionCell').html(posDisplay);
+
+            while (gcPattern.test(textArea.value.toString())) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
+            $('#gcCell').html(gcContent);
         }
         else {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
             $('#positionCell').html(posDisplay);
+
+            while (gcPattern.test(selection)) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (selection.length)) * 100);
+            $('#gcCell').html(gcContent);
         }
     };
 
@@ -676,16 +691,34 @@ $(document).ready(function() {
 
         }
 
+        var gcPattern = /[gc]/ig;
+        var gcContent = 0;
+        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
         if (textArea.selectionStart === textArea.selectionEnd) {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
             $('#positionCell').html(posDisplay);
+
+            while (gcPattern.test(textArea.value.toString())) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
+            $('#gcCell').html(gcContent);
         }
         else {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
             $('#positionCell').html(posDisplay);
+
+            while (gcPattern.test(selection)) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (selection.length)) * 100);
+            $('#gcCell').html(gcContent);
         }
+
+
+
     };
 
     /***************************************************************************************/
@@ -790,15 +823,11 @@ $(document).ready(function() {
 
     $('#nextForwardORF').click(nextForwardORF);         // Upon click call nextForwardORF function
 
-    $('#previousForwardORF').click(function() {
-        alert('Previous Forward ORF item chosen');
-    });
+    $('#previousForwardORF').click(previousForwardORF);
 
     $('#nextReverseORF').click(nextReverseORF);
 
-    $('#previousReverseORF').click(function() {
-        alert('Previous Reverse ORF item chosen');
-    });
+    $('#previousReverseORF').click(previousReverseORF);
 
     $('#search').click(function() {
         alert('Search item chosen');
