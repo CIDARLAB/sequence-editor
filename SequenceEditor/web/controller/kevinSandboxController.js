@@ -333,8 +333,27 @@ $(document).ready(function() {
         var text = ($('#seqTextArea')[0]).value.toString();
         var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
         var arrayForwardORF = text.match(seqPattern);
-        var numORF = arrayForwardORF.length;
+        if (arrayForwardORF === null) {
+            return ["", 0];
+        }
+        else {
+            var numORF = arrayForwardORF.length;
+        }
         return [arrayForwardORF, numORF];
+    }
+    ;
+
+    function getReverseORFS() {
+        var text = ($('#seqTextArea')[0]).value.toString();
+        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
+        var arrayReverseORF = text.match(seqPattern);
+        if (arrayReverseORF === null) {
+            return ["", 0];
+        }
+        else {
+            var numORF = arrayReverseORF.length;
+        }
+        return [arrayReverseORF, numORF];
     }
     ;
 
@@ -343,34 +362,51 @@ $(document).ready(function() {
      * @returns Alert with all forward ORFs found. TODO: highlight ORFs in consecutive order.
      */
     var needToResetORFList = 0;     // Boolean: True if a change in the sequence is detected. Otherwise, 0.
-    var loopCountORF = 0;
-    var arrayAndIndex = getForwardORFS();
-    var currentORF = arrayAndIndex[0];
-    var numORF = arrayAndIndex[1];
+    var forwardLoopCountORF = 0;
+    var forwardArrayAndIndex = getForwardORFS();
+    var forwardCurrentORF = forwardArrayAndIndex[0];
+    var forwardNumORF = forwardArrayAndIndex[1];
 
     function nextForwardORF() {
         if (needToResetORFList) {
-            arrayAndIndex = getForwardORFS();
-            currentORF = arrayAndIndex[0];
-            numORF = arrayAndIndex[1];
+            forwardArrayAndIndex = getForwardORFS();
+            forwardCurrentORF = forwardArrayAndIndex[0];
+            forwardNumORF = forwardArrayAndIndex[1];
             needToResetORFList = 0;
         }
-        if (loopCountORF < numORF) {
-            alert(currentORF[loopCountORF]);
-            loopCountORF++;
+        if (forwardLoopCountORF < forwardNumORF) {
+            alert(forwardCurrentORF[forwardLoopCountORF]);
+            forwardLoopCountORF++;
         }
         else {
-            loopCountORF = 0;
-            alert(currentORF[loopCountORF]);
-            loopCountORF++;
+            forwardLoopCountORF = 0;
+            alert(forwardCurrentORF[forwardLoopCountORF]);
+            forwardLoopCountORF++;
         }
     }
     ;
 
+    var reverseLoopCountORF = 0;
+    var reverseArrayAndIndex = getReverseORFS();
+    var reverseCurrentORF = reverseArrayAndIndex[0];
+    var reverseNumORF = reverseArrayAndIndex[1];
+
     function nextReverseORF() {
-        var text = ($('#seqTextArea')[0]).value.toString();
-        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!tta|cta|tca))*(?:[atcg]{3})(?:cat)/ig;
-        alert(text.match(seqPattern));
+        if (needToResetORFList) {
+            reverseArrayAndIndex = getReverseORFS();
+            reverseCurrentORF = reverseArrayAndIndex[0];
+            reverseNumORF = reverseArrayAndIndex[1];
+            needToResetORFList = 0;
+        }
+        if (reverseLoopCountORF < reverseNumORF) {
+            alert(reverseCurrentORF[reverseLoopCountORF]);
+            reverseLoopCountORF++;
+        }
+        else {
+            reverseLoopCountORF = 0;
+            alert(reverseCurrentORF[reverseLoopCountORF]);
+            reverseLoopCountORF++;
+        }
     }
     ;
 
@@ -555,10 +591,8 @@ $(document).ready(function() {
         alert('ID: previousForwardORF');
     });
 
-    jwerty.key('alt+e', false);
-    jwerty.key('alt+e', function() {
-        alert('ID: nextReverseORF');
-    });
+    jwerty.key('alt+a', false);
+    jwerty.key('alt+a', nextReverseORF);        // When shortcut Alt+e is pressed, call nextReverseORF function
 
     jwerty.key('alt+r', false);
     jwerty.key('alt+r', function() {
