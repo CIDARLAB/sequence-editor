@@ -797,30 +797,6 @@ $(document).ready(function() {
         alert('Close menu item chosen');
     });
 
-    $('#undo').click(function() {
-        alert('Undo menu item chosen');
-    });
-
-    $('#redo').click(function() {
-        alert('Redo menu item chosen');
-    });
-
-    $('#cut').click(function() {
-        alert('Cut menu item chosen');
-    });
-
-    $('#copy').click(function() {
-        alert('Copy menu item chosen');
-    });
-
-    $('#paste').click(function() {
-        alert('Paste menu item chosen');
-    });
-
-    $('#delete').click(function() {
-        alert('Delete menu item chosen');
-    });
-
     $('#nextForwardORF').click(nextForwardORF);         // Upon click call nextForwardORF function
 
     $('#previousForwardORF').click(previousForwardORF);
