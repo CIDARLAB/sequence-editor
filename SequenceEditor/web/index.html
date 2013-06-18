@@ -30,7 +30,12 @@ and open the template in the editor.
                 </table>
                 <textarea id="testArea" cols="50">moo something hi</textarea>
                 <p id ="bPAR"></p>
-                <h1>Try the ctrl+a shortcut. Then look at the bottom of the index.html code.</h1>
+                <button id="getButton" class="btn btn-large btn-primary">TEST GET REQUEST</button>
+                <form method="POST" action="SequenceEditorServlet" enctype="multipart/form-data" >
+                    <input type="submit" value="Upload File" name="upload" id="uploadFileButton" class="btn btn-sucess" style="width:150px" />
+                    <br>
+                    <input type="file" name="file" id="file" />
+                </form>
             </div>  
         </div>
         <!--javascript libraries-->
@@ -41,14 +46,16 @@ and open the template in the editor.
         <!--javascript goes here-->
         <script type="text/javascript" src ="controller/IndexController.js"></script> 
         <script>
-            //disable the default functionality of ctrl+a
-            jwerty.key('ctrl+a', false);
-            //add my own functionality
-            jwerty.key('ctrl+a', function() {
-                alert('ctrl+a disabled');
-                //remember I also want you to display the uuid of the link for which you are binding the shortcut
-                //for example, ctrl+c should generate not only an alert saying "copy" but also the uuid if the <a> element that you could click on to do copy
-                
+            $(document).ready(function() {
+                $('#getButton').click(function() {
+
+                    //submit a get request!
+                    //1st param: url of servlet, 2nd param: parameters passed to servlet, 3rd param: callback function
+                    //post requests look the exact same
+                    $.get("SequenceEditorServlet", {"command": "test", "data": "testData"}, function(response) {
+                        alert(response);
+                    });
+                });
             });
         </script>
     </body>
