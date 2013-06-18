@@ -383,32 +383,40 @@ $(document).ready(function() {
             forwardCurrentORF = forwardArrayAndIndex[0];
             forwardNumORF = forwardArrayAndIndex[1];
             forwardIndex = forwardArrayAndIndex[2];
+            if (forwardLoopCountORF >= forwardNumORF) {
+                forwardLoopCountORF = 0;
+            }
             needToResetORFList = 0;
         }
 
-        if (forwardNextOrPrevious === 2 || forwardNextOrPrevious === 1) {
-            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-            forwardLoopCountORF++;
-            if (forwardLoopCountORF >= forwardNumORF) {
-                forwardLoopCountORF = 0;
-            } else {
-                // Do nothing
+        if (forwardNumORF !== 0) {
+            if (forwardNextOrPrevious === 2 || forwardNextOrPrevious === 1) {
+                $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+                forwardLoopCountORF++;
+                if (forwardLoopCountORF >= forwardNumORF) {
+                    forwardLoopCountORF = 0;
+                } else {
+                    // Do nothing
+                }
+            }
+            else if (forwardNextOrPrevious === 0) {
+                forwardLoopCountORF += 2;
+                if (forwardLoopCountORF >= forwardNumORF) {
+                    forwardLoopCountORF = (forwardLoopCountORF - (forwardNumORF - 1)) - 1;
+                } else {
+                    // Do nothing
+                }
+                $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+                forwardLoopCountORF++;
+                if (forwardLoopCountORF >= forwardNumORF) {
+                    forwardLoopCountORF = 0;
+                } else {
+                    // Do nothing
+                }
             }
         }
-        else if (forwardNextOrPrevious === 0) {
-            forwardLoopCountORF += 2;
-            if (forwardLoopCountORF >= forwardNumORF) {
-                forwardLoopCountORF = (forwardLoopCountORF - (forwardNumORF - 1)) - 1;
-            } else {
-                // Do nothing
-            }
-            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-            forwardLoopCountORF++;
-            if (forwardLoopCountORF >= forwardNumORF) {
-                forwardLoopCountORF = 0;
-            } else {
-                // Do nothing
-            }
+        else {
+            //Do nothing. No ORFs to iterate through.
         }
         forwardNextOrPrevious = 1;
     }
@@ -431,30 +439,36 @@ $(document).ready(function() {
             reverseCurrentORF = reverseArrayAndIndex[0];
             reverseNumORF = reverseArrayAndIndex[1];
             reverseIndex = reverseArrayAndIndex[2];
+            if (reverseLoopCountORF >= reverseNumORF) {
+                reverseLoopCountORF = 0;
+            }
             needToResetORFList = 0;
         }
-        if (reverseNextOrPrevious === 2 || reverseNextOrPrevious === 1) {
-            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-            reverseLoopCountORF++;
-            if (reverseLoopCountORF >= reverseNumORF) {
-                reverseLoopCountORF = 0;
-            } else {
-                // Do nothing
+
+        if (reverseNumORF !== 0) {
+            if (reverseNextOrPrevious === 2 || reverseNextOrPrevious === 1) {
+                $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+                reverseLoopCountORF++;
+                if (reverseLoopCountORF >= reverseNumORF) {
+                    reverseLoopCountORF = 0;
+                } else {
+                    // Do nothing
+                }
             }
-        }
-        else if (reverseNextOrPrevious === 0) {
-            reverseLoopCountORF += 2;
-            if (reverseLoopCountORF >= reverseNumORF) {
-                reverseLoopCountORF = (reverseLoopCountORF - (reverseNumORF - 1)) - 1;
-            } else {
-                // Do nothing
-            }
-            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-            reverseLoopCountORF++;
-            if (reverseLoopCountORF >= reverseNumORF) {
-                reverseLoopCountORF = 0;
-            } else {
-                // Do nothing
+            else if (reverseNextOrPrevious === 0) {
+                reverseLoopCountORF += 2;
+                if (reverseLoopCountORF >= reverseNumORF) {
+                    reverseLoopCountORF = (reverseLoopCountORF - (reverseNumORF - 1)) - 1;
+                } else {
+                    // Do nothing
+                }
+                $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+                reverseLoopCountORF++;
+                if (reverseLoopCountORF >= reverseNumORF) {
+                    reverseLoopCountORF = 0;
+                } else {
+                    // Do nothing
+                }
             }
         }
         reverseNextOrPrevious = 1;
@@ -467,30 +481,36 @@ $(document).ready(function() {
             forwardCurrentORF = forwardArrayAndIndex[0];
             forwardNumORF = forwardArrayAndIndex[1];
             forwardIndex = forwardArrayAndIndex[2];
+            if (forwardLoopCountORF >= forwardNumORF) {
+                forwardLoopCountORF = 0;
+            }
             needToResetORFList = 0;
         }
-        if (forwardNextOrPrevious === 0 || forwardNextOrPrevious === 2) {
-            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-            forwardLoopCountORF--;
-            if (forwardLoopCountORF < 0) {
-                forwardLoopCountORF = forwardNumORF - 1;
-            } else {
-                // Do nothing
+
+        if (forwardNumORF !== 0) {
+            if (forwardNextOrPrevious === 0 || forwardNextOrPrevious === 2) {
+                $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+                forwardLoopCountORF--;
+                if (forwardLoopCountORF < 0) {
+                    forwardLoopCountORF = forwardNumORF - 1;
+                } else {
+                    // Do nothing
+                }
             }
-        }
-        else if (forwardNextOrPrevious === 1) {
-            forwardLoopCountORF -= 2;
-            if (forwardLoopCountORF < 0) {
-                forwardLoopCountORF = forwardNumORF + forwardLoopCountORF;
-            } else {
-                // Do nothing
-            }
-            $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-            forwardLoopCountORF--;
-            if (forwardLoopCountORF < 0) {
-                forwardLoopCountORF = forwardNumORF - 1;
-            } else {
-                // Do nothing
+            else if (forwardNextOrPrevious === 1) {
+                forwardLoopCountORF -= 2;
+                if (forwardLoopCountORF < 0) {
+                    forwardLoopCountORF = forwardNumORF + forwardLoopCountORF;
+                } else {
+                    // Do nothing
+                }
+                $('#seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
+                forwardLoopCountORF--;
+                if (forwardLoopCountORF < 0) {
+                    forwardLoopCountORF = forwardNumORF - 1;
+                } else {
+                    // Do nothing
+                }
             }
         }
         forwardNextOrPrevious = 0;
@@ -503,31 +523,36 @@ $(document).ready(function() {
             reverseCurrentORF = reverseArrayAndIndex[0];
             reverseNumORF = reverseArrayAndIndex[1];
             reverseIndex = reverseArrayAndIndex[2];
+            if (reverseLoopCountORF >= reverseNumORF) {
+                reverseLoopCountORF = 0;
+            }
             needToResetORFList = 0;
         }
 
-        if (reverseNextOrPrevious === 0 || reverseNextOrPrevious === 2) {
-            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-            reverseLoopCountORF--;
-            if (reverseLoopCountORF < 0) {
-                reverseLoopCountORF = reverseNumORF - 1;
-            } else {
-                // Do nothing
+        if (reverseNumORF !== 0) {
+            if (reverseNextOrPrevious === 0 || reverseNextOrPrevious === 2) {
+                $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+                reverseLoopCountORF--;
+                if (reverseLoopCountORF < 0) {
+                    reverseLoopCountORF = reverseNumORF - 1;
+                } else {
+                    // Do nothing
+                }
             }
-        }
-        else if (reverseNextOrPrevious === 1) {
-            reverseLoopCountORF -= 2;
-            if (reverseLoopCountORF < 0) {
-                reverseLoopCountORF = reverseNumORF + reverseLoopCountORF;
-            } else {
-                // Do nothing
-            }
-            $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-            reverseLoopCountORF--;
-            if (reverseLoopCountORF < 0) {
-                reverseLoopCountORF = reverseNumORF - 1;
-            } else {
-                // Do nothing
+            else if (reverseNextOrPrevious === 1) {
+                reverseLoopCountORF -= 2;
+                if (reverseLoopCountORF < 0) {
+                    reverseLoopCountORF = reverseNumORF + reverseLoopCountORF;
+                } else {
+                    // Do nothing
+                }
+                $('#seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
+                reverseLoopCountORF--;
+                if (reverseLoopCountORF < 0) {
+                    reverseLoopCountORF = reverseNumORF - 1;
+                } else {
+                    // Do nothing
+                }
             }
         }
         reverseNextOrPrevious = 0;
@@ -626,7 +651,6 @@ $(document).ready(function() {
         $('#bigInterface').css("background-color", color);
     });
 
-
     document.onmouseup = function() {
         var textArea = $('#seqTextArea')[0];
         var gcPattern = /[gc]/ig;
@@ -717,8 +741,7 @@ $(document).ready(function() {
             $('#gcCell').html(gcContent);
         }
 
-
-
+        needToResetORFList = 1;
     };
 
     /***************************************************************************************/
