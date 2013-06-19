@@ -31,6 +31,7 @@ and open the template in the editor.
                 <textarea id="testArea" cols="50">moo something hi</textarea>
                 <p id ="bPAR"></p>
                 <button id="getButton" class="btn btn-large btn-primary">TEST GET REQUEST</button>
+                <button id="getAllFilesButton" class="btn btn-large btn-primary">Get All Files</button>
                 <form method="POST" action="SequenceEditorServlet" enctype="multipart/form-data" >
                     <input type="submit" value="Upload File" name="upload" id="uploadFileButton" class="btn btn-sucess" style="width:150px" />
                     <br>
@@ -56,6 +57,13 @@ and open the template in the editor.
                         alert(response);
                     });
                 });
+                
+//                $('#getAllFilesButton').click(function() {
+//                   $.get("SequenceEditorServlet", {}, function(response) {
+//                       
+//                   }); 
+//                });
+                
             });
         </script>
     </body>
