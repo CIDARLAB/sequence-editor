@@ -37,6 +37,10 @@ and open the template in the editor.
                     <br>
                     <input type="file" name="file" id="file" />
                 </form>
+                <button id="uploadFeatureFile" class="btn btn-large btn-primary">Upload Feature File</button>
+                <button id="align" class="btn btn-large btn-primary">Align</button>
+                <button id="uploadGenbankFile" class="btn btn-large btn-primary">Upload Genbank File</button>
+                <button id="saveButton" class="btn btn-large btn-primary">Save</button>
             </div>  
         </div>
         <!--javascript libraries-->
@@ -49,10 +53,8 @@ and open the template in the editor.
         <script>
             $(document).ready(function() {
                 $('#getButton').click(function() {
-
                     //submit a get request!
                     //1st param: url of servlet, 2nd param: parameters passed to servlet, 3rd param: callback function
-                    //post requests look the exact same
                     $.get("SequenceEditorServlet", {"command": "test", "data": "testData"}, function(response) {
                         alert(response);
                     });
@@ -63,7 +65,30 @@ and open the template in the editor.
                         alert(response);
                     });
                 });
-
+                
+                $('#uploadFeatureFile').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "feature"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#align').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "align"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#uploadGenbankFile').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#saveButton').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "save"}, function(response) {
+                        alert(response);
+                    });
+                });
             });
         </script>
     </body>

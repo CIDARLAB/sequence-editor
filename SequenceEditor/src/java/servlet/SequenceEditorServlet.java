@@ -99,6 +99,14 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("load")) {
                     String toReturn = loadFiles();
                     out.write(toReturn);
+                } else if (command.equals("feature")) {
+                    out.write("Upload feature file chosen");
+                } else if (command.equals("align")) {
+                    out.write("Align chosen");
+                } else if (command.equals("genbank")) {
+                    out.write("Upload Genbank file chosen");
+                } else if (command.equals("save")) {
+                    out.write("Save chosen");
                 }
 
             } finally {
