@@ -57,13 +57,13 @@ and open the template in the editor.
                         alert(response);
                     });
                 });
-                
-//                $('#getAllFilesButton').click(function() {
-//                   $.get("SequenceEditorServlet", {}, function(response) {
-//                       
-//                   }); 
-//                });
-                
+
+                $('#getAllFilesButton').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "load"}, function(response) {
+                        alert(response);
+                    });
+                });
+
             });
         </script>
     </body>

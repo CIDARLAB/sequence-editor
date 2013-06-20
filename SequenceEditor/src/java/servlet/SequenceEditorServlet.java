@@ -4,7 +4,9 @@
  */
 package servlet;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -94,7 +96,9 @@ public class SequenceEditorServlet extends HttpServlet {
                     System.out.println("got from client " + request.getParameter("data"));
                     //write content of response
                     out.write("response from the server");
-                } else if (command.equals("command2")) {
+                } else if (command.equals("load")) {
+                    String toReturn = loadFiles();
+                    out.write(toReturn);
                 }
 
             } finally {
@@ -143,4 +147,26 @@ public class SequenceEditorServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private String loadFiles() {
+        String filePath = this.getServletContext().getRealPath("/") + "data/";
+        //find all files at filePath
+        File[] filesInDirectory = new File(filePath).listFiles();
+        String toReturn = "";
+        try {
+            for (File currentFile : filesInDirectory) {
+                BufferedReader reader = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
+                String line = reader.readLine();
+                while (line != null) {
+                    toReturn = toReturn + "<br>" + line;
+                    line = reader.readLine();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
+        }
+        return toReturn;
+
+    }
 }
