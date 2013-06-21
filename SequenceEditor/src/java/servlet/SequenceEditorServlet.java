@@ -6,12 +6,15 @@ package servlet;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +23,8 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 /**
  *
@@ -44,30 +49,13 @@ public class SequenceEditorServlet extends HttpServlet {
             ServletFileUpload uploadHandler = new ServletFileUpload(new DiskFileItemFactory());
             PrintWriter writer = response.getWriter();
             //set content type
-            response.setContentType("text/plain");
+            response.setContentType("application/json");
             //after post request redirect to another page
             response.sendRedirect("index.html");
+
             try {
                 List<FileItem> items = uploadHandler.parseRequest(request);
-                //get relative file path
-                String uploadFilePath = this.getServletContext().getRealPath("/") + "/data/";
-                ArrayList<File> toLoad = new ArrayList();
-                for (FileItem item : items) {
-                    File file;
-                    if (!item.isFormField()) {
-                        String fileName = item.getName();
-                        if (fileName.equals("")) {
-                            System.out.println("You forgot to choose a file.");
-                        }
-                        if (fileName.lastIndexOf("\\") >= 0) {
-                            file = new File(uploadFilePath + fileName.substring(fileName.lastIndexOf("\\")));
-                        } else {
-                            file = new File(uploadFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
-                        }
-                        item.write(file);
-                        toLoad.add(file);
-                    }
-                }
+                addFilesToLoad(items);
             } catch (FileUploadException e) {
                 throw new RuntimeException(e);
             } catch (Exception e) {
@@ -80,7 +68,6 @@ public class SequenceEditorServlet extends HttpServlet {
 
             } finally {
                 writer.close();
-
             }
         } else {
             //HANDLE REGULAR REQUESTS
@@ -100,7 +87,8 @@ public class SequenceEditorServlet extends HttpServlet {
                     String toReturn = loadFiles();
                     out.write(toReturn);
                 } else if (command.equals("feature")) {
-                    out.write("Upload feature file chosen");
+                    String toReturn = getFeatureFiles();
+                    out.write(toReturn);
                 } else if (command.equals("align")) {
                     out.write("Align chosen");
                 } else if (command.equals("genbank")) {
@@ -157,7 +145,7 @@ public class SequenceEditorServlet extends HttpServlet {
     }// </editor-fold>
 
     private String loadFiles() {
-        String filePath = this.getServletContext().getRealPath("/") + "data/";
+        String filePath = this.getServletContext().getRealPath("/") + "data/sequences/";
         //find all files at filePath
         File[] filesInDirectory = new File(filePath).listFiles();
         String toReturn = "";
@@ -175,6 +163,74 @@ public class SequenceEditorServlet extends HttpServlet {
             return "ERROR";
         }
         return toReturn;
+    }
 
+    private String getFeatureFiles() {
+        JSONArray arrayOfFeatures = new JSONArray();
+        String filePath = this.getServletContext().getRealPath("/") + "data/featureFiles/";
+        File[] filesInDirectory = new File(filePath).listFiles();
+        String toReturn = "";
+        try {
+            for (File currentFile : filesInDirectory) {
+                BufferedReader reader = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
+                String line = reader.readLine();
+                while (line != null) {
+                    JSONObject features = new JSONObject();
+                    String[] fields = line.split(",");
+                    for (int ii = 0; ii < 3; ii++) {
+                        System.out.println(fields[ii]);
+                        if (ii == 0) {
+                            features.put("name", fields[ii]);
+                        } else if (ii == 1) {
+                            features.put("sequence", fields[ii]);
+                        } else if (ii == 2) {
+                            features.put("color", fields[ii]);
+                        }
+                    }
+                    line = reader.readLine();
+                    arrayOfFeatures.add(features);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
+        }
+        toReturn = arrayOfFeatures.toString();
+        System.out.println(toReturn);
+        return toReturn;
+    }
+
+    private void addFilesToLoad(List<FileItem> items) {
+        String uploadSeqFilePath = this.getServletContext().getRealPath("/") + "/data/sequences/";
+        String uploadFeatureFilePath = this.getServletContext().getRealPath("/") + "/data/featureFiles/";
+        ArrayList<File> toLoad = new ArrayList();
+        for (FileItem item : items) {
+            File file;
+            if (!item.isFormField()) {
+                String fileName = item.getName();
+                if (fileName.equals("")) {
+                    System.out.println("You forgot to choose a file.");
+                }
+                if (fileName.lastIndexOf("\\") >= 0) {
+                    if (fileName.contains(".ff")) {
+                        file = new File(uploadFeatureFilePath + fileName.substring(fileName.lastIndexOf("\\")));
+                    } else {
+                        file = new File(uploadSeqFilePath + fileName.substring(fileName.lastIndexOf("\\")));
+                    }
+                } else {
+                    if (fileName.contains(".ff")) {
+                        file = new File(uploadFeatureFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+                    } else {
+                        file = new File(uploadSeqFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+                    }
+                }
+                try {
+                    item.write(file);
+                } catch (Exception ex) {
+                    Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                toLoad.add(file);
+            }
+        }
     }
 }

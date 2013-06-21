@@ -37,7 +37,7 @@ and open the template in the editor.
                     <br>
                     <input type="file" name="file" id="file" />
                 </form>
-                <button id="uploadFeatureFile" class="btn btn-large btn-primary">Upload Feature File</button>
+                <button id="featureFile" class="btn btn-large btn-primary">Feature File</button>
                 <button id="align" class="btn btn-large btn-primary">Align</button>
                 <button id="uploadGenbankFile" class="btn btn-large btn-primary">Upload Genbank File</button>
                 <button id="saveButton" class="btn btn-large btn-primary">Save</button>
@@ -66,7 +66,7 @@ and open the template in the editor.
                     });
                 });
                 
-                $('#uploadFeatureFile').click(function() {
+                $('#featureFile').click(function() {
                     $.get("SequenceEditorServlet", {"command": "feature"}, function(response) {
                         alert(response);
                     });
