@@ -202,17 +202,19 @@ public class SequenceEditorServlet extends HttpServlet {
                 ArrayList<String> features = new ArrayList();
                 while (lineTwo != null) {
                     String indeces = "";
-                    String feature = "";
+                    String featureSeq = "";
                     if (lineTwo.startsWith("FEATURES")) {
                         lineTwo = readerTwo.readLine().trim();
                         while (!(lineTwo.startsWith("ORIGIN"))) {
                             if (!(lineTwo.startsWith("//")) && !(lineTwo.startsWith("SOURCE"))) {
                                 if (lineTwo.startsWith("misc_feature")) {
-                                    features.add(lineTwo.replaceAll("misc_feature", ""));
-//                                    indeces = lineTwo.replaceAll("misc_feature", "");
+                                    indeces = lineTwo.replaceAll("misc_feature", "");
+                                    indeces = indeces.trim();
+                                    String[] splitIndeces = indeces.split("\\..");
+                                    featureSeq = sequence.substring(Integer.parseInt(splitIndeces[0])-1, Integer.parseInt(splitIndeces[1]));
+                                    features.add(featureSeq);
                                 } else if (lineTwo.startsWith("/label=")) {
                                     features.add(lineTwo.replaceAll("/label=", ""));
-//                                    feature = lineTwo.replaceAll("/label=", "");
                                 }
                             }
                             lineTwo = readerTwo.readLine().trim();
