@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,7 +93,9 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("align")) {
                     out.write("Align chosen");
                 } else if (command.equals("genbank")) {
-                    out.write("Upload Genbank file chosen");
+//                    out.write("Upload Genbank file chosen");
+                    String toReturn = genbankParser();
+                    out.write(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
                 }
@@ -165,6 +168,74 @@ public class SequenceEditorServlet extends HttpServlet {
         return toReturn;
     }
 
+    // Choose and parse a Genbank file that has already been uploaded to database.
+    private String genbankParser() {
+        String filePath = this.getServletContext().getRealPath("/") + "data/genbank/";
+        File[] filesInDirectory = new File(filePath).listFiles();
+        String toReturn = "";
+        String sequence = "";
+        JSONArray genbankInfo = new JSONArray();
+        try {
+            for (File currentFile : filesInDirectory) {
+                BufferedReader reader = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
+                String line = reader.readLine();
+                while (line != null) {
+                    JSONObject genbankObject = new JSONObject();
+                    if (line.startsWith("ORIGIN")) {
+                        line = reader.readLine().trim();
+                        while (!(line.startsWith("//"))) {
+                            ArrayList<String> seq = new ArrayList(Arrays.asList(line.split(" ")));
+                            for (int i = 1; i < seq.size(); i++) {
+                                sequence = sequence + seq.get(i);
+                            }
+                            line = reader.readLine().trim();
+                        }
+                        genbankObject.put("Sequence", sequence);
+                        genbankInfo.add(genbankObject);
+                    } else {
+                        line = reader.readLine();
+                    }
+                }
+                // Restart at head of file now that sequence is stored. Read in features one by one.
+                BufferedReader readerTwo = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
+                String lineTwo = readerTwo.readLine();
+                ArrayList<String> features = new ArrayList();
+                while (lineTwo != null) {
+                    String indeces = "";
+                    String feature = "";
+                    if (lineTwo.startsWith("FEATURES")) {
+                        lineTwo = readerTwo.readLine().trim();
+                        while (!(lineTwo.startsWith("ORIGIN"))) {
+                            if (!(lineTwo.startsWith("//")) && !(lineTwo.startsWith("SOURCE"))) {
+                                if (lineTwo.startsWith("misc_feature")) {
+                                    features.add(lineTwo.replaceAll("misc_feature", ""));
+//                                    indeces = lineTwo.replaceAll("misc_feature", "");
+                                } else if (lineTwo.startsWith("/label=")) {
+                                    features.add(lineTwo.replaceAll("/label=", ""));
+//                                    feature = lineTwo.replaceAll("/label=", "");
+                                }
+                            }
+                            lineTwo = readerTwo.readLine().trim();
+                        }
+                    }
+                    lineTwo = readerTwo.readLine();
+                }
+                for (int ii = 0; ii < features.size(); ii++) {
+                    JSONObject genbankObject = new JSONObject();
+                    genbankObject.put(features.get(ii + 1), features.get(ii));
+                    genbankInfo.add(genbankObject);
+                    ii++;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "ERROR";
+        }
+        toReturn = genbankInfo.toString();
+        return toReturn;
+    }
+
+    // Method written to practice working with client-server communication. Reads only fabricated files.
     private String getFeatureFiles() {
         JSONArray arrayOfFeatures = new JSONArray();
         String filePath = this.getServletContext().getRealPath("/") + "data/featureFiles/";
@@ -203,6 +274,7 @@ public class SequenceEditorServlet extends HttpServlet {
     private void addFilesToLoad(List<FileItem> items) {
         String uploadSeqFilePath = this.getServletContext().getRealPath("/") + "/data/sequences/";
         String uploadFeatureFilePath = this.getServletContext().getRealPath("/") + "/data/featureFiles/";
+        String uploadGenbankFilePath = this.getServletContext().getRealPath("/") + "/data/genbank/";
         ArrayList<File> toLoad = new ArrayList();
         for (FileItem item : items) {
             File file;
@@ -214,12 +286,16 @@ public class SequenceEditorServlet extends HttpServlet {
                 if (fileName.lastIndexOf("\\") >= 0) {
                     if (fileName.contains(".ff")) {
                         file = new File(uploadFeatureFilePath + fileName.substring(fileName.lastIndexOf("\\")));
+                    } else if (fileName.contains(".str")) {
+                        file = new File(uploadGenbankFilePath + fileName.substring(fileName.lastIndexOf("\\")));
                     } else {
                         file = new File(uploadSeqFilePath + fileName.substring(fileName.lastIndexOf("\\")));
                     }
                 } else {
                     if (fileName.contains(".ff")) {
                         file = new File(uploadFeatureFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
+                    } else if (fileName.contains(".str")) {
+                        file = new File(uploadGenbankFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
                     } else {
                         file = new File(uploadSeqFilePath + fileName.substring(fileName.lastIndexOf("\\") + 1));
                     }
