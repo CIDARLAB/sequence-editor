@@ -12,17 +12,37 @@
         <style>
             .resizable { width: 150px; height: 150px; padding: 0.5em; }
             .resizable h4 { text-align: center; margin: 0; }
+            textArea {
+                font-size: 12pt;
+                font-family: monospace;
+            }
+            #highlight{
+                font-size: 12pt;
+                font-family: monospace; 
+            }
+            #highlight span{
+                font-size: 12pt;
+                font-family: monospace; 
+            }
         </style>
     </head>
     <body>
         <button id="newButton" class="btn btn-large">New Widget</button>
-        <div id="testArea"></div>
-
+        <div id="testArea">
+            <textarea id="testText" style="position: relative;width: 500px;height:500px;background-color: transparent">testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+            </textarea>
+            <div id="highlight"><span style="text-color:lightblue;z-index: -1;background-color: lightblue;position:relative;top:-515px;padding:4px 6px">testtesttest</span></div>
+        </div>
 
 
         <!--javascript libraries-->
         <script src="jsLibraries/bootstrap.min.js"></script> 
         <!--javascript goes here-->
+        <script>
+//            alert($('#testText').css("padding"));
+//            alert($('#testText').css("margin"));
+//            alert($('#testText').css("border"));
+        </script>
         <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script> 
     </body>
 </html>
