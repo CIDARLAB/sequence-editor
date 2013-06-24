@@ -168,7 +168,7 @@ public class SequenceEditorServlet extends HttpServlet {
         return toReturn;
     }
 
-    // Choose and parse a Genbank file that has already been uploaded to database.
+    // Parse Genbank files already uploaded to database.
     private String genbankParser() {
         String filePath = this.getServletContext().getRealPath("/") + "data/genbank/";
         File[] filesInDirectory = new File(filePath).listFiles();
@@ -177,6 +177,7 @@ public class SequenceEditorServlet extends HttpServlet {
         JSONArray genbankInfo = new JSONArray();
         try {
             for (File currentFile : filesInDirectory) {
+                // Read through file once to store entire sequence.
                 BufferedReader reader = new BufferedReader(new FileReader(currentFile.getAbsolutePath()));
                 String line = reader.readLine();
                 while (line != null) {
