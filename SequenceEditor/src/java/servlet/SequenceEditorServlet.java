@@ -73,7 +73,8 @@ public class SequenceEditorServlet extends HttpServlet {
         } else {
             //HANDLE REGULAR REQUESTS
             //set response type; basically it's either text or json
-            response.setContentType("text/html;charset=UTF-8");
+//            response.setContentType("text/html;charset=UTF-8");
+            response.setContentType("text/json");
             PrintWriter out = response.getWriter();
             //get parameter from client request
             String command = request.getParameter("command");
@@ -93,9 +94,9 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("align")) {
                     out.write("Align chosen");
                 } else if (command.equals("genbank")) {
-//                    out.write("Upload Genbank file chosen");
-                    String toReturn = genbankParser();
-                    out.write(toReturn);
+//                    String toReturn = genbankParser();
+                    JSONArray toReturn = genbankParser();
+                    out.print(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
                 }
@@ -169,7 +170,7 @@ public class SequenceEditorServlet extends HttpServlet {
     }
 
     // Parse Genbank files already uploaded to database.
-    private String genbankParser() {
+    private JSONArray genbankParser() {
         String filePath = this.getServletContext().getRealPath("/") + "data/genbank/";
         File[] filesInDirectory = new File(filePath).listFiles();
         String toReturn = "";
@@ -232,10 +233,10 @@ public class SequenceEditorServlet extends HttpServlet {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return "ERROR";
+//            return "ERROR";
         }
-        toReturn = genbankInfo.toString();
-        return toReturn;
+//        toReturn = genbankInfo.toString();
+        return genbankInfo;
     }
 
     // Method written to practice working with client-server communication. Reads only fabricated files.
