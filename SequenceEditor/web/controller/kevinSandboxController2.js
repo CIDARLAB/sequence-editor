@@ -751,6 +751,13 @@ $(document).ready(function() {
         alert('ID: newSequence');
     });
 
+    jwerty.key('alt+o', false);
+    jwerty.key('alt+o', function() {
+        $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
+            $('#seqTextArea').text((response[0].Sequence));
+        });
+    });
+
     jwerty.key('alt+s', false);
     jwerty.key('alt+s', function() {
         alert('ID: saveSequence');
@@ -808,6 +815,12 @@ $(document).ready(function() {
 
     $('#newSequence').click(function() {
         alert('New Sequence menu item chosen');
+    });
+
+    $('#openSequence').click(function() {
+        $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
+            $('#seqTextArea').text((response[0].Sequence));
+        });
     });
 
     $('#saveSequence').click(function() {
