@@ -192,7 +192,9 @@ public class SequenceEditorServlet extends HttpServlet {
                             }
                             line = reader.readLine().trim();
                         }
-                        genbankObject.put("Sequence", sequence);
+                        genbankObject.put("name", "Sequence");
+                        genbankObject.put("sequence", sequence);
+                        genbankObject.put("color", "Null");
                         genbankInfo.add(genbankObject);
                     } else {
                         line = reader.readLine();
@@ -217,6 +219,8 @@ public class SequenceEditorServlet extends HttpServlet {
                                     features.add(featureSeq);
                                 } else if (lineTwo.startsWith("/label=")) {
                                     features.add(lineTwo.replaceAll("/label=", ""));
+                                } else if (lineTwo.startsWith("/ApEinfo_fwdcolor=")) {
+                                    features.add(lineTwo.replaceAll("/ApEinfo_fwdcolor=", ""));
                                 }
                             }
                             lineTwo = readerTwo.readLine().trim();
@@ -226,8 +230,11 @@ public class SequenceEditorServlet extends HttpServlet {
                 }
                 for (int ii = 0; ii < features.size(); ii++) {
                     JSONObject genbankObject = new JSONObject();
-                    genbankObject.put(features.get(ii + 1), features.get(ii));
+                    genbankObject.put("name", features.get(ii + 1));
+                    genbankObject.put("sequence", features.get(ii));
+                    genbankObject.put("color", features.get(ii+2));
                     genbankInfo.add(genbankObject);
+                    ii++;
                     ii++;
                 }
             }

@@ -38,6 +38,7 @@ $(document).ready(function() {
         $('#rowsTextArea').scrollTop($(this).scrollTop());
     });
 
+
     /***************************************************************************************/
     /* Functions */
 
@@ -651,6 +652,7 @@ $(document).ready(function() {
         $('#bigInterface').css("background-color", color);
     });
 
+
     document.onmouseup = function() {
         var textArea = $('#seqTextArea')[0];
         var gcPattern = /[gc]/ig;
@@ -821,10 +823,19 @@ $(document).ready(function() {
 
     $('#openSequence').click(function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
-            $('#seqTextArea').text((response[0].Sequence));
-//            $.each(response, function(index, d) {
-//                    alert(d.Sequence);
-//            });
+            var sequence;
+            $.each(response, function(index, d) {
+                if (d.name === "Sequence") {
+                    sequence = d.sequence;
+                    $('#seqTextArea').text(d.sequence);
+                } 
+                else {
+                    var startIndex = sequence.indexOf(d.sequence);
+                    var endIndex = startIndex + (d.sequence).length;
+//                    alert(startIndex + " : " + endIndex);
+//                    $('#seqTextArea').setSelection(startIndex, endIndex);
+                }
+            });
         });
     });
 
