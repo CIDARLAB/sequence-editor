@@ -13,35 +13,68 @@
             .resizable { width: 150px; height: 150px; padding: 0.5em; }
             .resizable h4 { text-align: center; margin: 0; }
             textArea {
-                font-size: 12pt;
+                font-size: 22pt;
                 font-family: monospace;
+                padding:0px;
+                line-height: 22pt;
             }
             #highlight{
-                font-size: 12pt;
+                font-size: 22pt;
                 font-family: monospace; 
+                padding:0px;
+                line-height: 22pt;
+                color:transparent;
             }
-            #highlight span{
-                font-size: 12pt;
+            span{
+                line-height: 22pt;
+                font-size: 22pt;
                 font-family: monospace; 
+                background-color: lightblue;
+                word-wrap: break-word;
+                padding:0px;
+                margin: 0px;
+                border:0px;
             }
         </style>
     </head>
     <body>
-        <button id="newButton" class="btn btn-large">New Widget</button>
-        <div id="testArea">
-            <textarea id="testText" style="position: relative;width: 500px;height:500px;background-color: transparent">testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
-            </textarea>
-            <div id="highlight"><span style="text-color:lightblue;z-index: -1;background-color: lightblue;position:relative;top:-515px;padding:4px 6px">testtesttest</span></div>
+        <div class="container">
+            <button id="newButton" class="btn btn-large">New Widget</button>
+            <div id="testArea">
+                <textarea id="testText" style="resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
+                <div id="highlight" style="word-wrap: break-word;width:500px;z-index: 1;position:relative;top:-511px"></div>
+            </div>
         </div>
-
 
         <!--javascript libraries-->
         <script src="jsLibraries/bootstrap.min.js"></script> 
         <!--javascript goes here-->
         <script>
-//            alert($('#testText').css("padding"));
-//            alert($('#testText').css("margin"));
-//            alert($('#testText').css("border"));
+            $(document).ready(function() {
+                var features = [{"name": "feature1", "start": 1, "end": 3}, {"name": "feature2", "start": 4, "end": 10}, {"name": "feature3", "start": 12, "end": 30}];
+                $('#testText').mousedown(function() {
+                    $('#highlight').css("z-index", -1);
+                    $('#highlight span').css("color", "transparent");
+                    $('#testText').css("color", "black");
+                });
+                $('#highlight').mousedown(function() {
+                    $('#highlight').css("z-index", -1);
+                    $('#highlight span').css("color", "transparent");
+                    $('#testText').css("color", "black");
+                });
+                $('#testText').mouseleave(function() {
+                    $('#highlight').css("z-index", 1);
+                    $('#highlight span').css("color", "black");
+                });
+
+
+                $('#testText').keyup(function(event) {
+                    var typedChar = String.fromCharCode(event.which);
+                    var unparsed = $('#testText').val().toString();
+                    unparsed = '<span title="feature">' + unparsed.substring(0, unparsed.length / 2) + '</span>' + unparsed.substring(unparsed.length / 2);
+                    $('#highlight').html(unparsed);
+                });
+            });
         </script>
         <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script> 
     </body>
