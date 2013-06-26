@@ -660,6 +660,7 @@ $(document).ready(function() {
         var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
+        seqLength = $('#seqTextArea').val().length;
         if (textArea.selectionStart === textArea.selectionEnd) {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
             $('#positionCell').html(posDisplay);
@@ -669,6 +670,8 @@ $(document).ready(function() {
             }
             gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
             $('#gcCell').html(gcContent);
+            
+            $('#lengthCell').html(seqLength);
         }
         else {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
@@ -679,6 +682,9 @@ $(document).ready(function() {
             }
             gcContent = Math.round((gcContent / (selection.length)) * 100);
             $('#gcCell').html(gcContent);
+
+            var lengthDisplay = seqLength + "(" + selection.length + ")";
+            $('#lengthCell').html(lengthDisplay);
         }
     };
 
@@ -687,7 +693,6 @@ $(document).ready(function() {
         var textArea = $('#seqTextArea')[0];
         // Grab current sequence length
         seqLength = $('#seqTextArea').val().length;
-        $('#lengthCell').html(seqLength);
 
         // Update rows display
         if (seqLength === 0) {
@@ -731,6 +736,8 @@ $(document).ready(function() {
             }
             gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
             $('#gcCell').html(gcContent);
+
+            $('#lengthCell').html(seqLength);
         }
         else {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
@@ -741,6 +748,9 @@ $(document).ready(function() {
             }
             gcContent = Math.round((gcContent / (selection.length)) * 100);
             $('#gcCell').html(gcContent);
+
+            var lengthDisplay = seqLength + "(" + selection.length + ")";
+            $('#lengthCell').html(lengthDisplay);
         }
 
         needToResetORFList = 1;
@@ -838,7 +848,7 @@ $(document).ready(function() {
                     features.push({name: d.name, start: startIndex, end: endIndex, color: d.color});
                     orderedIndeces.push(startIndex);
                     orderedIndeces.push(endIndex);
-                    indexCount++;    
+                    indexCount++;
                 }
             });
             orderedIndeces.sort(function(a, b) {
@@ -850,7 +860,7 @@ $(document).ready(function() {
                 var span = [];
                 for (var jj = kk; jj < indexCount; jj++) {
                     if (jj === kk) {
-                        span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii+1]);
+                        span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
                     }
                     if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
                         span.push(features[jj].name);
