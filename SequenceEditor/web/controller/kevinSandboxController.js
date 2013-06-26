@@ -792,13 +792,13 @@ $(document).ready(function() {
         alert('ID: newSequence');
     });
 
+    var sequence = "";
+    var features = [];
+    var indexCount = 0;
+    var orderedIndeces = [];
     jwerty.key('alt+o', false);
     jwerty.key('alt+o', function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
-            var sequence;
-            var features = [];
-            var indexCount = 0;
-            var orderedIndeces = [];
             $.each(response, function(index, d) {
                 if (d.name === "Sequence") {
                     sequence = d.sequence;
