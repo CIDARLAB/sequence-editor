@@ -31,11 +31,17 @@ and open the template in the editor.
                 <textarea id="testArea" cols="50">moo something hi</textarea>
                 <p id ="bPAR"></p>
                 <button id="getButton" class="btn btn-large btn-primary">TEST GET REQUEST</button>
+                <button id="getAllFilesButton" class="btn btn-large btn-primary">Get All Files</button>
                 <form method="POST" action="SequenceEditorServlet" enctype="multipart/form-data" >
-                    <input type="submit" value="Upload File" name="upload" id="uploadFileButton" class="btn btn-sucess" style="width:150px" />
+                    <input type="submit" value="Upload File" name="upload" id="uploadFileButton" class="btn" style="width:150px" />
                     <br>
                     <input type="file" name="file" id="file" />
                 </form>
+                <button id="featureFile" class="btn btn-large btn-primary">Feature File</button>
+                <button id="align" class="btn btn-large btn-primary">Align</button>
+                <button id="genbank" class="btn btn-large btn-primary">Genbank</button>
+                <button id="saveButton" class="btn btn-large btn-primary">Save</button>
+                <br><br>
             </div>  
         </div>
         <!--javascript libraries-->
@@ -48,12 +54,40 @@ and open the template in the editor.
         <script>
             $(document).ready(function() {
                 $('#getButton').click(function() {
-
                     //submit a get request!
                     //1st param: url of servlet, 2nd param: parameters passed to servlet, 3rd param: callback function
-                    //post requests look the exact same
                     $.get("SequenceEditorServlet", {"command": "test", "data": "testData"}, function(response) {
 //                        alert(response);
+                    });
+                });
+
+                $('#getAllFilesButton').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "load"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#featureFile').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "feature"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#align').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "align"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#genbank').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
+                        alert(response);
+                    });
+                });
+                
+                $('#saveButton').click(function() {
+                    $.get("SequenceEditorServlet", {"command": "save"}, function(response) {
+                        alert(response);
                     });
                 });
             });
