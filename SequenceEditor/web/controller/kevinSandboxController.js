@@ -560,6 +560,33 @@ $(document).ready(function() {
     }
     ;
 
+    function resolveFeatureOverlap(orderedIndeces, features, indexCount) {
+        var spansToHighlight = [];
+        var kk = 0;
+        for (var ii = 0; ii < orderedIndeces.length; ii++) {
+            var span = [];
+            for (var jj = kk; jj < indexCount; jj++) {
+                if (jj === kk) {
+                    span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
+                }
+                if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
+                    span.push(features[jj].name);
+                }
+                else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+                    span.push(features[jj].name);
+                }
+                else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+                    span.push(features[jj].name);
+                }
+                else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
+                    span.push(features[jj].name);
+                }
+            }
+            alert(span);
+            spansToHighlight.push(span);
+        }
+    }
+
     /***************************************************************************************/
     /* Event Handlers */
 
@@ -670,7 +697,7 @@ $(document).ready(function() {
             }
             gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
             $('#gcCell').html(gcContent);
-            
+
             $('#lengthCell').html(seqLength);
         }
         else {
@@ -768,7 +795,29 @@ $(document).ready(function() {
     jwerty.key('alt+o', false);
     jwerty.key('alt+o', function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
-            $('#seqTextArea').text((response[0].Sequence));
+            var sequence;
+            var features = [];
+            var indexCount = 0;
+            var orderedIndeces = [];
+            $.each(response, function(index, d) {
+                if (d.name === "Sequence") {
+                    sequence = d.sequence;
+                    $('#seqTextArea').text(d.sequence);
+                }
+                else {
+                    var startIndex = sequence.indexOf(d.sequence);
+                    var endIndex = startIndex + (d.sequence).length;
+                    features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
+                    orderedIndeces.push(startIndex);
+                    orderedIndeces.push(endIndex);
+                    indexCount++;
+                }
+            });
+            orderedIndeces.sort(function(a, b) {
+                return a - b;
+            });
+            // Call function to determine feature overlaps.
+            resolveFeatureOverlap(orderedIndeces, features, indexCount);
         });
     });
 
@@ -845,7 +894,7 @@ $(document).ready(function() {
                 else {
                     var startIndex = sequence.indexOf(d.sequence);
                     var endIndex = startIndex + (d.sequence).length;
-                    features.push({name: d.name, start: startIndex, end: endIndex, color: d.color});
+                    features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
                     orderedIndeces.push(startIndex);
                     orderedIndeces.push(endIndex);
                     indexCount++;
@@ -854,30 +903,8 @@ $(document).ready(function() {
             orderedIndeces.sort(function(a, b) {
                 return a - b;
             });
-            var spansToHighlight = [];
-            var kk = 0;
-            for (var ii = 0; ii < orderedIndeces.length; ii++) {
-                var span = [];
-                for (var jj = kk; jj < indexCount; jj++) {
-                    if (jj === kk) {
-                        span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
-                    }
-                    if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
-                        span.push(features[jj].name);
-                    }
-                    else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
-                        span.push(features[jj].name);
-                    }
-                    else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
-                        span.push(features[jj].name);
-                    }
-                    else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
-                        span.push(features[jj].name);
-                    }
-                }
-                alert(span);
-                spansToHighlight.push(span);
-            }
+            // Call function to determine feature overlaps.
+            resolveFeatureOverlap(orderedIndeces, features, indexCount);
         });
     });
 
