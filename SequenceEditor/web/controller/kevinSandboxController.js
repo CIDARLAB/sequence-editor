@@ -824,18 +824,51 @@ $(document).ready(function() {
     $('#openSequence').click(function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
             var sequence;
+            var indexMap = new Object();
+            var indexCount = 0;
+            var orderedIndeces = [];
             $.each(response, function(index, d) {
                 if (d.name === "Sequence") {
                     sequence = d.sequence;
                     $('#seqTextArea').text(d.sequence);
-                } 
+                }
                 else {
                     var startIndex = sequence.indexOf(d.sequence);
                     var endIndex = startIndex + (d.sequence).length;
+                    indexMap["featureStart" + indexCount] = startIndex;
+                    indexMap["featureEnd" + indexCount] = endIndex;
+                    orderedIndeces.push(startIndex);
+                    orderedIndeces.push(endIndex);
+                    indexCount++;
 //                    alert(startIndex + " : " + endIndex);
 //                    $('#seqTextArea').setSelection(startIndex, endIndex);
                 }
             });
+            orderedIndeces.sort(function(a, b) {
+                return a - b;
+            });
+            var spansToHighlight = [];
+            var kk = 0;
+            for (var ii = 0; ii < orderedIndeces.length; ii++) {
+                var span = [];
+                for (var jj = kk; jj < indexCount; jj++) {
+                    if ((indexMap[("featureStart" + jj)] >= orderedIndeces[ii]) && (indexMap[("featureStart" + jj)] < orderedIndeces[ii + 1])) {
+                        span.push(jj + 1);
+                    }
+                    else if ((indexMap[("featureStart" + jj)] >= orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] <= orderedIndeces[ii + 1])) {
+                        span.push(jj + 1);
+                    }
+                    else if ((indexMap[("featureEnd" + jj)] > orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] <= orderedIndeces[ii + 1])) {
+                        span.push(jj + 1);
+                        kk++;
+                    }
+                    else if ((indexMap[("featureStart" + jj)] <= orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] >= orderedIndeces[ii + 1])) {
+                        span.push(jj + 1);
+                    }
+                }
+                //alert(span);
+                spansToHighlight.push(span);
+            }
         });
     });
 
