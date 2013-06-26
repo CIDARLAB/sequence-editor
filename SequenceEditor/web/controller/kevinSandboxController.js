@@ -825,6 +825,7 @@ $(document).ready(function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
             var sequence;
             var indexMap = new Object();
+            var features = [];
             var indexCount = 0;
             var orderedIndeces = [];
             $.each(response, function(index, d) {
@@ -835,13 +836,13 @@ $(document).ready(function() {
                 else {
                     var startIndex = sequence.indexOf(d.sequence);
                     var endIndex = startIndex + (d.sequence).length;
+                    features.push({name: d.name, start: startIndex, end: endIndex, color: d.color});
                     indexMap["featureStart" + indexCount] = startIndex;
                     indexMap["featureEnd" + indexCount] = endIndex;
                     orderedIndeces.push(startIndex);
                     orderedIndeces.push(endIndex);
-                    indexCount++;
-//                    alert(startIndex + " : " + endIndex);
-//                    $('#seqTextArea').setSelection(startIndex, endIndex);
+                    //alert(features[indexCount].name);
+                    indexCount++;    
                 }
             });
             orderedIndeces.sort(function(a, b) {
@@ -852,21 +853,21 @@ $(document).ready(function() {
             for (var ii = 0; ii < orderedIndeces.length; ii++) {
                 var span = [];
                 for (var jj = kk; jj < indexCount; jj++) {
-                    if ((indexMap[("featureStart" + jj)] >= orderedIndeces[ii]) && (indexMap[("featureStart" + jj)] < orderedIndeces[ii + 1])) {
-                        span.push(jj + 1);
+                    if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
+                        span.push(features[jj].name);
                     }
-                    else if ((indexMap[("featureStart" + jj)] >= orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] <= orderedIndeces[ii + 1])) {
-                        span.push(jj + 1);
+                    else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+                        span.push(features[jj].name);
                     }
-                    else if ((indexMap[("featureEnd" + jj)] > orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] <= orderedIndeces[ii + 1])) {
-                        span.push(jj + 1);
-                        kk++;
+                    else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+                        span.push(features[jj].name);
+                        //kk++;
                     }
-                    else if ((indexMap[("featureStart" + jj)] <= orderedIndeces[ii]) && (indexMap[("featureEnd" + jj)] >= orderedIndeces[ii + 1])) {
-                        span.push(jj + 1);
+                    else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
+                        span.push(features[jj].name);
                     }
                 }
-                //alert(span);
+                alert(span);
                 spansToHighlight.push(span);
             }
         });
