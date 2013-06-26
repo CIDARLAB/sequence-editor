@@ -824,7 +824,6 @@ $(document).ready(function() {
     $('#openSequence').click(function() {
         $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
             var sequence;
-            var indexMap = new Object();
             var features = [];
             var indexCount = 0;
             var orderedIndeces = [];
@@ -837,11 +836,8 @@ $(document).ready(function() {
                     var startIndex = sequence.indexOf(d.sequence);
                     var endIndex = startIndex + (d.sequence).length;
                     features.push({name: d.name, start: startIndex, end: endIndex, color: d.color});
-                    indexMap["featureStart" + indexCount] = startIndex;
-                    indexMap["featureEnd" + indexCount] = endIndex;
                     orderedIndeces.push(startIndex);
                     orderedIndeces.push(endIndex);
-                    //alert(features[indexCount].name);
                     indexCount++;    
                 }
             });
@@ -853,6 +849,9 @@ $(document).ready(function() {
             for (var ii = 0; ii < orderedIndeces.length; ii++) {
                 var span = [];
                 for (var jj = kk; jj < indexCount; jj++) {
+                    if (jj === kk) {
+                        span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii+1]);
+                    }
                     if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
                         span.push(features[jj].name);
                     }
@@ -861,7 +860,6 @@ $(document).ready(function() {
                     }
                     else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
                         span.push(features[jj].name);
-                        //kk++;
                     }
                     else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
                         span.push(features[jj].name);
