@@ -29,7 +29,6 @@
                 line-height: 22pt;
                 font-size: 22pt;
                 font-family: monospace; 
-                background-color: lightblue;
                 word-wrap: break-word;
                 padding:0px;
                 margin: 0px;
@@ -39,9 +38,10 @@
     </head>
     <body>
         <div class="container">
-            <button id="newButton" class="btn btn-large">New Widget</button>
             <div id="testArea">
+                <!--this is the text area you're typing into-->
                 <textarea id="testText" style="resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
+                <!--this is the highlight layer-->
                 <div id="highlight" style="word-wrap: break-word;width:500px;z-index: 1;position:relative;top:-511px"></div>
             </div>
         </div>
@@ -53,9 +53,9 @@
             $(document).ready(function() {
                 //generate feature list
                 var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
-                
+
                 ////////////////////////////////////////////////////////////////
-            $('#testText').mousedown(function() {
+                $('#testText').mousedown(function() {
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
                     $('#testText').css("color", "black");
@@ -75,6 +75,7 @@
                 $('#testText').keyup(function(event) {
                     var unparsed = $('#testText').val().toString();
                     var parsed = "";
+                    //iterate through each feature and append regular text or a span
                     for (var i = 0; i < features.length; i++) {
                         var currentFeature = features[i];
                         var start = currentFeature["start"];
@@ -82,17 +83,17 @@
                         var name = currentFeature["name"];
                         var color = currentFeature["color"];
                         if (name === "") {
-                            parsed = parsed+unparsed.substring(start,end);
+                            //just add text if no feature appears
+                            parsed = parsed + unparsed.substring(start, end);
                         } else {
-                            parsed = parsed + '<span title="' + name + '" style="background-color:"' + color + '">' + unparsed.substring(start, end) + '</span>';
+                            parsed = parsed + '<span title="' + name + '" style="background-color:' + color + '">' + unparsed.substring(start, end) + '</span>';
                         }
 
                     }
-//                    unparsed = '<span title="feature">' + unparsed.substring(0, unparsed.length / 2) + '</span>' + unparsed.substring(unparsed.length / 2);
+                    //set the html of the highlight layer
                     $('#highlight').html(parsed);
                 });
             });
         </script>
-        <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script> 
     </body>
 </html>

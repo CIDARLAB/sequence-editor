@@ -16,6 +16,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -81,7 +83,14 @@ public class SequenceEditorServlet extends HttpServlet {
             try {
                 //always use the param command to do servlet method calls
                 if (command.equals("test")) {
-                    //prints onto the GlassFish Server tab
+                    try {
+                        //prints onto the GlassFish Server tab
+                                    GoogleMail.Send("ravencadhelp", "Cidar1123", "eapple@bu.edu", "Guess who can send emails using a server now?", "test message");
+                    } catch (AddressException ex) {
+                        Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (MessagingException ex) {
+                        Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     System.out.println("got from client " + request.getParameter("data"));
                     //write content of response
                     out.write("response from the server");
