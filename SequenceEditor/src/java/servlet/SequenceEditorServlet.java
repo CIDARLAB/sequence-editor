@@ -104,7 +104,7 @@ public class SequenceEditorServlet extends HttpServlet {
                     out.write("Align chosen");
                 } else if (command.equals("genbank")) {
 //                    String toReturn = genbankParser();
-                    JSONArray toReturn = genbankParser();
+                    JSONObject toReturn = genbankParser();
                     out.print(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
@@ -179,11 +179,11 @@ public class SequenceEditorServlet extends HttpServlet {
     }
 
     // Parse Genbank files already uploaded to database.
-    private JSONArray genbankParser() {
+    private JSONObject genbankParser() {
         String filePath = this.getServletContext().getRealPath("/") + "data/genbank/";
         File[] filesInDirectory = new File(filePath).listFiles();
-        String toReturn = "";
         String sequence = "";
+        JSONObject toReturn = new JSONObject();
         JSONArray genbankInfo = new JSONArray();
         try {
             for (File currentFile : filesInDirectory) {
@@ -201,10 +201,9 @@ public class SequenceEditorServlet extends HttpServlet {
                             }
                             line = reader.readLine().trim();
                         }
-                        genbankObject.put("name", "Sequence");
-                        genbankObject.put("sequence", sequence);
-                        genbankObject.put("color", "Null");
-                        genbankInfo.add(genbankObject);
+
+                        //add full length sequence to toReturn
+                        toReturn.put("sequence" ,sequence);
                     } else {
                         line = reader.readLine();
                     }
@@ -251,8 +250,8 @@ public class SequenceEditorServlet extends HttpServlet {
             e.printStackTrace();
 //            return "ERROR";
         }
-//        toReturn = genbankInfo.toString();
-        return genbankInfo;
+        toReturn.put("features", genbankInfo);
+        return toReturn;
     }
 
     // Method written to practice working with client-server communication. Reads only fabricated files.
@@ -323,7 +322,7 @@ public class SequenceEditorServlet extends HttpServlet {
                 try {
                     item.write(file);
                 } catch (Exception ex) {
-                    Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
+                    ex.printStackTrace();
                 }
                 toLoad.add(file);
             }
