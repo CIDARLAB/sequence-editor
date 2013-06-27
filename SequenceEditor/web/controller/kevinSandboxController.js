@@ -560,30 +560,51 @@ $(document).ready(function() {
     }
     ;
 
+    var spansToHighlight = [];
     function resolveFeatureOverlap(orderedIndeces, features, indexCount) {
-        var spansToHighlight = [];
         var kk = 0;
         for (var ii = 0; ii < orderedIndeces.length; ii++) {
-            var span = [];
+            var overlappingFeatures = "";
+            var startingIndex = "";
+            var endingIndex = "";
+            var spanColor = "";
+            var count = 0;
+//            var span = [];
             for (var jj = kk; jj < indexCount; jj++) {
                 if (jj === kk) {
-                    span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
+//                    span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
+                    startingIndex = orderedIndeces[ii];
+                    endingIndex = orderedIndeces[ii + 1];
                 }
                 if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
-                    span.push(features[jj].name);
+//                    span.push(features[jj].name);
+                    overlappingFeatures += features[jj].name + ",";
+                    count = jj;
                 }
                 else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
-                    span.push(features[jj].name);
+//                    span.push(features[jj].name);
+                    overlappingFeatures += features[jj].name + ",";
+                    count = jj;
                 }
                 else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
-                    span.push(features[jj].name);
+//                    span.push(features[jj].name);
+                    overlappingFeatures += features[jj].name + ",";
+                    count = jj;
                 }
                 else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
-                    span.push(features[jj].name);
+//                    span.push(features[jj].name);
+                    overlappingFeatures += features[jj].name + ",";
+                    count = jj;
                 }
             }
-            alert(span);
-            spansToHighlight.push(span);
+            overlappingFeatures = overlappingFeatures.substring(0, overlappingFeatures.length - 1);
+            if (overlappingFeatures === "") {
+                spanColor = "";
+            } else {
+                spanColor = features[count].color;
+            }
+            spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, color: spanColor});
+//            alert(spansToHighlight[ii].features);
         }
     }
 
