@@ -77,30 +77,49 @@
                 jwerty.key('alt+h', false);
                 jwerty.key('alt+h', function() {
                     $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
-                        $.each(response, function(index, d) {
-                            if (d.name === "Sequence") {
-                                sequence = d.sequence;
-                                $('#testText').text(d.sequence);
-                            }
-                            else {
-                                var startIndex = sequence.indexOf(d.sequence);
-                                var endIndex = startIndex + (d.sequence).length;
-                                features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
-                                orderedIndeces.push(startIndex);
-                                orderedIndeces.push(endIndex);
-                                indexCount++;
-                            }
-                        });
-                        orderedIndeces.sort(function(a, b) {
-                            return a - b;
-                        });
+//                        $.each(response, function(index, d) {
+//                            if (d.name === "Sequence") {
+//                                sequence = d.sequence;
+//                                $('#testText').text(d.sequence);
+//                            }
+//                            else {
+//                                var startIndex = sequence.indexOf(d.sequence);
+//                                var endIndex = startIndex + (d.sequence).length;
+//                                features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
+//                                orderedIndeces.push(startIndex);
+//                                orderedIndeces.push(endIndex);
+//                                indexCount++;
+//                            }
+//                        });
+//                        orderedIndeces.sort(function(a, b) {
+//                            return a - b;
+//                        });
                         // Call function to determine feature overlaps.
-                        resolveFeatureOverlap(orderedIndeces, features, indexCount);
+//                        resolveFeatureOverlap(orderedIndeces, features, indexCount);
+                        resolveFeatureOverlap(response);
                     });
                 });
 
                 var spansToHighlight = [];
-                function resolveFeatureOverlap(orderedIndeces, features, indexCount) {
+                function resolveFeatureOverlap(response) {
+                    $.each(response, function(index, d) {
+                        if (d.name === "Sequence") {
+                            sequence = d.sequence;
+                            $('#testText').text(d.sequence);
+                        }
+                        else {
+                            var startIndex = sequence.indexOf(d.sequence);
+                            var endIndex = startIndex + (d.sequence).length;
+                            features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
+                            orderedIndeces.push(startIndex);
+                            orderedIndeces.push(endIndex);
+                            indexCount++;
+                        }
+                    });
+                    orderedIndeces.sort(function(a, b) {
+                        return a - b;
+                    });
+
                     var kk = 0;
                     for (var ii = 0; ii < orderedIndeces.length; ii++) {
                         var overlappingFeatures = "";
