@@ -8,7 +8,8 @@
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
-        <script type="text/javascript" src="jsLibraries/jquery-ui.min.js"></script> 
+        <script type="text/javascript" src="jsLibraries/jquery-ui.min.js"></script>
+        <script src="jsLibraries/jwerty.js"></script>
         <style>
             .resizable { width: 150px; height: 150px; padding: 0.5em; }
             .resizable h4 { text-align: center; margin: 0; }
@@ -23,7 +24,6 @@
                 font-family: monospace; 
                 padding:0px;
                 line-height: 22pt;
-                color:transparent;
             }
             span{
                 line-height: 22pt;
@@ -51,8 +51,7 @@
         <!--javascript goes here-->
         <script>
             $(document).ready(function() {
-                //generate feature list
-                var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
+
 
                 ////////////////////////////////////////////////////////////////
                 $('#testText').mousedown(function() {
@@ -71,17 +70,105 @@
                 });
                 ////////////////////////////////////////////////////////////////
 
+                var sequence = "";
+                var features = [];
+                var indexCount = 0;
+                var orderedIndeces = [];
+                jwerty.key('alt+h', false);
+                jwerty.key('alt+h', function() {
+                    $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
+                        $.each(response, function(index, d) {
+                            if (d.name === "Sequence") {
+                                sequence = d.sequence;
+                                $('#testText').text(d.sequence);
+                            }
+                            else {
+                                var startIndex = sequence.indexOf(d.sequence);
+                                var endIndex = startIndex + (d.sequence).length;
+                                features.push({name: d.name, sequence: d.sequence, start: startIndex, end: endIndex, color: d.color});
+                                orderedIndeces.push(startIndex);
+                                orderedIndeces.push(endIndex);
+                                indexCount++;
+                            }
+                        });
+                        orderedIndeces.sort(function(a, b) {
+                            return a - b;
+                        });
+                        // Call function to determine feature overlaps.
+                        resolveFeatureOverlap(orderedIndeces, features, indexCount);
+                    });
+                });
 
-                $('#testText').keyup(function(event) {
+                var spansToHighlight = [];
+                function resolveFeatureOverlap(orderedIndeces, features, indexCount) {
+                    var kk = 0;
+                    for (var ii = 0; ii < orderedIndeces.length; ii++) {
+                        var overlappingFeatures = "";
+                        var startingIndex = "";
+                        var endingIndex = "";
+                        var spanColor = "";
+                        var count = 0;
+//            var span = [];
+                        for (var jj = kk; jj < indexCount; jj++) {
+                            if (jj === kk) {
+//                    span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
+                                startingIndex = orderedIndeces[ii];
+                                endingIndex = orderedIndeces[ii + 1];
+                            }
+                            if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
+//                    span.push(features[jj].name);
+                                overlappingFeatures += features[jj].name + ",";
+                                count = jj;
+                            }
+                            else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+//                    span.push(features[jj].name);
+                                overlappingFeatures += features[jj].name + ",";
+                                count = jj;
+                            }
+                            else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
+//                    span.push(features[jj].name);
+                                overlappingFeatures += features[jj].name + ",";
+                                count = jj;
+                            }
+                            else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
+//                    span.push(features[jj].name);
+                                overlappingFeatures += features[jj].name + ",";
+                                count = jj;
+                            }
+                        }
+
+                        if (overlappingFeatures === "") {
+                            spanColor = "";
+                        } else {
+                            overlappingFeatures = overlappingFeatures.substring(0, overlappingFeatures.length - 1);
+                            spanColor = features[count].color;
+                        }
+                        spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, color: spanColor});
+//            alert(spansToHighlight[ii].features);
+                    }
+                    //generate feature list
+//                    var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
+                }
+
+
+                jwerty.key('alt+o', false);
+                jwerty.key('alt+o', function() {
                     var unparsed = $('#testText').val().toString();
                     var parsed = "";
                     //iterate through each feature and append regular text or a span
-                    for (var i = 0; i < features.length; i++) {
-                        var currentFeature = features[i];
-                        var start = currentFeature["start"];
-                        var end = currentFeature["end"];
-                        var name = currentFeature["name"];
-                        var color = currentFeature["color"];
+                    for (var i = 0; i < spansToHighlight.length; i++) {
+                        var start = spansToHighlight[i].start;
+                        var end = spansToHighlight[i].end;
+                        var name = spansToHighlight[i].features;
+                        var color = spansToHighlight[i].color;
+//                        var currentFeature = features[i];
+//                        var start = currentFeature["start"];
+//                        var end = currentFeature["end"];
+//                        var name = currentFeature["name"];
+//                        var color = currentFeature["color"];
+                        if (i === 0 && start !== 0) {
+                            parsed = parsed + unparsed.substring(0, start);
+                        }
                         if (name === "") {
                             //just add text if no feature appears
                             parsed = parsed + unparsed.substring(start, end);
@@ -93,6 +180,11 @@
                     //set the html of the highlight layer
                     $('#highlight').html(parsed);
                 });
+
+
+//                $('#testText').keyup(function(event) {
+//
+//                });
             });
         </script>
     </body>
