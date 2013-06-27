@@ -48,6 +48,13 @@
                     <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: 1;position:relative;"></div>
                 </div>
             </div>
+            <div class="row" id="sampleFeatures">
+                <ul class="nav nav-pills">
+                    <li class="active"><a id="sample1" href="#">Sample 1</a></li>
+                    <li class="active"><a id="sample2" href="#">Sample 2</a></li>
+                    <li class="active"><a id="sample3" href="#">Sample 3</a></li>
+                </ul>
+            </div>
         </div>
         <!--top:-511px-->
         <!--javascript libraries-->
@@ -75,6 +82,11 @@
                 });
                 ////////////////////////////////////////////////////////////////
 
+                jwerty.key('alt+b', false);
+                jwerty.key('alt+b', function() {
+                    alert(sample1[0].sequence);
+                    alert(sample1[0].features[0].sequence);
+                });
 
                 jwerty.key('alt+h', false);
                 jwerty.key('alt+h', function() {
@@ -86,6 +98,7 @@
                 var spansToHighlight = []; //stores highlight regions
                 function resolveFeatureOverlap(seq, featureList) {
                     var sequence = seq;
+                    $('#testText').text(sequence);
                     var features = [];
                     var indexCount = 0;
                     var orderedIndeces = [];
@@ -96,7 +109,6 @@
                         orderedIndeces.push(startIndex);
                         orderedIndeces.push(endIndex);
                         indexCount++;
-
                     });
                     orderedIndeces.sort(function(a, b) {
                         return a - b;
@@ -161,7 +173,6 @@
                         } else {
                             parsed = parsed + '<span title="' + name + '" style="background-color:' + color + '">' + unparsed.substring(start, end) + '</span>';
                         }
-
                     }
                     //set the html of the highlight layer
                     $('#highlight').html(parsed);
@@ -170,10 +181,38 @@
                     $('#testText').css("color", "black");
                 });
 
+                //Create dummy Genbank sequence/feature samples
+                var sample1 = [];
+                sample1.push({sequence: "ATTGCGTTATGGAAATTCGAAACTGCCAAATACTATGTCACCATCATTGATGCACCTGGACACAGAGATTTCATCAAGAACATGATCACTGGTACTT",
+                    features: [{name: "feature1", sequence: "GCGTTA", color: "red"},
+                        {name: "feature2", sequence: "TTCGAAACTGCCAAA", color: "cyan"},
+                        {name: "feature3", sequence: "AAATACTATGTCACCATCATTGATGCACCTGGACACAGA", color: "green"},
+                        {name: "feature4", sequence: "AGAGATTTCATCAAGAACATGATCACTGGTA", color: "yellow"}]
+                });
+                var sample2 = [];
+                sample2.push({sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
+                    features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
+                        {name: "feature2", sequence: "AATTCC", color: "cyan"},
+                        {name: "feature3", sequence: "CAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATAT", color: "green"},
+                        {name: "feature4", sequence: "TTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAA", color: "yellow"}]
+                });
+                var sample3 = [];
+                sample3.push({sequence: "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT",
+                    features: [{name: "feature1", sequence: "ATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAA", color: "red"},
+                        {name: "feature2", sequence: "TATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTAC", color: "cyan"},
+                        {name: "feature3", sequence: "TCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAA", color: "green"},
+                        {name: "feature4", sequence: "ACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTC", color: "yellow"}]
+                });
 
-//                $('#testText').keyup(function(event) {
-//
-//                });
+                $('#sample1').click(function() {
+                    resolveFeatureOverlap(sample1[0].sequence, sample1[0].features);
+                });
+                $('#sample2').click(function() {
+                    resolveFeatureOverlap(sample2[0].sequence, sample2[0].features);
+                });
+                $('#sample3').click(function() {
+                    resolveFeatureOverlap(sample3[0].sequence, sample3[0].features);
+                });
             });
         </script>
     </body>
