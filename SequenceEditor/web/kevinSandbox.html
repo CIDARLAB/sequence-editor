@@ -15,43 +15,7 @@ and open the template in the editor.
             .shortcut{
                 color: #afafaf;
             }
-            textArea {
-                font-size: 12pt;
-                font-family: monospace;
-            }
             .bigInterface{
-                background-color: #ffcc99;
-                border: solid black 3px;
-                /*                width:650px;
-                                height:400px*/
-            }
-            .textBox{
-                background-color: cornsilk;
-                color: #333333;
-                border: solid black 2px;
-                min-height: 250px;
-                border-style: inset;
-                width:90%;
-            }
-            .rowsTextArea{
-                background-color: cornsilk;
-                color: #333333;
-                border: solid black 2px;
-                min-height: 250px;
-                border-style: inset;
-                width:5%;
-                text-align: center;
-            }
-            .colsTextArea{
-                background-color: cornsilk;
-                color: #333333;
-                border: solid black 2px;
-                min-height: 45px;
-                border-style: inset;
-                width:45%;
-            }
-            .infoTable{
-                background-color: cornsilk;
                 border: solid black 1px;
             }
         </style>
@@ -135,19 +99,18 @@ and open the template in the editor.
                 </div>
                 <div class="row-fluid">
                     <div class="offset1 span10">
-                        <table class="colsTextArea" style="width:100%;">
+                        <table class="colsTextArea pull-right" style="width:90%;">
                             <tr>
                                 <td id="columnFirst" class="pull-left">1</td>
                                 <td id="columnLast" class="pull-right"></td>
                             </tr>
                         </table>
-                        <!--<textarea class="colsTextArea pull-right" style="resize:none"></textarea>-->
                     </div>
                 </div>
                 <div class="row-fluid">
                     <div class="offset1 span10">
-                        <textarea id="rowsTextArea" class="rowsTextArea" style="resize:none;overflow: hidden"></textarea>
-                        <textarea id="seqTextArea" class="textBox pull-right" style="resize:none">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
+                        <textarea id="rowsTextArea" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea>
+                        <textarea id="seqTextArea" class="pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
                     </div>
                 </div>
                 <div class='row-fluid'>
