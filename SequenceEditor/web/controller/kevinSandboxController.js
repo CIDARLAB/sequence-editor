@@ -571,15 +571,12 @@ $(document).ready(function() {
             var endingIndex = "";
             var spanColor = "";
             var count = 0;
-//            var span = [];
             for (var jj = kk; jj < indexCount; jj++) {
                 if (jj === kk) {
-//                    span.push(orderedIndeces[ii] + " : " + orderedIndeces[ii + 1]);
                     startingIndex = orderedIndeces[ii];
                     endingIndex = orderedIndeces[ii + 1];
                 }
                 if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
-//                    span.push(features[jj].name);
                     overlappingFeatures += features[jj].name + ",";
                     count = jj;
                 }
@@ -622,6 +619,7 @@ $(document).ready(function() {
             scrollBar = scrollBar + 1;
         }
         $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - scrollBar));
+        
         //TODO: Implement rows listing upon resizing
     });
 
@@ -939,13 +937,13 @@ $(document).ready(function() {
         alert('Close menu item chosen');
     });
 
-    $('#nextForwardORF').click(nextForwardORF);         // Upon click call nextForwardORF function
+    $('#nextForwardORF').click(nextForwardORF());
 
-    $('#previousForwardORF').click(previousForwardORF);
+    $('#previousForwardORF').click(previousForwardORF());
 
-    $('#nextReverseORF').click(nextReverseORF);
+    $('#nextReverseORF').click(nextReverseORF());
 
-    $('#previousReverseORF').click(previousReverseORF);
+    $('#previousReverseORF').click(previousReverseORF());
 
     $('#search').click(function() {
         alert('Search item chosen');
