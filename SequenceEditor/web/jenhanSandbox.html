@@ -23,6 +23,7 @@
                 font-family: monospace; 
                 padding:0px;
                 line-height: 22pt;
+                color:transparent;
             }
             span{
                 line-height: 22pt;
@@ -52,9 +53,9 @@
             $(document).ready(function() {
                 //generate feature list
                 var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
-                
+
                 ////////////////////////////////////////////////////////////////
-            $('#testText').mousedown(function() {
+                $('#testText').mousedown(function() {
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
                     $('#testText').css("color", "black");
@@ -81,14 +82,16 @@
                         var name = currentFeature["name"];
                         var color = currentFeature["color"];
                         if (name === "") {
-                            parsed = parsed+unparsed.substring(start,end);
+                            parsed = parsed + unparsed.substring(start, end);
                         } else {
                             parsed = parsed + '<span title="' + name + '" style="background-color:"' + color + '">' + unparsed.substring(start, end) + '</span>';
                         }
 
                     }
-//                    unparsed = '<span title="feature">' + unparsed.substring(0, unparsed.length / 2) + '</span>' + unparsed.substring(unparsed.length / 2);
                     $('#highlight').html(parsed);
+                    $('#highlight').css("z-index", -1);
+                    $('#highlight span').css("color", "transparent");
+                    $('#testText').css("color", "black");
                 });
             });
         </script>
