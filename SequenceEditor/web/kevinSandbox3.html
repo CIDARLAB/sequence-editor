@@ -64,12 +64,12 @@
         <!--javascript goes here-->
         <script>
             $(document).ready(function() {
+                $('#testText').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
                 $('#testText').scroll(function() {
                     $('#highlight').scrollTop($(this).scrollTop());
                 });
                 ////////////////////////////////////////////////////////////////
                 $('#testText').mousedown(function() {
-                    $('#testText').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
                     $('#testText').css("color", "black");
@@ -84,12 +84,6 @@
                     $('#highlight span').css("color", "black");
                 });
                 ////////////////////////////////////////////////////////////////
-
-                jwerty.key('alt+b', false);
-                jwerty.key('alt+b', function() {
-                    alert(sample1[0].sequence);
-                    alert(sample1[0].features[0].sequence);
-                });
 
                 jwerty.key('alt+h', false);
                 jwerty.key('alt+h', function() {
@@ -120,6 +114,7 @@
                     var kk = 0;
                     for (var ii = 0; ii < orderedIndeces.length; ii++) {
                         var overlappingFeatures = "";
+                        var overlappingFeatureSequences = "";
                         var startingIndex = "";
                         var endingIndex = "";
                         var spanColor = "";
@@ -131,18 +126,22 @@
                             }
                             if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
+                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
+                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
+                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
+                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                         }
@@ -151,15 +150,24 @@
                             spanColor = "";
                         } else {
                             overlappingFeatures = overlappingFeatures.substring(0, overlappingFeatures.length - 1);
+                            overlappingFeatureSequences = overlappingFeatureSequences.substring(0, overlappingFeatureSequences.length - 1);
                             spanColor = features[count].color;
                         }
-                        spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, color: spanColor});
+                        spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, featureSequences: overlappingFeatureSequences, color: spanColor});
                     }
 //                    var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
                 }
 
                 $('#testText').keyup(function() {
                     var unparsed = $('#testText').val().toString();
+                    
+                    ////// send updated sequence/features to resolveFeatureOverlap function and return new spansToHighlight object
+                    for (var jj=0; jj < spansToHighlight.length; jj++) {
+                        var currentFeatures = spansToHighlight[jj].features.split(",");
+                        alert(currentFeatures[0]);
+                    }
+                    //////
+                    
                     var parsed = "";
                     //iterate through each feature and append regular text or a span
                     for (var i = 0; i < spansToHighlight.length; i++) {
