@@ -6,7 +6,6 @@ package servlet;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -85,7 +84,7 @@ public class SequenceEditorServlet extends HttpServlet {
                 if (command.equals("test")) {
                     try {
                         //prints onto the GlassFish Server tab
-                                    GoogleMail.Send("ravencadhelp", "Cidar1123", "eapple@bu.edu", "Guess who can send emails using a server now?", "test message");
+                        GoogleMail.Send("ravencadhelp", "Cidar1123", "eapple@bu.edu", "Guess who can send emails using a server now?", "test message");
                     } catch (AddressException ex) {
                         Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (MessagingException ex) {
@@ -103,11 +102,14 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("align")) {
                     out.write("Align chosen");
                 } else if (command.equals("genbank")) {
-//                    String toReturn = genbankParser();
                     JSONObject toReturn = genbankParser();
                     out.print(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
+                } else if (command.equals("align")) {
+                    out.write("Align chosen");
+                    
+//                    String toReturn = alignSequences(sequence1, sequence2);
                 }
 
             } finally {
@@ -203,7 +205,7 @@ public class SequenceEditorServlet extends HttpServlet {
                         }
 
                         //add full length sequence to toReturn
-                        toReturn.put("sequence" ,sequence);
+                        toReturn.put("sequence", sequence);
                     } else {
                         line = reader.readLine();
                     }
@@ -223,7 +225,7 @@ public class SequenceEditorServlet extends HttpServlet {
                                     indeces = lineTwo.replaceAll("misc_feature", "");
                                     indeces = indeces.trim();
                                     String[] splitIndeces = indeces.split("\\..");
-                                    featureSeq = sequence.substring(Integer.parseInt(splitIndeces[0])-1, Integer.parseInt(splitIndeces[1]));
+                                    featureSeq = sequence.substring(Integer.parseInt(splitIndeces[0]) - 1, Integer.parseInt(splitIndeces[1]));
                                     features.add(featureSeq);
                                 } else if (lineTwo.startsWith("/label=")) {
                                     features.add(lineTwo.replaceAll("/label=", ""));
@@ -240,7 +242,7 @@ public class SequenceEditorServlet extends HttpServlet {
                     JSONObject genbankObject = new JSONObject();
                     genbankObject.put("name", features.get(ii + 1));
                     genbankObject.put("sequence", features.get(ii));
-                    genbankObject.put("color", features.get(ii+2));
+                    genbankObject.put("color", features.get(ii + 2));
                     genbankInfo.add(genbankObject);
                     ii++;
                     ii++;
@@ -251,6 +253,12 @@ public class SequenceEditorServlet extends HttpServlet {
 //            return "ERROR";
         }
         toReturn.put("features", genbankInfo);
+        return toReturn;
+    }
+
+    // Accepts two String sequences as parameters and returns an alignment as a String.
+    private String alignSequences(String sequence1, String sequence2) {
+        String toReturn = "";
         return toReturn;
     }
 
