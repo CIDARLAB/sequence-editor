@@ -87,12 +87,6 @@
                 });
                 ////////////////////////////////////////////////////////////////
 
-                jwerty.key('alt+b', false);
-                jwerty.key('alt+b', function() {
-                    alert(sample1[0].sequence);
-                    alert(sample1[0].features[0].sequence);
-                });
-
                 jwerty.key('alt+h', false);
                 jwerty.key('alt+h', function() {
                     $.get("SequenceEditorServlet", {"command": "genbank"}, function(response) {
@@ -101,9 +95,10 @@
                 });
                 //generate feature list
                 var spansToHighlight = []; //stores highlight regions
+                var features = []; //stores current features
                 function resolveFeatureOverlap(seq, featureList) {
                     var sequence = seq;
-                    var features = [];
+//                    var features = [];
                     var indexCount = 0;
                     var orderedIndeces = [];
                     $.each(featureList, function(index, d) {
@@ -161,6 +156,26 @@
 
                 $('#testText').keyup(function() {
                     var unparsed = $('#testText').val().toString();
+                    ////// send updated sequence/features to resolveFeatureOverlap function and return new spansToHighlight object
+                    var updatedFeatures = [];
+                    for (var jj = 0; jj < features.length; jj++) {
+                        var regexSeq = new RegExp(features[jj].sequence, "g");
+                        var matches = [];
+                        matches.push(unparsed.search(regexSeq));
+                        if (matches >= 0) {
+                            for (var bb = 0; bb < matches.length; bb++) {
+                                var startIndex = matches;
+                                var endIndex = parseInt(startIndex) + parseInt((features[jj].sequence).length);
+                                updatedFeatures.push({name: features[jj].name, sequence: features[jj].sequence, start: startIndex, end: endIndex, color: features[jj].color});
+                            }
+                            alert(updatedFeatures[jj].sequence);
+                            alert(updatedFeatures[jj].start + ".." + updatedFeatures[jj].end);
+                        }
+                    }
+                    features = updatedFeatures;
+                    resolveFeatureOverlap(unparsed, features);
+                    //////
+
                     var parsed = "";
                     //iterate through each feature and append regular text or a span
                     for (var i = 0; i < spansToHighlight.length; i++) {
