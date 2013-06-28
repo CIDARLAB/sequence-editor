@@ -53,12 +53,14 @@
                     <li class="active"><a id="sample1" href="#">Sample 1</a></li>
                     <li class="active"><a id="sample2" href="#">Sample 2</a></li>
                     <li class="active"><a id="sample3" href="#">Sample 3</a></li>
+                    <li class="active"><a id="clear" href="#">Clear</a></li>
                 </ul>
             </div>
         </div>
         <!--top:-511px-->
         <!--javascript libraries-->
         <script src="jsLibraries/bootstrap.min.js"></script> 
+        <script src="jsLibraries/jquery.filter_input.js"></script>
         <!--javascript goes here-->
         <script>
             $(document).ready(function() {
@@ -67,6 +69,7 @@
                 });
                 ////////////////////////////////////////////////////////////////
                 $('#testText').mousedown(function() {
+                    $('#testText').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
                     $('#testText').css("color", "black");
@@ -212,6 +215,9 @@
                 });
                 $('#sample3').click(function() {
                     resolveFeatureOverlap(sample3[0].sequence, sample3[0].features);
+                });
+                $('#clear').click(function() {
+                    $('#testText').text("");
                 });
             });
         </script>
