@@ -4,6 +4,8 @@
  */
 $(document).ready(function() {
     /***************************************************************************************/
+    //filter all characters besides known nucleotide codes (codes from: http://www.bioinformatics.org/sms2/iupac.html) 
+    $('#seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
     var seqLength = $('#seqTextArea').text().length;
 
     //i've added a hidden span on kevinSandbox.html with 0px padding; 
@@ -736,8 +738,8 @@ $(document).ready(function() {
         }
     };
 
-
     document.onkeyup = function() {
+
         var textArea = $('#seqTextArea')[0];
         // Grab current sequence length
         seqLength = $('#seqTextArea').val().length;
