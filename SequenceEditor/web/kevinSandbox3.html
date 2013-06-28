@@ -95,9 +95,10 @@
                 });
                 //generate feature list
                 var spansToHighlight = []; //stores highlight regions
+                var features = []; //stores current features
                 function resolveFeatureOverlap(seq, featureList) {
                     var sequence = seq;
-                    var features = [];
+//                    var features = [];
                     var indexCount = 0;
                     var orderedIndeces = [];
                     $.each(featureList, function(index, d) {
@@ -115,7 +116,6 @@
                     var kk = 0;
                     for (var ii = 0; ii < orderedIndeces.length; ii++) {
                         var overlappingFeatures = "";
-                        var overlappingFeatureSequences = "";
                         var startingIndex = "";
                         var endingIndex = "";
                         var spanColor = "";
@@ -127,22 +127,18 @@
                             }
                             if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].start < orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
-                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].start >= orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
-                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].end > orderedIndeces[ii]) && (features[jj].end <= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
-                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                             else if ((features[jj].start <= orderedIndeces[ii]) && (features[jj].end >= orderedIndeces[ii + 1])) {
                                 overlappingFeatures += features[jj].name + ",";
-                                overlappingFeatureSequences += features[jj].sequence + ",";
                                 count = jj;
                             }
                         }
@@ -151,24 +147,35 @@
                             spanColor = "";
                         } else {
                             overlappingFeatures = overlappingFeatures.substring(0, overlappingFeatures.length - 1);
-                            overlappingFeatureSequences = overlappingFeatureSequences.substring(0, overlappingFeatureSequences.length - 1);
                             spanColor = features[count].color;
                         }
-                        spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, featureSequences: overlappingFeatureSequences, color: spanColor});
+                        spansToHighlight.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, color: spanColor});
                     }
 //                    var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
                 }
 
                 $('#testText').keyup(function() {
                     var unparsed = $('#testText').val().toString();
-                    
                     ////// send updated sequence/features to resolveFeatureOverlap function and return new spansToHighlight object
-                    for (var jj=0; jj < spansToHighlight.length; jj++) {
-                        var currentFeatures = spansToHighlight[jj].features.split(",");
-                        alert(currentFeatures[0]);
+                    var updatedFeatures = [];
+                    for (var jj = 0; jj < features.length; jj++) {
+                        var regexSeq = new RegExp(features[jj].sequence, "g");
+                        var matches = [];
+                        matches.push(unparsed.search(regexSeq));
+                        if (matches >= 0) {
+                            for (var bb = 0; bb < matches.length; bb++) {
+                                var startIndex = matches;
+                                var endIndex = parseInt(startIndex) + parseInt((features[jj].sequence).length);
+                                updatedFeatures.push({name: features[jj].name, sequence: features[jj].sequence, start: startIndex, end: endIndex, color: features[jj].color});
+                            }
+                            alert(updatedFeatures[jj].sequence);
+                            alert(updatedFeatures[jj].start + ".." + updatedFeatures[jj].end);
+                        }
                     }
+                    features = updatedFeatures;
+                    resolveFeatureOverlap(unparsed, features);
                     //////
-                    
+
                     var parsed = "";
                     //iterate through each feature and append regular text or a span
                     for (var i = 0; i < spansToHighlight.length; i++) {
