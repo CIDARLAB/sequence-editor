@@ -4,6 +4,7 @@
  */
 package servlet;
 
+import algorithms.Annealer;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -25,6 +26,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.SymbolList;
+import org.biojavax.SimpleNamespace;
+import org.biojavax.bio.seq.SimpleRichSequence;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -74,8 +79,8 @@ public class SequenceEditorServlet extends HttpServlet {
         } else {
             //HANDLE REGULAR REQUESTS
             //set response type; basically it's either text or json
-//            response.setContentType("text/html;charset=UTF-8");
-            response.setContentType("text/json");
+            response.setContentType("text/html;charset=UTF-8");
+//            response.setContentType("text/json");
             PrintWriter out = response.getWriter();
             //get parameter from client request
             String command = request.getParameter("command");
@@ -99,17 +104,31 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("feature")) {
                     String toReturn = getFeatureFiles();
                     out.write(toReturn);
-                } else if (command.equals("align")) {
-                    out.write("Align chosen");
                 } else if (command.equals("genbank")) {
                     JSONObject toReturn = genbankParser();
                     out.print(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
                 } else if (command.equals("align")) {
-                    out.write("Align chosen");
-                    
-//                    String toReturn = alignSequences(sequence1, sequence2);
+                    String sequence1 = request.getParameter("sequence1");
+                    String sequence2 = request.getParameter("sequence2");
+                    SymbolList forwardOligoSymList = null;
+                    SymbolList reverseOligoSymList = null;
+                    String toReturn;
+
+                    //Initiation block from servlet code
+                    try {
+                        forwardOligoSymList = DNATools.createDNA(sequence1);
+                        reverseOligoSymList = DNATools.createDNA(sequence2);
+                        SimpleRichSequence forwardOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
+                        SimpleRichSequence reverseOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
+                        Annealer AnnealerObject = new Annealer();
+                        toReturn = AnnealerObject.anneal(forwardOligo, reverseOligo);
+                        out.write(toReturn);
+                    } catch (Exception e) {
+                        System.out.println("Error occurred");
+                        e.getMessage();
+                    }
                 }
 
             } finally {

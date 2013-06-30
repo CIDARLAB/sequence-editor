@@ -610,6 +610,15 @@ $(document).ready(function() {
     /***************************************************************************************/
     /* Event Handlers */
 
+    jwerty.key('ctrl+9', false);
+    jwerty.key('ctrl+9', function() {
+        //call get request when two sequences are dragged together for alignment.
+        $.get("SequenceEditorServlet", {"command": "align", "sequence1": $('#seqTextArea').val().toString(), "sequence2": $('#seqTextArea').val().toString()}, function(response) {
+            //TODO: Display alignment text in new window
+            $('#seqTextArea').text(response);
+        });
+    });
+
     /* 
      * Updates column width whenever window is resized
      */
@@ -619,7 +628,7 @@ $(document).ready(function() {
             scrollBar = scrollBar + 1;
         }
         $('#columnLast').text(Math.floor($('#seqTextArea').width() / charWidth - scrollBar));
-        
+
         //TODO: Implement rows listing upon resizing
     });
 
