@@ -46,7 +46,7 @@ $(document).ready(function() {
 
     /*
      * Reverse Complement function takes sequence text and a boolean isDna. The output returned 
-     * is the reversed complemented sequence. 
+     * is the reversed complemented sequence.   
      * @param {type} sequence
      * @param {type} isDna --- true if DNA sequence, false if RNA sequence
      * @returns {String}
