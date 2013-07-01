@@ -66,15 +66,10 @@
             var samples = [];
             //Create dummy Genbank sequence/feature samples
             var sample1 = {sequence: "aaaagctacaggggccaatgacgcccctagacagtttttaacccaaaa",
-                features: [{name: "feature1", sequence: "aaaa", color: "red"},
-                    {name: "feature2", sequence: "cccc", color: "cyan"},
-                    {name: "feature3", sequence: "gggg", color: "green"},
-                    {name: "feature4", sequence: "tttt", color: "yellow"},
-                    ]};
+                features: []};
 //                {name: "feature4", sequence: "aaaag", color: "brown"}
             var sample2 = {sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
                 features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
-                    {name: "feature2", sequence: "AATTCC", color: "cyan"},
                     {name: "feature3", sequence: "CAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATAT", color: "green"},
                     {name: "feature4", sequence: "TTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAA", color: "yellow"}]
             };
@@ -275,12 +270,15 @@
                 // test page event handlers
                 $('#sample1').click(function() {
                     $('#seqTextArea').val(samples[0].sequence);
+                    $('#highlight').html("")
                 });
                 $('#sample2').click(function() {
                     $('#seqTextArea').val(samples[1].sequence);
+                    $('#highlight').html("")
                 });
                 $('#sample3').click(function() {
                     $('#seqTextArea').val(samples[2].sequence);
+                    $('#highlight').html("")
                 });
                 $('#clear').click(function() {
                     $('#seqTextArea').val("");
