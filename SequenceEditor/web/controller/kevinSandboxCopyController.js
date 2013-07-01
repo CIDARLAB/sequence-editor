@@ -90,7 +90,7 @@ $(document).ready(function() {
     $('#columnLast1').text(numberOfCols1);
     $('#columnLast2').text(numberOfCols2);
 
-
+//TODO: This doesn't set the rows information with updated jquery.
     function findNumOfRows(seqLength, numberOfCols) {
         if (seqLength > 0) {
             var kk = 0;
@@ -666,7 +666,7 @@ $(document).ready(function() {
     $('.revComp').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -687,7 +687,7 @@ $(document).ready(function() {
     $('.translate').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id;
+        var textAreaID = "#seqTextArea_" + id;
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
         if (sequence.length === 0) {
@@ -704,7 +704,7 @@ $(document).ready(function() {
     $('.uppercase').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -724,7 +724,7 @@ $(document).ready(function() {
     $('.lowercase').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -741,7 +741,7 @@ $(document).ready(function() {
     $('.colorChanger').colorpicker().on('changeColor', function(ev) {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "#bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "#bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var color = ev.color.toHex().toString();
         $(bigInterfaceID).css("background-color", color);
@@ -758,9 +758,9 @@ $(document).ready(function() {
         var inCodonPosStart = (textArea.selectionStart % 3);
         var inCodonPosEnd = (textArea.selectionEnd % 3);
         var seqLength = $(textAreaID).val().length;
-        var posCell = "#positionCell" + id;
-        var gcCell = "#gcCell" + id;
-        var lenCell = "#lengthCell" + id;
+        var posCell = "#positionCell_" + id;
+        var gcCell = "#gcCell_" + id;
+        var lenCell = "#lengthCell_" + id;
 
         if (textArea.selectionStart === textArea.selectionEnd) {
             var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
@@ -795,11 +795,11 @@ $(document).ready(function() {
         var textArea = $(textAreaID)[0];
         // Grab current sequence length
         var seqLength = $(textAreaID).val().length;
-        var rowsTextArea = "#rowsTextArea" + id;
-        var columnsLast = "#columnLast" + id;
-        var posCell = "#positionCell" + id;
-        var gcCell = "#gcCell" + id;
-        var lengthCell = "#lengthCell" + id;
+        var rowsTextArea = "#rowsTextArea_" + id;
+        var columnsLast = "#columnLast_" + id;
+        var posCell = "#positionCell_" + id;
+        var gcCell = "#gcCell_" + id;
+        var lengthCell = "#lengthCell_" + id;
         // Update rows display
         if (seqLength === 0) {
             $(rowsTextArea).text("");
@@ -812,15 +812,15 @@ $(document).ready(function() {
             }
             var kk = 0;
             var lineNumber = "";
-            windows[id - 1].numOfRows = Math.ceil(seqLength / (windows[id - 1].numOfCols - hasScrollBar));
-            while (kk < windows[id - 1].numOfRows) {
+            windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols - hasScrollBar));
+            while (kk < windows[id].numOfRows) {
                 if (kk === 0) {
                     lineNumber += "1";
                     $(rowsTextArea).text(lineNumber);
                     kk++;
                 }
                 else {
-                    lineNumber += "\r\n" + ((windows[id - 1].numOfCols - hasScrollBar) * (kk));
+                    lineNumber += "\r\n" + ((windows[id].numOfCols - hasScrollBar) * (kk));
                     $(rowsTextArea).text(lineNumber);
                     kk++;
                 }
@@ -858,7 +858,7 @@ $(document).ready(function() {
             $(lengthCell).html(lengthDisplay);
         }
 
-        windows[id - 1].needToResetORFList = 1;
+        windows[id].needToResetORFList = 1;
     });
 
     /***************************************************************************************/
@@ -918,7 +918,7 @@ $(document).ready(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
         var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        id = id;
         nextForwardORF(id, textAreaID);
     });
 
@@ -928,7 +928,7 @@ $(document).ready(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
         var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        id = id;
         previousForwardORF(id, textAreaID);
     });
 
@@ -938,7 +938,7 @@ $(document).ready(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
         var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        id = id;
         nextReverseORF(id, textAreaID);
     });
 
@@ -948,7 +948,7 @@ $(document).ready(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
         var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        id = id;
         previousReverseORF(id, textAreaID);
     });
 
@@ -972,19 +972,19 @@ $(document).ready(function() {
 
     jwerty.key('a', function() {
         var id = (document.activeElement.id).match(/\d/);
-        windows[id - 1].needToResetORFList = 1;
+        windows[id].needToResetORFList = 1;
     });
     jwerty.key('c', function() {
         var id = (document.activeElement.id).match(/\d/);
-        windows[id - 1].needToResetORFList = 1;
+        windows[id].needToResetORFList = 1;
     });
     jwerty.key('t', function() {
         var id = (document.activeElement.id).match(/\d/);
-        windows[id - 1].needToResetORFList = 1;
+        windows[id].needToResetORFList = 1;
     });
     jwerty.key('g', function() {
         var id = (document.activeElement.id).match(/\d/);
-        windows[id - 1].needToResetORFList = 1;
+        windows[id].needToResetORFList = 1;
     });
 //    /***************************************************************************************/
 //    /* Menu Item Event Handlers */
@@ -992,7 +992,7 @@ $(document).ready(function() {
     $('.newSequence').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("New Sequence menu item chosen for " + bigInterfaceID);
     });
 //
@@ -1027,77 +1027,77 @@ $(document).ready(function() {
     $('.saveSequence').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Save Sequence menu item chosen for " + bigInterfaceID);
     });
 
     $('.close').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Close menu item chosen for " + bigInterfaceID);
     });
 
     $('.nextForwardORF').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id;
         nextForwardORF(id, textAreaID);
     });
 
     $('.previousForwardORF').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id;
         previousForwardORF(id, textAreaID);
     });
 
     $('.nextReverseORF').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id;
         nextReverseORF(id, textAreaID);
     });
 
     $('.previousReverseORF').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        id = id - 1;
+        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id;
         previousReverseORF(id, textAreaID);
     });
 
     $('.search').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Search menu item chosen for " + bigInterfaceID);
     });
     $('.features').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Features Highlight menu item chosen for " + bigInterfaceID);
     });
     $('.selection').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Selection Highlight menu item chosen for " + bigInterfaceID);
     });
     $('.resize').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Resize menu item chosen for " + bigInterfaceID);
     });
     $('.closeWindow').click(function() {
         var idPattern = /\d/;
         var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Close Window menu item chosen for " + bigInterfaceID);
     });
 });

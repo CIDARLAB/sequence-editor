@@ -6,9 +6,15 @@
         <!--CSS style sheets-->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+        <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
         <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script type="text/javascript" src="jsLibraries/jquery-ui.min.js"></script> 
+
+        <script src="jsLibraries/jquery.filter_input.js"></script>
+        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
+        <script type="text/javascript" src ="jsLibraries/rangyinputs_jquery.min.js"></script>
+        <script src="jsLibraries/jwerty.js"></script> 
         <style>
             .resizable { width: 150px; height: 150px; padding: 0.5em; }
             .resizable h4 { text-align: center; margin: 0; }
@@ -35,17 +41,51 @@
                 margin: 0px;
                 border:0px;
             }
+            .newSequence{}
+            .openSequence{}
+            .colorChanger{}
+            .saveSequence{}
+            .closeOption{}
+            .undo{}
+            .redo{}
+            .cut{}
+            .copy{}
+            .paste{}
+            .delete{}
+            .nextForwardORF{}
+            .previousForwardORF{}
+            .nextReverseORF{}
+            .previousReverseORF{}
+            .search{}
+            .features{}
+            .selection{}
+            .revComp{}
+            .uppercase{}
+            .lowercase{}
+            .translate{}
+            .resize{}
+            .closeWindow{}
+            .positionCell{}
+            .lengthCell{}
+            .tempCell{}
+            .gcCell{}
+            .featureCell{}
+            .seqTextArea{}
+            .colsTextArea{}
+            .columnFirst{}
+            .columnLast{}
         </style>
     </head>
     <body>
         <div class="container">
             <button id="newButton" class="btn btn-large">New Widget</button>
         </div>
+        <div id="testArea"></div>
         <span class="hidden" id="measureSpan" style="padding: 0px;font-family:monospace;font-size: 12pt">1234567890</span>
 
         <!--javascript libraries-->
         <script src="jsLibraries/bootstrap.min.js"></script> 
         <!--javascript goes here-->
-        <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script> 
+        <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script>
     </body>
 </html>
