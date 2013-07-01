@@ -18,6 +18,39 @@ and open the template in the editor.
             .bigInterface{
                 border: solid black 1px;
             }
+            .newSequence{}
+            .openSequence{}
+            .colorChanger{}
+            .saveSequence{}
+            .closeOption{}
+            .undo{}
+            .redo{}
+            .cut{}
+            .copy{}
+            .paste{}
+            .delete{}
+            .nextForwardORF{}
+            .previousForwardORF{}
+            .nextReverseORF{}
+            .previousReverseORF{}
+            .search{}
+            .features{}
+            .selection{}
+            .revComp{}
+            .uppercase{}
+            .lowercase{}
+            .translate{}
+            .resize{}
+            .closeWindow{}
+            .positionCell{}
+            .lengthCell{}
+            .tempCell{}
+            .gcCell{}
+            .featureCell{}
+            .seqTextArea{}
+            .colsTextArea{}
+            .columnFirst{}
+            .columnLast{}
         </style>
     </head>
     <body>
@@ -36,11 +69,11 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" style="width:225px;">
-                                    <li><a id="colorChanger" href="#">Change Theme</a></li>
-                                    <li><a id="newSequence" href='#'>New Sequence<span class="shortcut pull-right">Alt+N</span></a></li>
-                                    <li><a id="openSequence" href='#'>Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li>
-                                    <li><a id="saveSequence" href='#'>Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li>
-                                    <li><a id="close" href='#'>Close<span class="shortcut pull-right">Esc</span></a></li>
+                                    <li><a id="colorChanger" class="colorChanger" href="#">Change Theme</a></li>
+                                    <li><a id="newSequence" class="newSequence" href='#'>New Sequence<span class="shortcut pull-right">Alt+N</span></a></li>
+                                    <li><a id="openSequence" class="openSequence" href='#'>Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li>
+                                    <li><a id="saveSequence" class="saveSequence" href='#'>Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li>
+                                    <li><a id="close" class="closeOption" href='#'>Close<span class="shortcut pull-right">Esc</span></a></li>
                                 </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -49,12 +82,12 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a id="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li>
-                                    <li><a id="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li>
-                                    <li><a id="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li>
-                                    <li><a id="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li>
-                                    <li><a id="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li>
-                                    <li><a id="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li>
+                                    <li><a id="undo" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li>
+                                    <li><a id="redo" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li>
+                                    <li><a id="cut" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li>
+                                    <li><a id="copy" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li>
+                                    <li><a id="paste" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li>
+                                    <li><a id="delete" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li>
                                 </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -63,11 +96,11 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu" style="width:250px;">
-                                    <li><a id="nextForwardORF" href='#'>Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li>
-                                    <li><a id="previousForwardORF" href='#'>Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li>
-                                    <li><a id="nextReverseORF" href='#'>Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li>
-                                    <li><a id="previousReverseORF" href='#'>Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li>
-                                    <li><a id="search" href='#'>Search<span class="shortcut pull-right">Ctrl+/</span></a></li>
+                                    <li><a id="nextForwardORF" class="nextForwardORF" href='#'>Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li>
+                                    <li><a id="previousForwardORF" class="previousForwardORF" href='#'>Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li>
+                                    <li><a id="nextReverseORF" class="nextReverseORF" href='#'>Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li>
+                                    <li><a id="previousReverseORF" class="previousReverseORF" href='#'>Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li>
+                                    <li><a id="search" class="search" href='#'>Search<span class="shortcut pull-right">Ctrl+/</span></a></li>
                                 </ul>
                             </li>
                             <li class="btn-group" style="margin-left:0px">
@@ -76,24 +109,24 @@ and open the template in the editor.
                                     <span class="caret"></span>
                                 </button>
                                 <ul class="dropdown-menu">
-                                    <li><a id="features" href='#'>Features<span class="shortcut pull-right">Alt+2</span></a></li>
-                                    <li><a id="selection" href='#'>Selection<span class="shortcut pull-right">Alt+3</span></a></li>
+                                    <li><a id="features" class="features" href='#'>Features<span class="shortcut pull-right">Alt+2</span></a></li>
+                                    <li><a id="selection" class="selection" href='#'>Selection<span class="shortcut pull-right">Alt+3</span></a></li>
                                 </ul>
                             </li>
                         </ul>
                     </div>
                     <div class="span2">
                         <div class="btn-group pull-right">
-                            <button id="revComp" class="btn"><i class="icon-backward"></i></button>
-                            <button id="translate" class="btn"><i class="icon-text-width"></i></button>
-                            <button id="uppercase" class="btn"><i class="icon-arrow-up"></i></button>
-                            <button id="lowercase" class="btn"><i class="icon-arrow-down"></i></button>
+                            <button id="revComp" class="revComp btn"><i class="icon-backward"></i></button>
+                            <button id="translate" class="translate btn"><i class="icon-text-width"></i></button>
+                            <button id="uppercase" class="uppercase btn"><i class="icon-arrow-up"></i></button>
+                            <button id="lowercase" class="lowercase btn"><i class="icon-arrow-down"></i></button>
                         </div>
                     </div>
                     <div class="span2">
                         <div class="btn-group pull-right">
-                            <button id="resize" class="btn"><i class="icon-fullscreen"></i></button>
-                            <button id="closeWindow" class="btn"><i class="icon-remove"></i></button>
+                            <button id="resize" class="resize btn"><i class="icon-fullscreen"></i></button>
+                            <button id="closeWindow" class="closeWindow btn"><i class="icon-remove"></i></button>
                         </div>
                     </div>
                 </div>
@@ -101,8 +134,8 @@ and open the template in the editor.
                     <div class="offset1 span10">
                         <table class="colsTextArea pull-right" style="width:90%;">
                             <tr>
-                                <td id="columnFirst" class="pull-left">1</td>
-                                <td id="columnLast" class="pull-right"></td>
+                                <td id="columnFirst" class="columnFirst pull-left">1</td>
+                                <td id="columnLast" class="columnLast pull-right"></td>
                             </tr>
                         </table>
                     </div>
@@ -110,8 +143,8 @@ and open the template in the editor.
                 <div class="row-fluid">
                     <div class="offset1 span10">
                         <textarea id="rowsTextArea" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea>
-                        <textarea id="seqTextArea" class="pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
-                        <textarea id="seqTextArea" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;"></textarea>
+                        <textarea id="seqTextArea" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
+                        <textarea id="seqTextArea" class="seqTextArea" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;"></textarea>
                         <!--this is the highlight layer-->
                         <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: -1;position:relative;top:-511px"></div>
                     </div>
@@ -120,10 +153,10 @@ and open the template in the editor.
                     <div class="offset4 span4">
                         <table style="width:100%">
                             <tr>
-                                <th>Position:</th><td id="positionCell">0(0)</td><th>Temp:</th><td id="tempCell">0 C</td><th>Feature:</th><td id="featureCell">XbaI</td>
+                                <th>Position:</th><td id="positionCell" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell" class="featureCell">XbaI</td>
                             </tr>
                             <tr>
-                                <th>Length:</th><td id="lengthCell">100</td><th>% GC</th><td id="gcCell">50</td>
+                                <th>Length:</th><td id="lengthCell" class="lengthCell">100</td><th>% GC</th><td id="gcCell" class="gcCell">50</td>
                             </tr>
                         </table>
                     </div>
