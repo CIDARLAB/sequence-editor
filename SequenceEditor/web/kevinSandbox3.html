@@ -14,21 +14,21 @@
             .resizable { width: 150px; height: 150px; padding: 0.5em; }
             .resizable h4 { text-align: center; margin: 0; }
             textArea {
-                font-size: 22pt;
+                font-size: 12pt;
                 font-family: monospace;
                 padding:0px;
-                line-height: 22pt;
+                line-height: 12pt;
             }
             #highlight{
-                font-size: 22pt;
+                font-size: 12pt;
                 font-family: monospace; 
                 padding:0px;
-                line-height: 22pt;
-                color:black;
+                line-height: 12pt;
+                color:transparent;
             }
             span{
-                line-height: 22pt;
-                font-size: 22pt;
+                line-height: 12pt;
+                font-size: 12pt;
                 font-family: monospace; 
                 word-wrap: break-word;
                 padding:0px;
@@ -39,17 +39,13 @@
     </head>
     <body>
         <div class="container">
-            <div class='row-fluid' id="testArea">
+            <div id="testArea">
                 <!--this is the text area you're typing into-->
-                <div class ='span6'>
                     <textarea id="testText" style="overflow:auto;resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
-                </div>
-                <div class ='span6'>
                     <!--this is the highlight layer-->
-                    <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: 1;"></div>
-                </div>
+                    <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: -1;position:relative;top:-511px"></div>
             </div>
-            <div class="row" id="sampleFeatures">
+            <div id="sampleFeatures" style="position:relative;top:-511px">
                 <ul class="nav nav-pills">
                     <li><a id="sample1" href="#">Sample 1</a></li>
                     <li><a id="sample2" href="#">Sample 2</a></li>
@@ -73,8 +69,9 @@
                 features: [{name: "feature1", sequence: "aaaa", color: "red"},
                     {name: "feature2", sequence: "cccc", color: "cyan"},
                     {name: "feature3", sequence: "gggg", color: "green"},
-                    {name: "feature4", sequence: "tttt", color: "yellow"}]
-            };
+                    {name: "feature4", sequence: "tttt", color: "yellow"},
+                    ]};
+//                {name: "feature4", sequence: "aaaag", color: "brown"}
             var sample2 = {sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
                 features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
                     {name: "feature2", sequence: "AATTCC", color: "cyan"},
@@ -145,9 +142,6 @@
                     return indices;
                 }
 
-                getIndicesOf("le", "I learned to play the Ukulele in Lebanon.", false);
-
-
                 //generates annotations: {featureName, start, end, color}
                 var generateAnnotations = function(sequence, features) {
                     var unresolvedAnnotations = []; //annotations with potential overlaps
@@ -157,7 +151,7 @@
                             for (var j = 0; j < matches.length; j++) {
                                 var startIndex = matches[j];
                                 var endIndex = startIndex + features[i].sequence.length;
-                                unresolvedAnnotations.push({name: features[i].name, sequence: features[i].sequence, start: startIndex, end: endIndex, color: features[i].color});
+                                unresolvedAnnotations.push({features: features[i].name, sequence: features[i].sequence, start: startIndex, end: endIndex, color: features[i].color});
                             }
                         }
                     }
@@ -170,67 +164,38 @@
                         }
                         return 0;
                     });
-                    var resolvedAnnotations = resolveFeatureOverlap(sequence, unresolvedAnnotations);
-                    
+                    unresolvedAnnotations = unresolvedAnnotations.sort(function(a, b) {
+                        if (a.end < b.end) {
+                            return -1;
+                        }
+                        else if (a.end > b.end) {
+                            return 1;
+                        }
+                        return 0;
+                    });
+//                    var toshow = "";
+                    for (var i = 0; i < unresolvedAnnotations.length; i++) {
+//                        toshow = toshow + "\n" + unresolvedAnnotations[i].start + " " + unresolvedAnnotations[i].end;
+                    }
+//                    alert(toshow);
+//                    var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations);
+
                     return unresolvedAnnotations;
                 };
 
                 //resolve overlaps between annotations
-                var resolveFeatureOverlap = function(seq, unresolvedAnnotations) {
-                    var toReturn = [];
-                    var sequence = seq;
-                    var indexCount = 0;
-                    var orderedIndeces = [];
-                    $.each(unresolvedAnnotations, function(index, d) {
-                        var startIndex = sequence.indexOf(d.sequence);
-                        var endIndex = startIndex + (d.sequence).length;
-                        orderedIndeces.push(startIndex);
-                        orderedIndeces.push(endIndex);
-                        indexCount++;
-                    });
-                    orderedIndeces.sort(function(a, b) {
-                        return a - b;
-                    });
-                    var kk = 0;
-                    for (var ii = 0; ii < orderedIndeces.length; ii++) {
-                        var overlappingFeatures = "";
-                        var startingIndex = "";
-                        var endingIndex = "";
-                        var spanColor = "";
-                        var count = 0;
-                        for (var jj = kk; jj < indexCount; jj++) {
-                            if (jj === kk) {
-                                startingIndex = orderedIndeces[ii];
-                                endingIndex = orderedIndeces[ii + 1];
-                            }
-                            if ((unresolvedAnnotations[jj].start >= orderedIndeces[ii]) && (unresolvedAnnotations[jj].start < orderedIndeces[ii + 1])) {
-                                overlappingFeatures += unresolvedAnnotations[jj].name + ",";
-                                count = jj;
-                            }
-                            else if ((unresolvedAnnotations[jj].start >= orderedIndeces[ii]) && (unresolvedAnnotations[jj].end <= orderedIndeces[ii + 1])) {
-                                overlappingFeatures += unresolvedAnnotations[jj].name + ",";
-                                count = jj;
-                            }
-                            else if ((unresolvedAnnotations[jj].end > orderedIndeces[ii]) && (unresolvedAnnotations[jj].end <= orderedIndeces[ii + 1])) {
-                                overlappingFeatures += unresolvedAnnotations[jj].name + ",";
-                                count = jj;
-                            }
-                            else if ((unresolvedAnnotations[jj].start <= orderedIndeces[ii]) && (unresolvedAnnotations[jj].end >= orderedIndeces[ii + 1])) {
-                                overlappingFeatures += unresolvedAnnotations[jj].name + ",";
-                                count = jj;
-                            }
+                var resolveFeatureOverlap = function(unresolvedAnnotations) {
+                    for (var i = 0; i < unresolvedAnnotations.length; i++) {
+                        var current = unresolvedAnnotations[i];
+                        var j = i + 1;
+                        var compared = unresolvedAnnotations[j];
+                        alert(compared)
+                        while (current.end > compared.start) {
+                            
+                            compared = unresolvedAnnotations[j];
                         }
-                        if (overlappingFeatures === "") {
-                            spanColor = "";
-                        } else {
-                            overlappingFeatures = overlappingFeatures.substring(0, overlappingFeatures.length - 1);
-                            spanColor = unresolvedAnnotations[count].color;
-                            toReturn.push({start: startingIndex, end: endingIndex, features: overlappingFeatures, color: spanColor});
-                        }
-
                     }
-//                    toReturn[toReturn.length - 1].end = seq.length;
-                    return toReturn;
+
                 };
 
                 var updateAnnotationIndices = function(index, annotations, changeLength) {
@@ -269,10 +234,10 @@
                         for (var i = 1; i < annotationsToDraw.length; i++) {
                             var start = annotationsToDraw[i].start;
                             var end = annotationsToDraw[i].end;
-                            var name = annotationsToDraw[i].features;
+                            var features = annotationsToDraw[i].features;
                             var color = annotationsToDraw[i].color;
                             toReturn = toReturn + sequence.substring(prevEnd, start);
-                            toReturn = toReturn + '<span title="' + name + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
+                            toReturn = toReturn + '<span title="' + features + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
                             prevEnd = end;
                         }
                         //append end of string
@@ -285,6 +250,7 @@
                 var changeLength = 0;
                 $('#testText').keydown(function() {
                     _sequence = $('#testText').val();
+                    $('#highlight span').css("color","transparent");
                     changeLength++;
                 });
 
@@ -308,15 +274,12 @@
 
                 // test page event handlers
                 $('#sample1').click(function() {
-                    resolveFeatureOverlap(samples[0].sequence, samples[0].features);
                     $('#testText').val(samples[0].sequence);
                 });
                 $('#sample2').click(function() {
-                    resolveFeatureOverlap(samples[1].sequence, samples[1].features);
                     $('#testText').val(samples[1].sequence);
                 });
                 $('#sample3').click(function() {
-                    resolveFeatureOverlap(samples[2].sequence, samples[2].features);
                     $('#testText').val(samples[2].sequence);
                 });
                 $('#clear').click(function() {
@@ -325,7 +288,7 @@
                 });
                 $('#annotate').click(function() {
                     _annotations = generateAnnotations($('#testText').val(), _features);
-                    var parsed =generateHighlights($('#testText').val(), _annotations);
+                    var parsed = generateHighlights($('#testText').val(), _annotations);
                     $('#highlight').html(parsed);
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");

@@ -4,9 +4,9 @@
  */
 package servlet;
 
+import algorithms.Annealer;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -26,6 +26,10 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.biojava.bio.seq.DNATools;
+import org.biojava.bio.symbol.SymbolList;
+import org.biojavax.SimpleNamespace;
+import org.biojavax.bio.seq.SimpleRichSequence;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -75,8 +79,8 @@ public class SequenceEditorServlet extends HttpServlet {
         } else {
             //HANDLE REGULAR REQUESTS
             //set response type; basically it's either text or json
-//            response.setContentType("text/html;charset=UTF-8");
-            response.setContentType("text/json");
+            response.setContentType("text/html;charset=UTF-8");
+//            response.setContentType("text/json");
             PrintWriter out = response.getWriter();
             //get parameter from client request
             String command = request.getParameter("command");
@@ -85,7 +89,7 @@ public class SequenceEditorServlet extends HttpServlet {
                 if (command.equals("test")) {
                     try {
                         //prints onto the GlassFish Server tab
-                                    GoogleMail.Send("ravencadhelp", "Cidar1123", "eapple@bu.edu", "Guess who can send emails using a server now?", "test message");
+                        GoogleMail.Send("ravencadhelp", "Cidar1123", "eapple@bu.edu", "Guess who can send emails using a server now?", "test message");
                     } catch (AddressException ex) {
                         Logger.getLogger(SequenceEditorServlet.class.getName()).log(Level.SEVERE, null, ex);
                     } catch (MessagingException ex) {
@@ -100,14 +104,31 @@ public class SequenceEditorServlet extends HttpServlet {
                 } else if (command.equals("feature")) {
                     String toReturn = getFeatureFiles();
                     out.write(toReturn);
-                } else if (command.equals("align")) {
-                    out.write("Align chosen");
                 } else if (command.equals("genbank")) {
-//                    String toReturn = genbankParser();
                     JSONObject toReturn = genbankParser();
                     out.print(toReturn);
                 } else if (command.equals("save")) {
                     out.write("Save chosen");
+                } else if (command.equals("align")) {
+                    String sequence1 = request.getParameter("sequence1");
+                    String sequence2 = request.getParameter("sequence2");
+                    SymbolList forwardOligoSymList = null;
+                    SymbolList reverseOligoSymList = null;
+                    String toReturn;
+
+                    //Initiation block from servlet code
+                    try {
+                        forwardOligoSymList = DNATools.createDNA(sequence1);
+                        reverseOligoSymList = DNATools.createDNA(sequence2);
+                        SimpleRichSequence forwardOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
+                        SimpleRichSequence reverseOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
+                        Annealer AnnealerObject = new Annealer();
+                        toReturn = AnnealerObject.anneal(forwardOligo, reverseOligo);
+                        out.write(toReturn);
+                    } catch (Exception e) {
+                        System.out.println("Error occurred");
+                        e.getMessage();
+                    }
                 }
 
             } finally {
@@ -203,7 +224,7 @@ public class SequenceEditorServlet extends HttpServlet {
                         }
 
                         //add full length sequence to toReturn
-                        toReturn.put("sequence" ,sequence);
+                        toReturn.put("sequence", sequence);
                     } else {
                         line = reader.readLine();
                     }
@@ -223,7 +244,7 @@ public class SequenceEditorServlet extends HttpServlet {
                                     indeces = lineTwo.replaceAll("misc_feature", "");
                                     indeces = indeces.trim();
                                     String[] splitIndeces = indeces.split("\\..");
-                                    featureSeq = sequence.substring(Integer.parseInt(splitIndeces[0])-1, Integer.parseInt(splitIndeces[1]));
+                                    featureSeq = sequence.substring(Integer.parseInt(splitIndeces[0]) - 1, Integer.parseInt(splitIndeces[1]));
                                     features.add(featureSeq);
                                 } else if (lineTwo.startsWith("/label=")) {
                                     features.add(lineTwo.replaceAll("/label=", ""));
@@ -240,7 +261,7 @@ public class SequenceEditorServlet extends HttpServlet {
                     JSONObject genbankObject = new JSONObject();
                     genbankObject.put("name", features.get(ii + 1));
                     genbankObject.put("sequence", features.get(ii));
-                    genbankObject.put("color", features.get(ii+2));
+                    genbankObject.put("color", features.get(ii + 2));
                     genbankInfo.add(genbankObject);
                     ii++;
                     ii++;
@@ -251,6 +272,12 @@ public class SequenceEditorServlet extends HttpServlet {
 //            return "ERROR";
         }
         toReturn.put("features", genbankInfo);
+        return toReturn;
+    }
+
+    // Accepts two String sequences as parameters and returns an alignment as a String.
+    private String alignSequences(String sequence1, String sequence2) {
+        String toReturn = "";
         return toReturn;
     }
 
