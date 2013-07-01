@@ -400,11 +400,11 @@ $(document).ready(function() {
     }
 
     // Checks to see if an element has a scrollbar
-//    (function($) {
-//        $.fn.hasScrollBar = function() {
-//            return this.get(0).scrollHeight > this.innerHeight();
-//        };
-//    })(jQuery);
+    (function($) {
+        $.fn.hasScrollBar = function() {
+            return this.get(0).scrollHeight > this.innerHeight();
+        };
+    })(jQuery);
 
 
     function getForwardORFS(sequence) {
@@ -747,124 +747,130 @@ $(document).ready(function() {
         $(bigInterfaceID).css("background-color", color);
     });
 
-////    document.onmouseup = function() {
-//    $('.seqTextArea').mouseup(function() {
-//        var textAreaID = "#" + $(this).attr('id');
-//        var id = textAreaID.match(/\d/);
-//        var textArea = $(textAreaID)[0];
-//        var gcPattern = /[gc]/ig;
-//        var gcContent = 0;
-//        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
-//        var inCodonPosStart = (textArea.selectionStart % 3);
-//        var inCodonPosEnd = (textArea.selectionEnd % 3);
-//        var seqLength = $(textAreaID).val().length;
-//        var posCell = "#positionCell" + id;
-//        var gcCell = "#gcCell" + id;
-//        var lenCell = "#lengthCell" + id;
-//
-//        if (textArea.selectionStart === textArea.selectionEnd) {
-//            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
-//            $(posCell).html(posDisplay);
-//
-//            while (gcPattern.test(textArea.value.toString())) {
-//                gcContent++;
-//            }
-//            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
-//            $(gcCell).html(gcContent);
-//            $(lenCell).html(seqLength);
-//        }
-//        else {
-//            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
-//            $(posCell).html(posDisplay);
-//
-//            while (gcPattern.test(selection)) {
-//                gcContent++;
-//            }
-//            gcContent = Math.round((gcContent / (selection.length)) * 100);
-//            $(gcCell).html(gcContent);
-//
-//            var lengthDisplay = seqLength + "(" + selection.length + ")";
-//            $(lenCell).html(lengthDisplay);
-//        }
-//    });
-//
-//    $('.seqTextArea').keyup(function() {
-//
-//        var textArea = $('.seqTextArea')[0];
-//        // Grab current sequence length
-//        seqLength = $('.seqTextArea').val().length;
-//
-//        // Update rows display
-//        if (seqLength === 0) {
-//            $('.rowsTextArea').text("");
-//        }
-//        else {
-//            var hasScrollBar = 0;
-//            if ($('.seqTextArea').hasScrollBar()) {
-//                $('.columnLast').text(Math.floor($('.seqTextArea').width() / charWidth - 1));
-//                hasScrollBar = 1;
-//            }
-//            var kk = 0;
-//            var lineNumber = "";
-//            var numberOfRows = Math.ceil(seqLength / (numberOfCols - hasScrollBar));
-//            while (kk < numberOfRows) {
-//                if (kk === 0) {
-//                    lineNumber += "1";
-//                    $('.rowsTextArea').text(lineNumber);
-//                    kk++;
-//                }
-//                else {
-//                    lineNumber += "\r\n" + ((numberOfCols - hasScrollBar) * (kk));
-//                    $('.rowsTextArea').text(lineNumber);
-//                    kk++;
-//                }
-//            }
-//
-//        }
-//
-//        var gcPattern = /[gc]/ig;
-//        var gcContent = 0;
-//        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
-//        var inCodonPosStart = (textArea.selectionStart % 3);
-//        var inCodonPosEnd = (textArea.selectionEnd % 3);
-//        if (textArea.selectionStart === textArea.selectionEnd) {
-//            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
-//            $('.positionCell').html(posDisplay);
-//
-//            while (gcPattern.test(textArea.value.toString())) {
-//                gcContent++;
-//            }
-//            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
-//            $('.gcCell').html(gcContent);
-//
-//            $('.lengthCell').html(seqLength);
-//        }
-//        else {
-//            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
-//            $('.positionCell').html(posDisplay);
-//
-//            while (gcPattern.test(selection)) {
-//                gcContent++;
-//            }
-//            gcContent = Math.round((gcContent / (selection.length)) * 100);
-//            $('.gcCell').html(gcContent);
-//
-//            var lengthDisplay = seqLength + "(" + selection.length + ")";
-//            $('.lengthCell').html(lengthDisplay);
-//        }
-//
-//        needToResetORFList = 1;
-//    });
+
+    $('.seqTextArea').mouseup(function() {
+        var textAreaID = "#" + $(this).attr('id');
+        var id = textAreaID.match(/\d/);
+        var textArea = $(textAreaID)[0];
+        var gcPattern = /[gc]/ig;
+        var gcContent = 0;
+        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
+        var inCodonPosStart = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
+        var seqLength = $(textAreaID).val().length;
+        var posCell = "#positionCell" + id;
+        var gcCell = "#gcCell" + id;
+        var lenCell = "#lengthCell" + id;
+
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            $(posCell).html(posDisplay);
+
+            while (gcPattern.test(textArea.value.toString())) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
+            $(gcCell).html(gcContent);
+            $(lenCell).html(seqLength);
+        }
+        else {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+            $(posCell).html(posDisplay);
+
+            while (gcPattern.test(selection)) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (selection.length)) * 100);
+            $(gcCell).html(gcContent);
+
+            var lengthDisplay = seqLength + "(" + selection.length + ")";
+            $(lenCell).html(lengthDisplay);
+        }
+    });
+
+
+    $('.seqTextArea').keyup(function() {
+        var textAreaID = "#" + $(this).attr('id');
+        var id = textAreaID.match(/\d/);
+        var textArea = $(textAreaID)[0];
+        // Grab current sequence length
+        var seqLength = $(textAreaID).val().length;
+        var rowsTextArea = "#rowsTextArea" + id;
+        var columnsLast = "#columnLast" + id;
+        var posCell = "#positionCell" + id;
+        var gcCell = "#gcCell" + id;
+        var lengthCell = "#lengthCell" + id;
+        // Update rows display
+        if (seqLength === 0) {
+            $(rowsTextArea).text("");
+        }
+        else {
+            var hasScrollBar = 0;
+            if ($(textAreaID).hasScrollBar()) {
+                $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth - 1));
+                hasScrollBar = 1;
+            }
+            var kk = 0;
+            var lineNumber = "";
+            windows[id - 1].numOfRows = Math.ceil(seqLength / (windows[id - 1].numOfCols - hasScrollBar));
+            while (kk < windows[id - 1].numOfRows) {
+                if (kk === 0) {
+                    lineNumber += "1";
+                    $(rowsTextArea).text(lineNumber);
+                    kk++;
+                }
+                else {
+                    lineNumber += "\r\n" + ((windows[id - 1].numOfCols - hasScrollBar) * (kk));
+                    $(rowsTextArea).text(lineNumber);
+                    kk++;
+                }
+            }
+        }
+
+        var gcPattern = /[gc]/ig;
+        var gcContent = 0;
+        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
+        var inCodonPosStart = (textArea.selectionStart % 3);
+        var inCodonPosEnd = (textArea.selectionEnd % 3);
+        if (textArea.selectionStart === textArea.selectionEnd) {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            $(posCell).html(posDisplay);
+
+            while (gcPattern.test(textArea.value.toString())) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
+            $(gcCell).html(gcContent);
+
+            $(lengthCell).html(seqLength);
+        }
+        else {
+            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+            $(posCell).html(posDisplay);
+
+            while (gcPattern.test(selection)) {
+                gcContent++;
+            }
+            gcContent = Math.round((gcContent / (selection.length)) * 100);
+            $(gcCell).html(gcContent);
+
+            var lengthDisplay = seqLength + "(" + selection.length + ")";
+            $(lengthCell).html(lengthDisplay);
+        }
+
+        windows[id - 1].needToResetORFList = 1;
+    });
 
     /***************************************************************************************/
     /* Hotkey Event Handlers */
 
 
-//    jwerty.key('alt+n', false);
-//    jwerty.key('alt+n', function() {
-//        alert('ID: newSequence');
-//    });
-//
+    jwerty.key('alt+n', false);
+    jwerty.key('alt+n', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: newSequence shortcode called from seqTextArea' + id);
+    });
+
 //    var sequence = "";
 //    var features = [];
 //    var indexCount = 0;
@@ -893,55 +899,92 @@ $(document).ready(function() {
 //            resolveFeatureOverlap(orderedIndeces, features, indexCount);
 //        });
 //    });
-//
-//    jwerty.key('alt+s', false);
-//    jwerty.key('alt+s', function() {
-//        alert('ID: saveSequence');
-//    });
-//
-//    jwerty.key('esc', false);
-//    jwerty.key('esc', function() {
-//        alert('ID: close');
-//    });
-//
-//    jwerty.key('alt+q', false);
-//    jwerty.key('alt+q', nextForwardORF);        // When shortcut Alt+q is pressed, call nextForwardORF function
-//
-//    jwerty.key('alt+w', false);
-//    jwerty.key('alt+w', previousForwardORF);    // When shortcut Alt+w is pressed, call previousForwardORF function
-//
-//    jwerty.key('alt+a', false);
-//    jwerty.key('alt+a', nextReverseORF);        // When shortcut Alt+e is pressed, call nextReverseORF function
-//
-//    jwerty.key('alt+r', false);
-//    jwerty.key('alt+r', previousReverseORF);    // When shortcut Alt+r is pressed, call previousReverseORF function
-//
-//    jwerty.key('ctrl+/', false);
-//    jwerty.key('ctrl+/', function() {
-//        alert('ID: search');
-//    });
-//
-//    jwerty.key('alt+2', false);
-//    jwerty.key('alt+2', function() {
-//        alert('ID: features');
-//    });
-//
-//    jwerty.key('alt+3', false);
-//    jwerty.key('alt+3', function() {
-//        alert('ID: selection');
-//    });
-//
+
+    jwerty.key('alt+s', false);
+    jwerty.key('alt+s', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: saveSequence shortcode selected from seqTextArea' + id);
+    });
+
+    jwerty.key('esc', false);
+    jwerty.key('esc', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: close shortcode selected from seqTextArea' + id);
+    });
+
+    jwerty.key('alt+q', false);
+    // When shortcut Alt+q is pressed, call nextForwardORF function
+    jwerty.key('alt+q', function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        nextForwardORF(id, textAreaID);
+    });
+
+    jwerty.key('alt+w', false);
+    // When shortcut Alt+w is pressed, call previousForwardORF function
+    jwerty.key('alt+w', function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        previousForwardORF(id, textAreaID);
+    });
+
+    jwerty.key('alt+a', false);
+    // When shortcut Alt+e is pressed, call nextReverseORF function
+    jwerty.key('alt+a', function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        nextReverseORF(id, textAreaID);
+    });
+
+    jwerty.key('alt+r', false);
+    // When shortcut Alt+r is pressed, call previousReverseORF function
+    jwerty.key('alt+r', function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern);     // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        previousReverseORF(id, textAreaID);
+    });
+
+    jwerty.key('ctrl+/', false);
+    jwerty.key('ctrl+/', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: search shortcode selected in seqTextArea' + id);
+    });
+
+    jwerty.key('alt+2', false);
+    jwerty.key('alt+2', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: features shortcode selected in seqTextArea' + id);
+    });
+
+    jwerty.key('alt+3', false);
+    jwerty.key('alt+3', function() {
+        var id = (document.activeElement.id).match(/\d/);
+        alert('ID: selection shortcode selected in seqTextArea' + id);
+    });
+
     jwerty.key('a', function() {
-        windows[id].needToResetORFList = 1;
+        var id = (document.activeElement.id).match(/\d/);
+        windows[id - 1].needToResetORFList = 1;
     });
     jwerty.key('c', function() {
-        windows[id].needToResetORFList = 1;
+        var id = (document.activeElement.id).match(/\d/);
+        windows[id - 1].needToResetORFList = 1;
     });
     jwerty.key('t', function() {
-        windows[id].needToResetORFList = 1;
+        var id = (document.activeElement.id).match(/\d/);
+        windows[id - 1].needToResetORFList = 1;
     });
     jwerty.key('g', function() {
-        windows[id].needToResetORFList = 1;
+        var id = (document.activeElement.id).match(/\d/);
+        windows[id - 1].needToResetORFList = 1;
     });
 //    /***************************************************************************************/
 //    /* Menu Item Event Handlers */
