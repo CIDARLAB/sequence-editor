@@ -40,61 +40,12 @@
     <body>
         <div class="container">
             <button id="newButton" class="btn btn-large">New Widget</button>
-            <div id="testArea">
-                <textarea id="testText" style="resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
-                <div id="highlight" style="word-wrap: break-word;width:500px;z-index: 1;position:relative;top:-511px"></div>
-            </div>
         </div>
+        <span class="hidden" id="measureSpan" style="padding: 0px;font-family:monospace;font-size: 12pt">1234567890</span>
 
         <!--javascript libraries-->
         <script src="jsLibraries/bootstrap.min.js"></script> 
         <!--javascript goes here-->
-        <script>
-            $(document).ready(function() {
-                //generate feature list
-                var features = [{"name": "feature1", "start": 0, "end": 3, "color": "yellow"}, {"name": "feature2", "start": 3, "end": 10, "color": "yellow"}, {"name": "", "start": 10, "end": 12, "color": "yellow"}, {"name": "feature3", "start": 12, "end": 30, "color": "yellow"}];
-
-                ////////////////////////////////////////////////////////////////
-                $('#testText').mousedown(function() {
-                    $('#highlight').css("z-index", -1);
-                    $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
-                });
-                $('#highlight').mousedown(function() {
-                    $('#highlight').css("z-index", -1);
-                    $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
-                });
-                $('#testText').mouseleave(function() {
-                    $('#highlight').css("z-index", 1);
-                    $('#highlight span').css("color", "black");
-                });
-                ////////////////////////////////////////////////////////////////
-
-
-                $('#testText').keyup(function(event) {
-                    var unparsed = $('#testText').val().toString();
-                    var parsed = "";
-                    for (var i = 0; i < features.length; i++) {
-                        var currentFeature = features[i];
-                        var start = currentFeature["start"];
-                        var end = currentFeature["end"];
-                        var name = currentFeature["name"];
-                        var color = currentFeature["color"];
-                        if (name === "") {
-                            parsed = parsed + unparsed.substring(start, end);
-                        } else {
-                            parsed = parsed + '<span title="' + name + '" style="background-color:"' + color + '">' + unparsed.substring(start, end) + '</span>';
-                        }
-
-                    }
-                    $('#highlight').html(parsed);
-                    $('#highlight').css("z-index", -1);
-                    $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
-                });
-            });
-        </script>
         <script type="text/javascript" src ="controller/jenhanSandboxController.js"></script> 
     </body>
 </html>

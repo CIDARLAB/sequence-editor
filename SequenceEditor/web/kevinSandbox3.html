@@ -41,7 +41,7 @@
         <div class="container">
             <div id="testArea">
                 <!--this is the text area you're typing into-->
-                    <textarea id="testText" style="overflow:auto;resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
+                    <textarea id="seqTextArea" style="overflow:auto;resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
                     <!--this is the highlight layer-->
                     <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: -1;position:relative;top:-511px"></div>
             </div>
@@ -96,23 +96,23 @@
                     return this.push.apply(this, rest);
                 };
 
-                $('#testText').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
+                $('#seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
 
-                $('#testText').scroll(function() {
+                $('#seqTextArea').scroll(function() {
                     $('#highlight').scrollTop($(this).scrollTop());
                 });
                 ////////////////////////////////////////////////////////////////
-                $('#testText').mousedown(function() {
+                $('#seqTextArea').mousedown(function() {
                     $('#highlight').css("z-index", -1);
 //                    $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
+                    $('#seqTextArea').css("color", "black");
                 });
                 $('#highlight').mousedown(function() {
                     $('#highlight').css("z-index", -1);
 //                    $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
+                    $('#seqTextArea').css("color", "black");
                 });
-                $('#testText').mouseleave(function() {
+                $('#seqTextArea').mouseleave(function() {
                     $('#highlight').css("z-index", 1);
                     $('#highlight span').css("color", "black");
                 });
@@ -248,15 +248,15 @@
                     return toReturn;
                 };
                 var changeLength = 0;
-                $('#testText').keydown(function() {
-                    _sequence = $('#testText').val();
+                $('#seqTextArea').keydown(function() {
+                    _sequence = $('#seqTextArea').val();
                     $('#highlight span').css("color","transparent");
                     changeLength++;
                 });
 
-                $('#testText').keyup(function() {
-                    var textArea = $('#testText')[0];
-                    var unparsed = $('#testText').val();
+                $('#seqTextArea').keyup(function() {
+                    var textArea = $('#seqTextArea')[0];
+                    var unparsed = $('#seqTextArea').val();
                     changeLength = (unparsed.length - _sequence.length) * changeLength;
                     if (changeLength !== 0) {
                         _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
@@ -268,31 +268,31 @@
                     $('#highlight').html(parsed);
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
+                    $('#seqTextArea').css("color", "black");
                 });
 
 
                 // test page event handlers
                 $('#sample1').click(function() {
-                    $('#testText').val(samples[0].sequence);
+                    $('#seqTextArea').val(samples[0].sequence);
                 });
                 $('#sample2').click(function() {
-                    $('#testText').val(samples[1].sequence);
+                    $('#seqTextArea').val(samples[1].sequence);
                 });
                 $('#sample3').click(function() {
-                    $('#testText').val(samples[2].sequence);
+                    $('#seqTextArea').val(samples[2].sequence);
                 });
                 $('#clear').click(function() {
-                    $('#testText').val("");
+                    $('#seqTextArea').val("");
                     $('#highlight').html("");
                 });
                 $('#annotate').click(function() {
-                    _annotations = generateAnnotations($('#testText').val(), _features);
-                    var parsed = generateHighlights($('#testText').val(), _annotations);
+                    _annotations = generateAnnotations($('#seqTextArea').val(), _features);
+                    var parsed = generateHighlights($('#seqTextArea').val(), _annotations);
                     $('#highlight').html(parsed);
                     $('#highlight').css("z-index", -1);
                     $('#highlight span').css("color", "transparent");
-                    $('#testText').css("color", "black");
+                    $('#seqTextArea').css("color", "black");
                 });
             });
         </script>
