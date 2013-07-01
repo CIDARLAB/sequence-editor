@@ -572,23 +572,17 @@ $(document).ready(function() {
                 windows[id].reverseLoopCountORF--;
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
-                } else {
-                    // Do nothing
                 }
             }
             else if (windows[id].reverseNextOrPrevious === 1) {
                 windows[id].reverseLoopCountORF -= 2;
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF + windows[id].reverseLoopCountORF;
-                } else {
-                    // Do nothing
                 }
                 $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
                 windows[id].reverseLoopCountORF--;
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
-                } else {
-                    // Do nothing
                 }
             }
         }
@@ -752,43 +746,49 @@ $(document).ready(function() {
         var color = ev.color.toHex().toString();
         $(bigInterfaceID).css("background-color", color);
     });
-//
-//    document.onmouseup = function() {
-//        var textArea = $('.seqTextArea')[0];
+
+////    document.onmouseup = function() {
+//    $('.seqTextArea').mouseup(function() {
+//        var textAreaID = "#" + $(this).attr('id');
+//        var id = textAreaID.match(/\d/);
+//        var textArea = $(textAreaID)[0];
 //        var gcPattern = /[gc]/ig;
 //        var gcContent = 0;
 //        var selection = textArea.value.toString().substring(textArea.selectionStart, textArea.selectionEnd);
 //        var inCodonPosStart = (textArea.selectionStart % 3);
 //        var inCodonPosEnd = (textArea.selectionEnd % 3);
-//        seqLength = $('.seqTextArea').val().length;
+//        var seqLength = $(textAreaID).val().length;
+//        var posCell = "#positionCell" + id;
+//        var gcCell = "#gcCell" + id;
+//        var lenCell = "#lengthCell" + id;
+//
 //        if (textArea.selectionStart === textArea.selectionEnd) {
 //            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
-//            $('.positionCell').html(posDisplay);
+//            $(posCell).html(posDisplay);
 //
 //            while (gcPattern.test(textArea.value.toString())) {
 //                gcContent++;
 //            }
 //            gcContent = Math.round((gcContent / (textArea.value.toString().length)) * 100);
-//            $('.gcCell').html(gcContent);
-//
-//            $('.lengthCell').html(seqLength);
+//            $(gcCell).html(gcContent);
+//            $(lenCell).html(seqLength);
 //        }
 //        else {
 //            var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
-//            $('.positionCell').html(posDisplay);
+//            $(posCell).html(posDisplay);
 //
 //            while (gcPattern.test(selection)) {
 //                gcContent++;
 //            }
 //            gcContent = Math.round((gcContent / (selection.length)) * 100);
-//            $('.gcCell').html(gcContent);
+//            $(gcCell).html(gcContent);
 //
 //            var lengthDisplay = seqLength + "(" + selection.length + ")";
-//            $('.lengthCell').html(lengthDisplay);
+//            $(lenCell).html(lengthDisplay);
 //        }
-//    };
-
-//    document.onkeyup = function() {
+//    });
+//
+//    $('.seqTextArea').keyup(function() {
 //
 //        var textArea = $('.seqTextArea')[0];
 //        // Grab current sequence length
@@ -854,12 +854,12 @@ $(document).ready(function() {
 //        }
 //
 //        needToResetORFList = 1;
-//    };
-//
-//    /***************************************************************************************/
-//    /* Hotkey Event Handlers */
-//
-//
+//    });
+
+    /***************************************************************************************/
+    /* Hotkey Event Handlers */
+
+
 //    jwerty.key('alt+n', false);
 //    jwerty.key('alt+n', function() {
 //        alert('ID: newSequence');
