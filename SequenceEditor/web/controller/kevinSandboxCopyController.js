@@ -4,47 +4,123 @@
  */
 $(document).ready(function() {
 
-//    /***************************************************************************************/
-//    //filter all characters besides known nucleotide codes (codes from: http://www.bioinformatics.org/sms2/iupac.html) 
+    /***************************************************************************************/
+    //filter all characters besides known nucleotide codes for all seqTextAreas (codes from: http://www.bioinformatics.org/sms2/iupac.html) 
     $('.seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
-//    var seqLength = $('#seqTextArea').text().length;
-//
-//    //i've added a hidden span on kevinSandbox.html with 0px padding; 
-//    $('#lengthCell').html(seqLength);
-//
-//    //this span contains 10 characters.
-//    var charWidth = $('#measureSpan').width() / 10;
-//    var numberOfCols = Math.floor($('#seqTextArea').width() / charWidth);
-//    //initialize column width text
-//    $('#columnLast').text(numberOfCols);
-//
-//    if (seqLength > 0) {
-//        var kk = 0;
-//        var lineNumber = "";
-//        var numberOfRows = Math.ceil(seqLength / numberOfCols);
-//        while (kk < numberOfRows) {
-//            if (kk === 0) {
-//                lineNumber += "1";
-//                $('#rowsTextArea').text(lineNumber);
-//                kk++;
-//            }
-//            else {
-//                lineNumber += "\r\n" + (numberOfCols * (kk));
-//                $('#rowsTextArea').text(lineNumber);
-//                kk++;
-//            }
-//        }
-//    }
-//
-//    //link scrollbars together
+
+
+    /////////////////////////////////////////////////////////////////////////////////////
+    //TODO: Need to do all of this between the comment-slash lines dynamically.
+
+    //this span contains 10 characters.
+    var charWidth = $('#measureSpan1').width() / 10;
+    var numberOfCols1 = Math.floor($('#seqTextArea1').width() / charWidth);
+    charWidth = $('#measureSpan2').width() / 10;
+    var numberOfCols2 = Math.floor($('#seqTextArea2').width() / charWidth);
+
+    var tempSeq = $('#seqTextArea1').text().length;
+    var numberofRows1 = findNumOfRows(tempSeq, numberOfCols1);
+
+    tempSeq = $('#seqTextArea2').text().length;
+    var numberofRows2 = findNumOfRows(tempSeq, numberOfCols2);
+
+    tempSeq = $('#seqTextArea1').text();
+    var forwardArrayAndIndex1 = getForwardORFS(tempSeq);
+    var reverseArrayAndIndex1 = getReverseORFS(tempSeq);
+
+    tempSeq = $('#seqTextArea2').text();
+    var forwardArrayAndIndex2 = getForwardORFS(tempSeq);
+    var reverseArrayAndIndex2 = getReverseORFS(tempSeq);
+
+    //JSON Object holding all necessary info for each window
+    //TODO: calculate this info for each window as they are added
+    var windows = [];
+    var windowInfo1 = {sequence: $('#seqTextArea1').text(),
+        seqLength: $('#seqTextArea1').text().length,
+        numOfCols: numberOfCols1,
+        numOfRows: numberofRows1,
+        needToResetORFList: 0,
+        forwardNextOrPrevious: 1,
+        forwardLoopCountORF: 0,
+        forwardArrayAndIndex: [{
+                forwardCurrentORF: forwardArrayAndIndex1[0],
+                forwardNumORF: forwardArrayAndIndex1[1],
+                forwardIndex: forwardArrayAndIndex1[2]
+            }],
+        reverseNextOrPrevious: 2,
+        reverseLoopCountORF: 0,
+        reverseArrayAndIndex: [{
+                reverseCurrentORF: reverseArrayAndIndex1[0],
+                reverseNumORF: reverseArrayAndIndex1[1],
+                reverseIndex: reverseArrayAndIndex1[2]
+            }]
+    };
+    var windowInfo2 = {sequence: $('#seqTextArea2').text(),
+        seqLength: $('#seqTextArea2').text().length,
+        numOfCols: numberOfCols2,
+        numOfRows: numberofRows2,
+        needToResetORFList: 0,
+        forwardNextOrPrevious: 1,
+        forwardLoopCountORF: 0,
+        forwardArrayAndIndex: [{
+                forwardCurrentORF: forwardArrayAndIndex2[0],
+                forwardNumORF: forwardArrayAndIndex2[1],
+                forwardIndex: forwardArrayAndIndex2[2]
+            }],
+        reverseNextOrPrevious: 2,
+        reverseLoopCountORF: 0,
+        reverseArrayAndIndex: [{
+                reverseCurrentORF: reverseArrayAndIndex2[0],
+                reverseNumORF: reverseArrayAndIndex2[1],
+                reverseIndex: reverseArrayAndIndex2[2]
+            }]
+    };
+
+    windows.push(windowInfo1);
+    windows.push(windowInfo2);
+
+    /////////////////////////////////////////////////////////////////////////////////////
+
+
+    //i've added a hidden span on kevinSandbox.html with 0px padding; 
+    $('#lengthCell1').html(windows[0].seqLength);
+    $('#lengthCell2').html(windows[1].seqLength);
+
+    //initialize column width text
+    $('#columnLast1').text(numberOfCols1);
+    $('#columnLast2').text(numberOfCols2);
+
+
+    function findNumOfRows(seqLength, numberOfCols) {
+        if (seqLength > 0) {
+            var kk = 0;
+            var lineNumber = "";
+            var numberOfRows = Math.ceil(seqLength / numberOfCols);
+            while (kk < numberOfRows) {
+                if (kk === 0) {
+                    lineNumber += "1";
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+                else {
+                    lineNumber += "\r\n" + (numberOfCols * (kk));
+                    $('#rowsTextArea').text(lineNumber);
+                    kk++;
+                }
+            }
+        }
+        return numberOfRows;
+    }
+
+    //link scrollbars together
 //    $('#seqTextArea').scroll(function() {
 //        $('#rowsTextArea').scrollTop($(this).scrollTop());
 //    });
-//
-//
-//    /***************************************************************************************/
-//    /* Functions */
-//
+
+
+    /***************************************************************************************/
+    /* Functions */
+
     /*
      * Reverse Complement function takes sequence text and a boolean isDna. The output returned 
      * is the reversed complemented sequence.   
@@ -53,11 +129,10 @@ $(document).ready(function() {
      * @returns {String}
      */
     function revComp(sequence, isDna) {
-        isDna = true;   //Temporarily set isDna to true. TODO: remove when logic is in place to provide this info to function
+        isDna = true; //Temporarily set isDna to true. TODO: remove when logic is in place to provide this info to function
         var revText = (sequence).split('').reverse().join('');
         var reverseComp = "";
         var jj = 0;
-
         while (jj < revText.length) {
             if (revText[jj] === "a") {
                 if (isDna) {
@@ -106,7 +181,7 @@ $(document).ready(function() {
         }
         return reverseComp;
     }
-    ;
+
 
     /*
      * Translate function returns codon representation of sequence
@@ -117,7 +192,6 @@ $(document).ready(function() {
         var translatedSeq = "";
         var ii = 0;
         var triplet = "";
-
         while (ii < (sequence.length) - 2) {
             sequence = sequence.toUpperCase();
             triplet = sequence.substring(ii, ii + 3);
@@ -324,247 +398,203 @@ $(document).ready(function() {
         }
         return translatedSeq;
     }
-    ;
-//
-//    // Checks to see if an element has a scrollbar
+
+    // Checks to see if an element has a scrollbar
 //    (function($) {
 //        $.fn.hasScrollBar = function() {
 //            return this.get(0).scrollHeight > this.innerHeight();
 //        };
 //    })(jQuery);
-//
-//    function getForwardORFS() {
-//
-//
-//        var text = ($(textAreaID)[0]).value.toString();
-//        var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
-//        var forwardIndeces = [];
-//        while (seqPattern.test(text) === true) {
-//            forwardIndeces.push(seqPattern.lastIndex);
-//        }
-//        var arrayForwardORF = text.match(seqPattern);
-//        if (arrayForwardORF === null) {
-//            return ["", 0];
-//        }
-//        else {
-//            var numORF = arrayForwardORF.length;
-//        }
-//        return [arrayForwardORF, numORF, forwardIndeces];
-//    }
-//    ;
-//
-//    function getReverseORFS() {
-//        var text = ($('.seqTextArea')[0]).value.toString();
-//        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
-//        var reverseIndeces = [];
-//        while (seqPattern.test(text) === true) {
-//            reverseIndeces.push(seqPattern.lastIndex);
-//        }
-//        var arrayReverseORF = text.match(seqPattern);
-//        if (arrayReverseORF === null) {
-//            return ["", 0];
-//        }
-//        else {
-//            var numORF = arrayReverseORF.length;
-//        }
-//        return [arrayReverseORF, numORF, reverseIndeces];
-//    }
-//    ;
-//
-//    var forwardNextOrPrevious = 1;          // Integer: 2 if no iteration has been processed yet, 1 if iterating to next forward ORF, 0 if iterating to previous forward ORF
-//    var needToResetORFList = 0;             // Boolean: True if a change in the sequence is detected. Otherwise, 0.
-//    var forwardLoopCountORF = 0;
-//    var forwardArrayAndIndex = getForwardORFS();
-//    var forwardCurrentORF = forwardArrayAndIndex[0];
-//    var forwardNumORF = forwardArrayAndIndex[1];
-//    var forwardIndex = forwardArrayAndIndex[2];
-//
-//    /*
-//     * Next Forward ORF function
-//     * @return: Highlights Next Forward ORF
-//     */
-//    function nextForwardORF(textAreaID) {
-//        if (needToResetORFList) {
-//            forwardArrayAndIndex = getForwardORFS();
-//            forwardCurrentORF = forwardArrayAndIndex[0];
-//            forwardNumORF = forwardArrayAndIndex[1];
-//            forwardIndex = forwardArrayAndIndex[2];
-//            if (forwardLoopCountORF >= forwardNumORF) {
-//                forwardLoopCountORF = 0;
-//            }
-//            needToResetORFList = 0;
-//        }
-//
-//        if (forwardNumORF !== 0) {
-//            if (forwardNextOrPrevious === 2 || forwardNextOrPrevious === 1) {
-//                $(textAreaID).setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-//                forwardLoopCountORF++;
-//                if (forwardLoopCountORF >= forwardNumORF) {
-//                    forwardLoopCountORF = 0;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//            else if (forwardNextOrPrevious === 0) {
-//                forwardLoopCountORF += 2;
-//                if (forwardLoopCountORF >= forwardNumORF) {
-//                    forwardLoopCountORF = (forwardLoopCountORF - (forwardNumORF - 1)) - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//                $(textAreaID).setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-//                forwardLoopCountORF++;
-//                if (forwardLoopCountORF >= forwardNumORF) {
-//                    forwardLoopCountORF = 0;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//        }
-//        else {
-//            //Do nothing. No ORFs to iterate through.
-//        }
-//        forwardNextOrPrevious = 1;
-//    }
-//    ;
 
-//    var reverseNextOrPrevious = 2;          // Integer: 2 if no iteration has been processed yet, 1 if iterating to next forward ORF, 0 if iterating to previous forward ORF
-//    var reverseLoopCountORF = 0;
-//    var reverseArrayAndIndex = getReverseORFS();
-//    var reverseCurrentORF = reverseArrayAndIndex[0];
-//    var reverseNumORF = reverseArrayAndIndex[1];
-//    var reverseIndex = reverseArrayAndIndex[2];
-//
-//    /*
-//     * Next Reverse ORF function
-//     * @return: Highlights Next Reverse ORF
-//     */
-//    function nextReverseORF() {
-//        if (needToResetORFList) {
-//            reverseArrayAndIndex = getReverseORFS();
-//            reverseCurrentORF = reverseArrayAndIndex[0];
-//            reverseNumORF = reverseArrayAndIndex[1];
-//            reverseIndex = reverseArrayAndIndex[2];
-//            if (reverseLoopCountORF >= reverseNumORF) {
-//                reverseLoopCountORF = 0;
-//            }
-//            needToResetORFList = 0;
-//        }
-//
-//        if (reverseNumORF !== 0) {
-//            if (reverseNextOrPrevious === 2 || reverseNextOrPrevious === 1) {
-//                $('.seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-//                reverseLoopCountORF++;
-//                if (reverseLoopCountORF >= reverseNumORF) {
-//                    reverseLoopCountORF = 0;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//            else if (reverseNextOrPrevious === 0) {
-//                reverseLoopCountORF += 2;
-//                if (reverseLoopCountORF >= reverseNumORF) {
-//                    reverseLoopCountORF = (reverseLoopCountORF - (reverseNumORF - 1)) - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//                $('.seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-//                reverseLoopCountORF++;
-//                if (reverseLoopCountORF >= reverseNumORF) {
-//                    reverseLoopCountORF = 0;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//        }
-//        reverseNextOrPrevious = 1;
-//    }
-//    ;
-//
-//    function previousForwardORF() {
-//        if (needToResetORFList) {
-//            forwardArrayAndIndex = getForwardORFS();
-//            forwardCurrentORF = forwardArrayAndIndex[0];
-//            forwardNumORF = forwardArrayAndIndex[1];
-//            forwardIndex = forwardArrayAndIndex[2];
-//            if (forwardLoopCountORF >= forwardNumORF) {
-//                forwardLoopCountORF = 0;
-//            }
-//            needToResetORFList = 0;
-//        }
-//
-//        if (forwardNumORF !== 0) {
-//            if (forwardNextOrPrevious === 0 || forwardNextOrPrevious === 2) {
-//                $('.seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-//                forwardLoopCountORF--;
-//                if (forwardLoopCountORF < 0) {
-//                    forwardLoopCountORF = forwardNumORF - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//            else if (forwardNextOrPrevious === 1) {
-//                forwardLoopCountORF -= 2;
-//                if (forwardLoopCountORF < 0) {
-//                    forwardLoopCountORF = forwardNumORF + forwardLoopCountORF;
-//                } else {
-//                    // Do nothing
-//                }
-//                $('.seqTextArea').setSelection(forwardIndex[forwardLoopCountORF] - ((forwardCurrentORF[forwardLoopCountORF]).length), forwardIndex[forwardLoopCountORF]);
-//                forwardLoopCountORF--;
-//                if (forwardLoopCountORF < 0) {
-//                    forwardLoopCountORF = forwardNumORF - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//        }
-//        forwardNextOrPrevious = 0;
-//    }
-//    ;
-//
-//    function previousReverseORF() {
-//        if (needToResetORFList) {
-//            reverseArrayAndIndex = getReverseORFS();
-//            reverseCurrentORF = reverseArrayAndIndex[0];
-//            reverseNumORF = reverseArrayAndIndex[1];
-//            reverseIndex = reverseArrayAndIndex[2];
-//            if (reverseLoopCountORF >= reverseNumORF) {
-//                reverseLoopCountORF = 0;
-//            }
-//            needToResetORFList = 0;
-//        }
-//
-//        if (reverseNumORF !== 0) {
-//            if (reverseNextOrPrevious === 0 || reverseNextOrPrevious === 2) {
-//                $('.seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-//                reverseLoopCountORF--;
-//                if (reverseLoopCountORF < 0) {
-//                    reverseLoopCountORF = reverseNumORF - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//            else if (reverseNextOrPrevious === 1) {
-//                reverseLoopCountORF -= 2;
-//                if (reverseLoopCountORF < 0) {
-//                    reverseLoopCountORF = reverseNumORF + reverseLoopCountORF;
-//                } else {
-//                    // Do nothing
-//                }
-//                $('.seqTextArea').setSelection(reverseIndex[reverseLoopCountORF] - ((reverseCurrentORF[reverseLoopCountORF]).length), reverseIndex[reverseLoopCountORF]);
-//                reverseLoopCountORF--;
-//                if (reverseLoopCountORF < 0) {
-//                    reverseLoopCountORF = reverseNumORF - 1;
-//                } else {
-//                    // Do nothing
-//                }
-//            }
-//        }
-//        reverseNextOrPrevious = 0;
-//    }
-//    ;
-//
+
+    function getForwardORFS(sequence) {
+        var forwardIndeces = [];
+        var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
+        while (seqPattern.test(sequence) === true) {
+            forwardIndeces.push(seqPattern.lastIndex);
+        }
+        var arrayForwardORF = sequence.match(seqPattern);
+        if (arrayForwardORF === null) {
+            return ["", 0];
+        }
+        else {
+            var numORF = arrayForwardORF.length;
+        }
+        return [arrayForwardORF, numORF, forwardIndeces];
+    }
+
+    function getReverseORFS(sequence) {
+        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
+        var reverseIndeces = [];
+        while (seqPattern.test(sequence) === true) {
+            reverseIndeces.push(seqPattern.lastIndex);
+        }
+        var arrayReverseORF = sequence.match(seqPattern);
+        if (arrayReverseORF === null) {
+            return ["", 0];
+        }
+        else {
+            var numORF = arrayReverseORF.length;
+        }
+        return [arrayReverseORF, numORF, reverseIndeces];
+    }
+
+
+    /*
+     * Next Forward ORF function
+     * @return: Highlights Next Forward ORF
+     */
+    function nextForwardORF(id, textAreaID) {
+        if (windows[id].needToResetORFList) {
+            var forwardArrayAndIndex = getForwardORFS();
+            windows[id].forwardArrayAndIndex[0].forwardCurrentORF = forwardArrayAndIndex[0];
+            windows[id].forwardArrayAndIndex[0].forwardNumORF = forwardArrayAndIndex[1];
+            windows[id].forwardArrayAndIndex[0].forwardIndex = forwardArrayAndIndex[2];
+            if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
+                windows[id].forwardLoopCountORF = 0;
+            }
+            windows[id].needToResetORFList = 0;
+        }
+
+        if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
+            if (windows[id].forwardNextOrPrevious === 2 || windows[id].forwardNextOrPrevious === 1) {
+                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                windows[id].forwardLoopCountORF++;
+                if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
+                    windows[id].forwardLoopCountORF = 0;
+                }
+            }
+            else if (windows[id].forwardNextOrPrevious === 0) {
+                windows[id].forwardLoopCountORF += 2;
+                if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
+                    windows[id].forwardLoopCountORF = (windows[id].forwardLoopCountORF - (windows[id].forwardArrayAndIndex[0].forwardNumORF - 1)) - 1;
+                }
+                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                windows[id].forwardLoopCountORF++;
+                if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
+                    windows[id].forwardLoopCountORF = 0;
+                }
+            }
+        }
+        windows[id].forwardNextOrPrevious = 1;
+    }
+
+
+    /*
+     * Next Reverse ORF function
+     * @return: Highlights Next Reverse ORF
+     */
+    function nextReverseORF(id, textAreaID) {
+        if (windows[id].needToResetORFList) {
+            var reverseArrayAndIndex = getReverseORFS();
+            windows[id].reverseArrayAndIndex[0].reverseCurrentORF = reverseArrayAndIndex[0];
+            windows[id].reverseArrayAndIndex[0].reverseNumORF = reverseArrayAndIndex[1];
+            windows[id].reverseArrayAndIndex[0].reverseIndex = reverseArrayAndIndex[2];
+            if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
+                windows[id].reverseLoopCountORF = 0;
+            }
+            windows[id].needToResetORFList = 0;
+        }
+
+        if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
+            if (windows[id].reverseNextOrPrevious === 2 || windows[id].reverseNextOrPrevious === 1) {
+                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                windows[id].reverseLoopCountORF++;
+                if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
+                    windows[id].reverseLoopCountORF = 0;
+                }
+            }
+            else if (windows[id].reverseNextOrPrevious === 0) {
+                windows[id].reverseLoopCountORF += 2;
+                if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
+                    windows[id].reverseLoopCountORF = (windows[id].reverseLoopCountORF - (windows[id].reverseArrayAndIndex[0].reverseNumORF - 1)) - 1;
+                }
+                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                windows[id].reverseLoopCountORF++;
+                if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
+                    windows[id].reverseLoopCountORF = 0;
+                }
+            }
+        }
+        windows[id].reverseNextOrPrevious = 1;
+    }
+
+    function previousForwardORF(id, textAreaID) {
+        if (windows[id].needToResetORFList) {
+            var forwardArrayAndIndex = getForwardORFS();
+            windows[id].forwardArrayAndIndex[0].forwardCurrentORF = forwardArrayAndIndex[0];
+            windows[id].forwardArrayAndIndex[0].forwardNumORF = forwardArrayAndIndex[1];
+            windows[id].forwardArrayAndIndex[0].forwardIndex = forwardArrayAndIndex[2];
+            if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
+                windows[id].forwardLoopCountORF = 0;
+            }
+            windows[id].needToResetORFList = 0;
+        }
+
+        if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
+            if (windows[id].forwardNextOrPrevious === 0 || windows[id].forwardNextOrPrevious === 2) {
+                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                windows[id].forwardLoopCountORF--;
+                if (windows[id].forwardLoopCountORF < 0) {
+                    windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
+                }
+            }
+            else if (windows[id].forwardNextOrPrevious === 1) {
+                windows[id].forwardLoopCountORF -= 2;
+                if (windows[id].forwardLoopCountORF < 0) {
+                    windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF + windows[id].forwardLoopCountORF;
+                }
+                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                windows[id].forwardLoopCountORF--;
+                if (windows[id].forwardLoopCountORF < 0) {
+                    windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
+                }
+            }
+        }
+        windows[id].forwardNextOrPrevious = 0;
+    }
+
+    function previousReverseORF(id, textAreaID) {
+        if (windows[id].needToResetORFList) {
+            var reverseArrayAndIndex = getReverseORFS();
+            windows[id].reverseArrayAndIndex[0].reverseCurrentORF = reverseArrayAndIndex[0];
+            windows[id].reverseArrayAndIndex[0].reverseNumORF = reverseArrayAndIndex[1];
+            windows[id].reverseArrayAndIndex[0].reverseIndex = reverseArrayAndIndex[2];
+            if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
+                windows[id].reverseLoopCountORF = 0;
+            }
+            windows[id].needToResetORFList = 0;
+        }
+
+        if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
+            if (windows[id].reverseNextOrPrevious === 0 || windows[id].reverseNextOrPrevious === 2) {
+                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                windows[id].reverseLoopCountORF--;
+                if (windows[id].reverseLoopCountORF < 0) {
+                    windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
+                } else {
+                    // Do nothing
+                }
+            }
+            else if (windows[id].reverseNextOrPrevious === 1) {
+                windows[id].reverseLoopCountORF -= 2;
+                if (windows[id].reverseLoopCountORF < 0) {
+                    windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF + windows[id].reverseLoopCountORF;
+                } else {
+                    // Do nothing
+                }
+                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                windows[id].reverseLoopCountORF--;
+                if (windows[id].reverseLoopCountORF < 0) {
+                    windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
+                } else {
+                    // Do nothing
+                }
+            }
+        }
+        windows[id].reverseNextOrPrevious = 0;
+    }
+
 //    var spansToHighlight = [];
 //    function resolveFeatureOverlap(orderedIndeces, features, indexCount) {
 //        var kk = 0;
@@ -641,8 +671,8 @@ $(document).ready(function() {
      */
     $('.revComp').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -657,15 +687,13 @@ $(document).ready(function() {
             $(textAreaID).replaceSelectedText(revCompOut, "select");
         }
     });
-
     /*
      * Translate function displays the sequence's codon representation.
      */
     $('.translate').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
         var textAreaID = "#seqTextArea" + id;
-
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
         if (sequence.length === 0) {
@@ -676,15 +704,13 @@ $(document).ready(function() {
         $(textAreaID).setSelection(textArea.selectionStart, textArea.selectionEnd);
         alert(transOut);
     });
-
-
     /*
      * Uppercase function makes all selected text uppercase.
      */
     $('.uppercase').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -698,15 +724,13 @@ $(document).ready(function() {
             $(textAreaID).replaceSelectedText(upperOut, "select");
         }
     });
-
-
     /*
      * Lowercase function makes all selected text lowercase.
      */
     $('.lowercase').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var textArea = $(textAreaID)[0];
         var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -720,17 +744,14 @@ $(document).ready(function() {
             $(textAreaID).replaceSelectedText(lowerOut, "select");
         }
     });
-
-
     $('.colorChanger').colorpicker().on('changeColor', function(ev) {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "#bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "#bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
         var color = ev.color.toHex().toString();
         $(bigInterfaceID).css("background-color", color);
     });
-
 //
 //    document.onmouseup = function() {
 //        var textArea = $('.seqTextArea')[0];
@@ -910,28 +931,25 @@ $(document).ready(function() {
 //        alert('ID: selection');
 //    });
 //
-//    jwerty.key('a', function() {
-//        needToResetORFList = 1;
-//    });
-//
-//    jwerty.key('c', function() {
-//        needToResetORFList = 1;
-//    });
-//
-//    jwerty.key('t', function() {
-//        needToResetORFList = 1;
-//    });
-//
-//    jwerty.key('g', function() {
-//        needToResetORFList = 1;
-//    });
+    jwerty.key('a', function() {
+        windows[id].needToResetORFList = 1;
+    });
+    jwerty.key('c', function() {
+        windows[id].needToResetORFList = 1;
+    });
+    jwerty.key('t', function() {
+        windows[id].needToResetORFList = 1;
+    });
+    jwerty.key('g', function() {
+        windows[id].needToResetORFList = 1;
+    });
 //    /***************************************************************************************/
 //    /* Menu Item Event Handlers */
 //
     $('.newSequence').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("New Sequence menu item chosen for " + bigInterfaceID);
     });
 //
@@ -965,63 +983,78 @@ $(document).ready(function() {
 //
     $('.saveSequence').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Save Sequence menu item chosen for " + bigInterfaceID);
     });
 
     $('.close').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Close menu item chosen for " + bigInterfaceID);
     });
 
     $('.nextForwardORF').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var textAreaID = "#seqTextArea" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-        nextForwardORF(textAreaID);
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        nextForwardORF(id, textAreaID);
     });
 
-//    $('.previousForwardORF').click(previousForwardORF());
-//
-//    $('.nextReverseORF').click(nextReverseORF());
-//
-//    $('.previousReverseORF').click(previousReverseORF());
-//
+    $('.previousForwardORF').click(function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        previousForwardORF(id, textAreaID);
+    });
+
+    $('.nextReverseORF').click(function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        nextReverseORF(id, textAreaID);
+    });
+
+    $('.previousReverseORF').click(function() {
+        var idPattern = /\d/;
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var textAreaID = "#seqTextArea" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
+        id = id - 1;
+        previousReverseORF(id, textAreaID);
+    });
+
     $('.search').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Search menu item chosen for " + bigInterfaceID);
     });
-
     $('.features').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Features Highlight menu item chosen for " + bigInterfaceID);
     });
-
     $('.selection').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Selection Highlight menu item chosen for " + bigInterfaceID);
     });
-
     $('.resize').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Resize menu item chosen for " + bigInterfaceID);
     });
-
     $('.closeWindow').click(function() {
         var idPattern = /\d/;
-        var id = ($(this).attr('id')).match(idPattern);         // match the id number associated with the current window
-        var bigInterfaceID = "bigInterface" + id;                   // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+        var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+        var bigInterfaceID = "bigInterface" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
         alert("Close Window menu item chosen for " + bigInterfaceID);
     });
 });
