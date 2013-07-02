@@ -2,7 +2,7 @@ $(document).ready(function() {
     var windows = [];
     var count = 0;
     $('#newButton').click(function() {
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" class="colorChanger" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" class="nextReverseORF" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="revComp btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="translate btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="uppercase btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="lowercase btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" class="colorChanger" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" class="nextReverseORF" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="revComp btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="translate btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="uppercase btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="lowercase btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
         var parent = $('#highlight_' + count).parent();
@@ -740,12 +740,14 @@ $(document).ready(function() {
 
             var color = ev.color.toHex().toString();
             $(bigInterfaceID).css("background-color", color);
+            $("#centralElement_" + id).css("background-color", color);
+            $("#seqTextArea_" + id).css("background-color", "white");
         });
 
 
-        $('.seqTextArea').mouseup(function() {
-            var textAreaID = "#" + $(this).attr('id');
-            var id = textAreaID.match(/\d/);
+        $('.resizable').mouseup(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             var gcPattern = /[gc]/ig;
             var gcContent = 0;
@@ -788,6 +790,8 @@ $(document).ready(function() {
                 }
             }
 
+//            alert("start: " + textArea.selectionStart + " ... end: " + textArea.selectionEnd);
+
             if (textArea.selectionStart === textArea.selectionEnd) {
                 var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
                 $(posCell).html(posDisplay);
@@ -800,7 +804,7 @@ $(document).ready(function() {
                 $(lenCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -815,9 +819,9 @@ $(document).ready(function() {
         });
 
 
-        $('.seqTextArea').keyup(function() {
-            var textAreaID = "#" + $(this).attr('id');
-            var id = textAreaID.match(/\d/);
+        $('.resizable').keyup(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             // Grab current sequence length
             var seqLength = $(textAreaID).val().length;
@@ -874,7 +878,7 @@ $(document).ready(function() {
                 $(lengthCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -1120,7 +1124,8 @@ $(document).ready(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            alert("Close Window menu item chosen for " + bigInterfaceID);
+//            alert("Close Window menu item chosen for " + bigInterfaceID);
+            $('#resizable_' + id).remove();
         });
 
         /////////////////////////// BIG TEST CODE ///////////////////////////////////////////
