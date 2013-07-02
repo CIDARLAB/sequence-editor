@@ -1054,6 +1054,11 @@ $(document).ready(function() {
 //        });
 //    });
 //
+        $('.copy').click(function() {
+            var idPattern = /\d/;
+            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            //            alert("Copy menu item chosen for " + bigInterfaceID);
+        });
         $('.saveSequence').click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
@@ -1119,17 +1124,15 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Resize menu item chosen for " + bigInterfaceID);
+//            $('#resizable_' + id).width(($(document).width()));
+//            $('#resizable_' + id).height(($(document).height()));
         });
         $('.closeWindow').click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-//            alert("Close Window menu item chosen for " + bigInterfaceID);
             $('#resizable_' + id).remove();
         });
-
-        /////////////////////////// BIG TEST CODE ///////////////////////////////////////////
-
 
         // LAST STEP: Increment count variable
         count++;
