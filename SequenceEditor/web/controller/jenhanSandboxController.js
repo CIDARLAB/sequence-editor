@@ -2,10 +2,7 @@ $(document).ready(function() {
     var windows = [];
     var count = 0;
     $('#newButton').click(function() {
-//        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" class="colorChanger" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" class="nextReverseORF" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="revComp btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="translate btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="uppercase btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="lowercase btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%">aaaaa</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count +
-                '" style="width:650px;height:400px"><h4 class="ui-widget-header">Resizable</h4><div class="row-fluid"><div class="offset1 span5"><ul><li class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-align-justify"></i><span class="caret"></span></a><ul class="dropdown-menu"><li><a href="#">New Sequence</a></li><li><a href="#">Save Sequence</a></li><li><a href="#">Close</a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-edit"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Undo</a></li><li><a href="#">Redo</a></li><li><a href="#">Cut</a></li><li><a href="#">Copy</a></li><li><a href="#">Paste</a></li><li><a href="#">Delete</a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-search"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Next Forward ORF</a></li><li><a href="#">Previous Forward ORF</a></li><li><a href="#">Next Reverse ORF</a></li><li><a href="#">Previous Reverse ORF</a></li><li><a href="#">Search</a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-pencil"></i><span class="caret"></span></button><ul class="dropdown-menu"><li><a href="#">Features</a></li><li><a href="#">Selection</a></li></ul></li></ul></div><div class="span3"><div class="btn-group"><button id="revComp" class="btn"><i class="icon-backward"></i></button><button id="translate" class="btn"><i class="icon-text-width"></i></button><button id="uppercase" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button class="btn"><i class="icon-fullscreen"></i></button><button class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="seqTextArea" class="textBox" style="resize:none;height:250px;width:100%">atgaccccgtggta</textarea></div></div><div class="row-fluid"><div class="offset3 span2"><div><dl class="dl-horizontal"><dt>Position:</dt><dd>0(0)</dd><dt>Length:</dt><dd>10</dd></dl></div></div><div class="span2"><dl class="dl-horizontal"><dt>Temp:</dt><dd>0C</dd><dt>%GC:</dt><dd>50</dd></dl> </div><div class="span2"><dl class="dl-horizontal"><dt>Feature</dt><dd>XbaI</dd></dl> </div></div></div>'
-                );
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" class="colorChanger" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" class="nextReverseORF" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="revComp btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="translate btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="uppercase btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="lowercase btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
         var parent = $('#highlight_' + count).parent();
@@ -26,11 +23,11 @@ $(document).ready(function() {
         });
 
         //this span contains 10 characters.
-        var charWidth = $('#measureSpan' + count).width() / 10;
+        var charWidth = $('#measureSpan').width() / 10;
         var numberOfCols = Math.floor($('#seqTextArea_' + count).width() / charWidth);
 
         var tempSeq = $('#seqTextArea_' + count).text().length;
-        var numberofRows = findNumOfRows(tempSeq, numberOfCols);
+        var numberOfRows = findNumOfRows(tempSeq, numberOfCols);
 
         tempSeq = $('#seqTextArea_' + count).text();
         var forwardArrayAndIndex = getForwardORFS(tempSeq);
@@ -41,7 +38,7 @@ $(document).ready(function() {
         var windowInfo = {sequence: $('#seqTextArea_' + count).text(),
             seqLength: $('#seqTextArea_' + count).text().length,
             numOfCols: numberOfCols,
-            numOfRows: numberofRows,
+            numOfRows: numberOfRows,
             needToResetORFList: 0,
             forwardNextOrPrevious: 1,
             forwardLoopCountORF: 0,
@@ -66,16 +63,9 @@ $(document).ready(function() {
         //initialize column width text
         $('#columnLast_' + count).text(numberOfCols);
 
+        //filter all characters besides known nucleotide codes for all seqTextAreas (codes from: http://www.bioinformatics.org/sms2/iupac.html) 
         $('.seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
 
-
-
-        /////////////////////////// BIG TEST CODE ///////////////////////////////////////////
-
-        //filter all characters besides known nucleotide codes for all seqTextAreas (codes from: http://www.bioinformatics.org/sms2/iupac.html) 
-//    $('.seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
-
-// TODO: This doesn't set the rows information with updated jquery.
         function findNumOfRows(seqLength, numberOfCols) {
             if (seqLength > 0) {
                 var kk = 0;
@@ -98,10 +88,10 @@ $(document).ready(function() {
         }
 
         //link scrollbars together
-//    $('#seqTextArea').scroll(function() {
-//        $('#rowsTextArea').scrollTop($(this).scrollTop());
-//    });
-
+        $('.seqTextArea').scroll(function() {
+            var id = ($(this).attr('id')).match(/\d/);
+            $('#rowsTextArea_' + id).scrollTop($(this).scrollTop());
+        });
 
         /***************************************************************************************/
         /* Functions */
@@ -177,10 +167,10 @@ $(document).ready(function() {
             var translatedSeq = "";
             var ii = 0;
             var triplet = "";
+            var stop = "STOP";
             while (ii < (sequence.length) - 2) {
                 sequence = sequence.toUpperCase();
                 triplet = sequence.substring(ii, ii + 3);
-                //translatedSeq += "X";
                 switch (triplet) {
                     case "TTT":
                         translatedSeq += "F";
@@ -367,13 +357,13 @@ $(document).ready(function() {
                         break;
                         // Stop Sequences
                     case "TAA":
-                        translatedSeq += "STOP";
+                        translatedSeq += "*";
                         break;
                     case "TAG":
-                        translatedSeq += "STOP";
+                        translatedSeq += "*";
                         break;
                     case "TGA":
-                        translatedSeq += "STOP";
+                        translatedSeq += "*";
                         break;
                     default:
                         translatedSeq += "X";
@@ -390,7 +380,6 @@ $(document).ready(function() {
                 return this.get(0).scrollHeight > this.innerHeight();
             };
         })(jQuery);
-
 
         function getForwardORFS(sequence) {
             var forwardIndeces = [];
@@ -444,7 +433,7 @@ $(document).ready(function() {
             if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
                 if (windows[id].forwardNextOrPrevious === 2 || windows[id].forwardNextOrPrevious === 1) {
                     $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
-                    windows[id].forwardLoopCountORF++;
+                    windows[id].forwardLoopCountORF += 1;
                     if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
                         windows[id].forwardLoopCountORF = 0;
                     }
@@ -455,7 +444,7 @@ $(document).ready(function() {
                         windows[id].forwardLoopCountORF = (windows[id].forwardLoopCountORF - (windows[id].forwardArrayAndIndex[0].forwardNumORF - 1)) - 1;
                     }
                     $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
-                    windows[id].forwardLoopCountORF++;
+                    windows[id].forwardLoopCountORF += 1;
                     if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
                         windows[id].forwardLoopCountORF = 0;
                     }
@@ -484,7 +473,7 @@ $(document).ready(function() {
             if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
                 if (windows[id].reverseNextOrPrevious === 2 || windows[id].reverseNextOrPrevious === 1) {
                     $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
-                    windows[id].reverseLoopCountORF++;
+                    windows[id].reverseLoopCountORF += 1;
                     if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
                         windows[id].reverseLoopCountORF = 0;
                     }
@@ -495,7 +484,7 @@ $(document).ready(function() {
                         windows[id].reverseLoopCountORF = (windows[id].reverseLoopCountORF - (windows[id].reverseArrayAndIndex[0].reverseNumORF - 1)) - 1;
                     }
                     $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
-                    windows[id].reverseLoopCountORF++;
+                    windows[id].reverseLoopCountORF += 1;
                     if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
                         windows[id].reverseLoopCountORF = 0;
                     }
@@ -519,7 +508,7 @@ $(document).ready(function() {
             if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
                 if (windows[id].forwardNextOrPrevious === 0 || windows[id].forwardNextOrPrevious === 2) {
                     $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
-                    windows[id].forwardLoopCountORF--;
+                    windows[id].forwardLoopCountORF -= 1;
                     if (windows[id].forwardLoopCountORF < 0) {
                         windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
                     }
@@ -530,7 +519,7 @@ $(document).ready(function() {
                         windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF + windows[id].forwardLoopCountORF;
                     }
                     $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
-                    windows[id].forwardLoopCountORF--;
+                    windows[id].forwardLoopCountORF -= 1;
                     if (windows[id].forwardLoopCountORF < 0) {
                         windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
                     }
@@ -554,7 +543,7 @@ $(document).ready(function() {
             if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
                 if (windows[id].reverseNextOrPrevious === 0 || windows[id].reverseNextOrPrevious === 2) {
                     $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
-                    windows[id].reverseLoopCountORF--;
+                    windows[id].reverseLoopCountORF -= 1;
                     if (windows[id].reverseLoopCountORF < 0) {
                         windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
                     }
@@ -565,7 +554,7 @@ $(document).ready(function() {
                         windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF + windows[id].reverseLoopCountORF;
                     }
                     $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
-                    windows[id].reverseLoopCountORF--;
+                    windows[id].reverseLoopCountORF -= 1;
                     if (windows[id].reverseLoopCountORF < 0) {
                         windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
                     }
@@ -634,16 +623,36 @@ $(document).ready(function() {
         /* 
          * Updates column width whenever window is resized
          */
-//    $(window).resize(function() {
-//        var scrollBar = 0;
-//        if ($('#seqTextArea_' + count).hasScrollBar()) {
-//            scrollBar = scrollBar + 1;
-//        }
-//        $('#columnLast_' + count).text(Math.floor($('#seqTextArea_' + count).width() / charWidth - scrollBar));
-//
-//        //TODO: Implement rows listing upon resizing
-//    });
+        $('.resizable').resize(function() {
+            var id = ($(this).attr('id')).match(/\d/);
+            var scrollBar = 0;
+            var seqLength = $('#seqTextArea_' + id).val().length;
 
+            //TODO: Implement rows listing upon resizing
+            var hasScrollBar = 0;
+            if ($('#seqTextArea_' + id).hasScrollBar()) {
+                $('#columnLast_' + id).text(Math.floor($('#seqTextArea_' + id).width() / charWidth - 1));
+                hasScrollBar = 1;
+            } else {
+                $('#columnLast_' + id).text(Math.floor($('#seqTextArea_' + id).width() / charWidth));
+            }
+            windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
+            var kk = 0;
+            var lineNumber = "";
+            windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
+            while (kk < windows[id].numOfRows) {
+                if (kk === 0) {
+                    lineNumber += "1";
+                    $("#rowsTextArea_" + id).text(lineNumber);
+                    kk++;
+                }
+                else {
+                    lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
+                    $("#rowsTextArea_" + id).text(lineNumber);
+                    kk++;
+                }
+            }
+        });
 
         /*
          * Binds the Reverse Complement function (revComp()) to the revComp button click. 
@@ -666,6 +675,7 @@ $(document).ready(function() {
                 $(textAreaID).replaceSelectedText(revCompOut, "select");
             }
         });
+
         /*
          * Translate function displays the sequence's codon representation.
          */
@@ -730,12 +740,14 @@ $(document).ready(function() {
 
             var color = ev.color.toHex().toString();
             $(bigInterfaceID).css("background-color", color);
+            $("#centralElement_" + id).css("background-color", color);
+            $("#seqTextArea_" + id).css("background-color", "white");
         });
 
 
-        $('.seqTextArea').mouseup(function() {
-            var textAreaID = "#" + $(this).attr('id');
-            var id = textAreaID.match(/\d/);
+        $('.resizable').mouseup(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             var gcPattern = /[gc]/ig;
             var gcContent = 0;
@@ -743,9 +755,42 @@ $(document).ready(function() {
             var inCodonPosStart = (textArea.selectionStart % 3);
             var inCodonPosEnd = (textArea.selectionEnd % 3);
             var seqLength = $(textAreaID).val().length;
+            var rowsTextArea = "#rowsTextArea_" + id;
+            var columnsLast = "#columnLast_" + id;
             var posCell = "#positionCell_" + id;
             var gcCell = "#gcCell_" + id;
             var lenCell = "#lengthCell_" + id;
+            // Update rows display
+            if (seqLength === 0) {
+                $(rowsTextArea).text("");
+            }
+            else {
+                var hasScrollBar = 0;
+                if ($(textAreaID).hasScrollBar()) {
+                    $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth - 1));
+                    hasScrollBar = 1;
+                } else {
+                    $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
+                }
+                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
+                var kk = 0;
+                var lineNumber = "";
+                windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
+                while (kk < windows[id].numOfRows) {
+                    if (kk === 0) {
+                        lineNumber += "1";
+                        $(rowsTextArea).text(lineNumber);
+                        kk++;
+                    }
+                    else {
+                        lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
+                        $(rowsTextArea).text(lineNumber);
+                        kk++;
+                    }
+                }
+            }
+
+//            alert("start: " + textArea.selectionStart + " ... end: " + textArea.selectionEnd);
 
             if (textArea.selectionStart === textArea.selectionEnd) {
                 var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
@@ -759,7 +804,7 @@ $(document).ready(function() {
                 $(lenCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -774,9 +819,9 @@ $(document).ready(function() {
         });
 
 
-        $('.seqTextArea').keyup(function() {
-            var textAreaID = "#" + $(this).attr('id');
-            var id = textAreaID.match(/\d/);
+        $('.resizable').keyup(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             // Grab current sequence length
             var seqLength = $(textAreaID).val().length;
@@ -794,10 +839,13 @@ $(document).ready(function() {
                 if ($(textAreaID).hasScrollBar()) {
                     $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth - 1));
                     hasScrollBar = 1;
+                } else {
+                    $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
                 }
+                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
                 var kk = 0;
                 var lineNumber = "";
-                windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols - hasScrollBar));
+                windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
                 while (kk < windows[id].numOfRows) {
                     if (kk === 0) {
                         lineNumber += "1";
@@ -805,7 +853,7 @@ $(document).ready(function() {
                         kk++;
                     }
                     else {
-                        lineNumber += "\r\n" + ((windows[id].numOfCols - hasScrollBar) * (kk));
+                        lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
                         $(rowsTextArea).text(lineNumber);
                         kk++;
                     }
@@ -830,7 +878,7 @@ $(document).ready(function() {
                 $(lengthCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ") - " + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -902,6 +950,7 @@ $(document).ready(function() {
         jwerty.key('alt+q', function() {
             var idPattern = /\d/;
             var id = (document.activeElement.id).match(idPattern);     // match the id number associated with the current window
+//            alert(id);
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextForwardORF(id, textAreaID);
         });
@@ -1005,6 +1054,11 @@ $(document).ready(function() {
 //        });
 //    });
 //
+        $('.copy').click(function() {
+            var idPattern = /\d/;
+            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            //            alert("Copy menu item chosen for " + bigInterfaceID);
+        });
         $('.saveSequence').click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
@@ -1070,16 +1124,15 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Resize menu item chosen for " + bigInterfaceID);
+//            $('#resizable_' + id).width(($(document).width()));
+//            $('#resizable_' + id).height(($(document).height()));
         });
         $('.closeWindow').click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            alert("Close Window menu item chosen for " + bigInterfaceID);
+            $('#resizable_' + id).remove();
         });
-
-        /////////////////////////// BIG TEST CODE ///////////////////////////////////////////
-
 
         // LAST STEP: Increment count variable
         count++;
