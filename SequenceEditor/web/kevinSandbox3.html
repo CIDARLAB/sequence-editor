@@ -232,12 +232,12 @@
                                 }
                                 var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
                                 toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
-                                alert("features: " + featuresRepresented + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[spanOverlapping.length - 1].color);
+//                                alert("features: " + featuresRepresented + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[spanOverlapping.length - 1].color);
                             }
                             else {
                                 var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
                                 toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
-                                alert("features: " + spanOverlapping[0].features + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[0].color);
+//                                alert("features: " + spanOverlapping[0].features + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[0].color);
                             }
                         }
                     }
