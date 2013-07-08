@@ -41,9 +41,9 @@
         <div class="container">
             <div id="testArea">
                 <!--this is the text area you're typing into-->
-                    <textarea id="seqTextArea" style="overflow:auto;resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
-                    <!--this is the highlight layer-->
-                    <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: -1;position:relative;top:-511px"></div>
+                <textarea id="seqTextArea" style="overflow:auto;resize:none;width: 500px;height:500px;background-color: transparent;"></textarea>
+                <!--this is the highlight layer-->
+                <div id="highlight" style="overflow:auto;word-wrap: break-word;width:500px;height:500px;z-index: -1;position:relative;top:-511px"></div>
             </div>
             <div id="sampleFeatures" style="position:relative;top:-511px">
                 <ul class="nav nav-pills">
@@ -139,7 +139,7 @@
 
                 //generates annotations: {featureName, start, end, color}
                 var generateAnnotations = function(sequence, features) {
-                    var unresolvedAnnotations = []; //annotations with potential overlaps
+                    var unresolvedAnnotations = [];                 //annotations with potential overlaps
                     for (var i = 0; i < features.length; i++) {
                         var matches = getIndicesOf(features[i].sequence, sequence, false);
                         if (matches.length > 0) {
@@ -157,14 +157,13 @@
                         else if (a.start > b.start) {
                             return 1;
                         }
-                        return 0;
-                    });
-                    unresolvedAnnotations = unresolvedAnnotations.sort(function(a, b) {
-                        if (a.end < b.end) {
-                            return -1;
-                        }
-                        else if (a.end > b.end) {
-                            return 1;
+                        else {
+                            if (a.end < b.end) {
+                                return -1;
+                            }
+                            else if (a.end > b.end) {
+                                return 1;
+                            }
                         }
                         return 0;
                     });
@@ -172,25 +171,77 @@
                     for (var i = 0; i < unresolvedAnnotations.length; i++) {
 //                        toshow = toshow + "\n" + unresolvedAnnotations[i].start + " " + unresolvedAnnotations[i].end;
                     }
-//                    alert(toshow);
-//                    var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations);
+                    var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
 
-                    return unresolvedAnnotations;
+                    return resolvedAnnotations;   //TODO: Return resolvedAnnotations when resolveFeatureOverlap function is completed
                 };
 
                 //resolve overlaps between annotations
-                var resolveFeatureOverlap = function(unresolvedAnnotations) {
+                var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
+                    var toReturn = [];  // Annotations denoting overlaps
                     for (var i = 0; i < unresolvedAnnotations.length; i++) {
+                        var overlapping = [];
                         var current = unresolvedAnnotations[i];
+                        overlapping.push(current);
                         var j = i + 1;
-                        var compared = unresolvedAnnotations[j];
-                        alert(compared)
-                        while (current.end > compared.start) {
-                            
+                        while (j < unresolvedAnnotations.length) {
+                            var compared = unresolvedAnnotations[j];
+                            if (current.end > compared.start) {
+                                overlapping.push(compared);
+                                i++;
+                            }
+                            // Increment variable j and get next feature to compare with current
+                            j += 1;
                             compared = unresolvedAnnotations[j];
                         }
+                        // Find indices for overlapping features. Store in variable ind
+                        var ind = [];
+                        for (var kk = 0; kk < overlapping.length; kk++) {
+                            ind.push(overlapping[kk].start);
+                            ind.push(overlapping[kk].end);
+                        }
+                        // Sort indices for overlapping section
+                        ind.sort(function(a, b) {
+                            return a - b;
+                        });
+                        // for each span push represented features to spanOverlapping array of feature objects
+                        for (var mm = 0; mm < ind.length - 1; mm++) {
+                            var spanOverlapping = [];   // features represented in overlapping spans 
+                            for (var nn = 0; nn < overlapping.length; nn++) {
+                                if (overlapping[nn].start >= ind[mm] && overlapping[nn].start < ind[mm + 1]) {
+                                    spanOverlapping.push(overlapping[nn]);
+                                }
+                                else if (overlapping[nn].end > ind[mm] && overlapping[nn].end <= ind[mm + 1]) {
+                                    spanOverlapping.push(overlapping[nn]);
+                                }
+                                else if (overlapping[nn].start <= ind[mm] && overlapping[nn].end >= ind[mm + 1]) {
+                                    spanOverlapping.push(overlapping[nn]);
+                                }
+                            }
+                            // Concatenate feature names represented in current span
+                            if (spanOverlapping.length > 1) {
+                                var pp = 0;
+                                var featuresRepresented = "";
+                                while (pp < spanOverlapping.length) {
+                                    if (pp === 0) {
+                                        featuresRepresented += spanOverlapping[pp].features;
+                                    } else {
+                                        featuresRepresented += "," + spanOverlapping[pp].features;
+                                    }
+                                    pp++;
+                                }
+                                var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                                toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
+                                alert("features: " + featuresRepresented + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[spanOverlapping.length - 1].color);
+                            }
+                            else {
+                                var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                                toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
+                                alert("features: " + spanOverlapping[0].features + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[0].color);
+                            }
+                        }
                     }
-
+                    return toReturn;
                 };
 
                 var updateAnnotationIndices = function(index, annotations, changeLength) {
@@ -214,7 +265,6 @@
                         return updatedAnnotations;
                     }
                     return annotations;
-
                 };
 
 
@@ -245,7 +295,7 @@
                 var changeLength = 0;
                 $('#seqTextArea').keydown(function() {
                     _sequence = $('#seqTextArea').val();
-                    $('#highlight span').css("color","transparent");
+                    $('#highlight span').css("color", "transparent");
                     changeLength++;
                 });
 
@@ -270,15 +320,15 @@
                 // test page event handlers
                 $('#sample1').click(function() {
                     $('#seqTextArea').val(samples[0].sequence);
-                    $('#highlight').html("")
+                    $('#highlight').html("");
                 });
                 $('#sample2').click(function() {
                     $('#seqTextArea').val(samples[1].sequence);
-                    $('#highlight').html("")
+                    $('#highlight').html("");
                 });
                 $('#sample3').click(function() {
                     $('#seqTextArea').val(samples[2].sequence);
-                    $('#highlight').html("")
+                    $('#highlight').html("");
                 });
                 $('#clear').click(function() {
                     $('#seqTextArea').val("");
