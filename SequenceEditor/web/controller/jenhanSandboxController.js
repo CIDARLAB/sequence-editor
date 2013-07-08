@@ -826,16 +826,22 @@ $(document).ready(function() {
 
         //layer switching for hover over
         $('#seqTextArea_' + count).mousedown(function() {
-            $('#highlight_' + count).css("z-index", -1);
-            $('#seqTextArea_' + count).css("color", "black");
+            var idPattern = /\d/;
+            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            $('#highlight_' + idNumber).css("z-index", -1);
+            $('#seqTextArea_' + idNumber).css("color", "black");
         });
         $('#highlight_' + count).mousedown(function() {
-            $('#highlight_' + count).css("z-index", -1);
-            $('#seqTextArea_' + count).css("color", "black");
+            var idPattern = /\d/;
+            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            $('#highlight_' + idNumber).css("z-index", -1);
+            $('#seqTextArea_' + idNumber).css("color", "black");
         });
         $('#seqTextArea_' + count).mouseleave(function() {
-            $('#highlight_' + count).css("z-index", 1);
-            $('#highlight_' + count + ' span').css("color", "black");
+            var idPattern = /\d/;
+            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            $('#highlight_' + idNumber).css("z-index", 1);
+            $('#highlight_' + idNumber + ' span').css("color", "black");
         });
         // LAST STEP: Increment count variable
         count++;
@@ -1299,21 +1305,21 @@ $(document).ready(function() {
 
 
 //                //generate feature list
-                var _features = []; //stores current features
-                var _annotations = [];
-                for (var i = 0; i < samples.length; i++) {
-                    for (var j = 0; j < samples[i]["features"].length; j++) {
-                        var currentFeature = samples[i].features[j];
-                        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
-                    }
-                }
-                $('#annotate').click(function() {
-                    $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-                    _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
-                    var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
-                    $('#highlight_0').html(parsed);
-                    $('#highlight_0').css("z-index", -1);
-                    $('#highlight_0 span').css("color", "transparent");
-                    $('#seqTextArea_0').css("color", "black");
-                });
+    var _features = []; //stores current features
+    var _annotations = [];
+    for (var i = 0; i < samples.length; i++) {
+        for (var j = 0; j < samples[i]["features"].length; j++) {
+            var currentFeature = samples[i].features[j];
+            _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
+        }
+    }
+    $('#annotate').click(function() {
+        $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+        _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
+        var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
+        $('#highlight_0').html(parsed);
+        $('#highlight_0').css("z-index", -1);
+        $('#highlight_0 span').css("color", "transparent");
+        $('#seqTextArea_0').css("color", "black");
+    });
 });
