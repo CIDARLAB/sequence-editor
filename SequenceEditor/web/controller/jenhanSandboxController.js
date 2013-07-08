@@ -1,6 +1,12 @@
 $(document).ready(function() {
+    Array.prototype.remove = function(from, to) {
+        var rest = this.slice((to || from) + 1 || this.length);
+        this.length = from < 0 ? this.length + from : from;
+        return this.push.apply(this, rest);
+    };
     var windows = [];
     var count = 0;
+    var changeLength = 0;
     $('#newButton').click(function() {
         $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
@@ -67,9 +73,13 @@ $(document).ready(function() {
         $('.seqTextArea').filter_input({regex: '[actguryswkmbdhvnACTGURYSWKMBDHVN]'});
 
         //link scrollbars together
-        $('.seqTextArea').scroll(function() {
+        $('#seqTextArea_' + count).scroll(function() {
             var id = ($(this).attr('id')).match(/\d/);
             $('#rowsTextArea_' + id).scrollTop($(this).scrollTop());
+        });
+
+        $('#seqTextArea_' + count).scroll(function() {
+            $('#highlight_' + count).scrollTop($(this).scrollTop());
         });
 
         /***************************************************************************************/
@@ -368,7 +378,7 @@ $(document).ready(function() {
         /* 
          * Updates column width whenever window is resized
          */
-        $('#resizable_'+count).resize(function() {
+        $('#resizable_' + count).resize(function() {
             var id = ($(this).attr('id')).match(/\d/);
             var scrollBar = 0;
             var seqLength = $('#seqTextArea_' + id).val().length;
@@ -402,7 +412,7 @@ $(document).ready(function() {
         /*
          * Binds the Reverse Complement function (revComp()) to the revComp button click. 
          */
-        $('#revComp_'+count).click(function() {
+        $('#revComp_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -424,7 +434,7 @@ $(document).ready(function() {
         /*
          * Translate function displays the sequence's codon representation.
          */
-        $('#translate_'+count).click(function() {
+        $('#translate_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;
@@ -441,7 +451,7 @@ $(document).ready(function() {
         /*
          * Uppercase function makes all selected text uppercase.
          */
-        $('#uppercase_'+count).click(function() {
+        $('#uppercase_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -461,7 +471,7 @@ $(document).ready(function() {
         /*
          * Lowercase function makes all selected text lowercase.
          */
-        $('#lowercase_'+count).click(function() {
+        $('#lowercase_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -478,7 +488,7 @@ $(document).ready(function() {
                 $(textAreaID).replaceSelectedText(lowerOut, "select");
             }
         });
-        $('#colorChanger_'+count).colorpicker().on('changeColor', function(ev) {
+        $('#colorChanger_' + count).colorpicker().on('changeColor', function(ev) {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -490,7 +500,7 @@ $(document).ready(function() {
         });
 
 
-        $('#resizable_'+count).mouseup(function() {
+        $('#resizable_' + count).mouseup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
@@ -562,7 +572,7 @@ $(document).ready(function() {
         });
 
 
-        $('#resizable_'+count).keyup(function() {
+        $('#resizable_' + count).keyup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
@@ -732,86 +742,101 @@ $(document).ready(function() {
 //    /***************************************************************************************/
 //    /* Menu Item Event Handlers */
 //
-        $('#newSequence_'+count).click(function() {
+        $('#newSequence_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("New Sequence menu item chosen for " + bigInterfaceID);
         });
 
-        $('#saveSequence_'+count).click(function() {
+        $('#saveSequence_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Save Sequence menu item chosen for " + bigInterfaceID);
         });
 
-        $('#close_'+count).click(function() {
+        $('#close_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Close menu item chosen for " + bigInterfaceID);
         });
 
-        $('#nextForwardORF_'+count).click(function() {
+        $('#nextForwardORF_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextForwardORF(id, textAreaID);
         });
 
-        $('#previousForwardORF_'+count).click(function() {
+        $('#previousForwardORF_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousForwardORF(id, textAreaID);
         });
 
-        $('#nextReverseORF_'+count).click(function() {
+        $('#nextReverseORF_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextReverseORF(id, textAreaID);
         });
 
-        $('#previousReverseORF_'+count).click(function() {
+        $('#previousReverseORF_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousReverseORF(id, textAreaID);
         });
 
-        $('#search_'+count).click(function() {
+        $('#search_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Search menu item chosen for " + bigInterfaceID);
         });
-        $('#features_'+count).click(function() {
+        $('#features_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Features Highlight menu item chosen for " + bigInterfaceID);
         });
-        $('#selection_'+count).click(function() {
+        $('#selection_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Selection Highlight menu item chosen for " + bigInterfaceID);
         });
-        $('#resize_'+count).click(function() {
+        $('#resize_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Resize menu item chosen for " + bigInterfaceID);
         });
-        $('#closeWindow_'+count).click(function() {
+        $('#closeWindow_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             $('#resizable_' + id).remove();
         });
 
+
+
+        //layer switching for hover over
+        $('#seqTextArea_' + count).mousedown(function() {
+            $('#highlight_' + count).css("z-index", -1);
+            $('#seqTextArea_' + count).css("color", "black");
+        });
+        $('#highlight_' + count).mousedown(function() {
+            $('#highlight_' + count).css("z-index", -1);
+            $('#seqTextArea_' + count).css("color", "black");
+        });
+        $('#seqTextArea_' + count).mouseleave(function() {
+            $('#highlight_' + count).css("z-index", 1);
+            $('#highlight_' + count + ' span').css("color", "black");
+        });
         // LAST STEP: Increment count variable
         count++;
     });
@@ -1027,4 +1052,268 @@ $(document).ready(function() {
         }
         windows[id].reverseNextOrPrevious = 0;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function getIndicesOf(searchStr, str, caseSensitive) {
+        var startIndex = 0, searchStrLen = searchStr.length;
+        var index, indices = [];
+        if (!caseSensitive) {
+            str = str.toLowerCase();
+            searchStr = searchStr.toLowerCase();
+        }
+        while ((index = str.indexOf(searchStr, startIndex)) > -1) {
+            indices.push(index);
+            startIndex = index + searchStrLen;
+        }
+        return indices;
+    }
+
+    //generates annotations: {featureName, start, end, color}
+    var generateAnnotations = function(sequence, features) {
+        var unresolvedAnnotations = [];                 //annotations with potential overlaps
+        for (var i = 0; i < features.length; i++) {
+            var matches = getIndicesOf(features[i].sequence, sequence, false);
+            if (matches.length > 0) {
+                for (var j = 0; j < matches.length; j++) {
+                    var startIndex = matches[j];
+                    var endIndex = startIndex + features[i].sequence.length;
+                    unresolvedAnnotations.push({features: features[i].name, sequence: features[i].sequence, start: startIndex, end: endIndex, color: features[i].color});
+                }
+            }
+        }
+        unresolvedAnnotations = unresolvedAnnotations.sort(function(a, b) {
+            if (a.start < b.start) {
+                return -1;
+            }
+            else if (a.start > b.start) {
+                return 1;
+            }
+            else {
+                if (a.end < b.end) {
+                    return -1;
+                }
+                else if (a.end > b.end) {
+                    return 1;
+                }
+            }
+            return 0;
+        });
+//                    var toshow = "";
+        for (var i = 0; i < unresolvedAnnotations.length; i++) {
+//                        toshow = toshow + "\n" + unresolvedAnnotations[i].start + " " + unresolvedAnnotations[i].end;
+        }
+        var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
+
+        return resolvedAnnotations;   //TODO: Return resolvedAnnotations when resolveFeatureOverlap function is completed
+    };
+
+    //resolve overlaps between annotations
+    var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
+        var toReturn = [];  // Annotations denoting overlaps
+        for (var i = 0; i < unresolvedAnnotations.length; i++) {
+            var overlapping = [];
+            var current = unresolvedAnnotations[i];
+            overlapping.push(current);
+            var j = i + 1;
+            while (j < unresolvedAnnotations.length) {
+                var compared = unresolvedAnnotations[j];
+                if (current.end > compared.start) {
+                    overlapping.push(compared);
+                    i++;
+                }
+                // Increment variable j and get next feature to compare with current
+                j += 1;
+                compared = unresolvedAnnotations[j];
+            }
+            // Find indices for overlapping features. Store in variable ind
+            var ind = [];
+            for (var kk = 0; kk < overlapping.length; kk++) {
+                ind.push(overlapping[kk].start);
+                ind.push(overlapping[kk].end);
+            }
+            // Sort indices for overlapping section
+            ind.sort(function(a, b) {
+                return a - b;
+            });
+            // for each span push represented features to spanOverlapping array of feature objects
+            for (var mm = 0; mm < ind.length - 1; mm++) {
+                var spanOverlapping = [];   // features represented in overlapping spans 
+                for (var nn = 0; nn < overlapping.length; nn++) {
+                    if (overlapping[nn].start >= ind[mm] && overlapping[nn].start < ind[mm + 1]) {
+                        spanOverlapping.push(overlapping[nn]);
+                    }
+                    else if (overlapping[nn].end > ind[mm] && overlapping[nn].end <= ind[mm + 1]) {
+                        spanOverlapping.push(overlapping[nn]);
+                    }
+                    else if (overlapping[nn].start <= ind[mm] && overlapping[nn].end >= ind[mm + 1]) {
+                        spanOverlapping.push(overlapping[nn]);
+                    }
+                }
+                // Concatenate feature names represented in current span
+                if (spanOverlapping.length > 1) {
+                    var pp = 0;
+                    var featuresRepresented = "";
+                    while (pp < spanOverlapping.length) {
+                        if (pp === 0) {
+                            featuresRepresented += spanOverlapping[pp].features;
+                        } else {
+                            featuresRepresented += "," + spanOverlapping[pp].features;
+                        }
+                        pp++;
+                    }
+                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
+//                                alert("features: " + featuresRepresented + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[spanOverlapping.length - 1].color);
+                }
+                else {
+                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
+//                                alert("features: " + spanOverlapping[0].features + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[0].color);
+                }
+            }
+        }
+        return toReturn;
+    };
+
+    var updateAnnotationIndices = function(index, annotations, changeLength) {
+        var updatedAnnotations = [];
+        if (changeLength !== 0) {
+            for (var i = 0; i < annotations.length; i++) {
+                var start = annotations[i].start;
+                var end = annotations[i].end;
+                if (start + changeLength >= index) {
+                    //change is before annotation
+                    annotations[i].start = start + changeLength;
+                    annotations[i].end = end + changeLength;
+                }
+                if (index > start + changeLength && index < end + changeLength) {
+                    //ignore features that should be removed
+                } else {
+                    updatedAnnotations.push(annotations[i]);
+                }
+            }
+            return updatedAnnotations;
+        }
+        return annotations;
+    };
+
+    var generateHighlights = function(sequence, annotationsToDraw) {
+        var toReturn = "";
+        //iterate through each feature and append regular text or a span
+        if (annotationsToDraw.length > 0) {
+            //append start of string
+            toReturn = sequence.substring(0, annotationsToDraw[0].start) + '<span title="' + annotationsToDraw[0].features + '" style="background-color:' + annotationsToDraw[0].color + '">' + sequence.substring(annotationsToDraw[0].start, annotationsToDraw[0].end) + '</span>';
+            var prevEnd = annotationsToDraw[0].end; //ending of the previous annotation
+            for (var i = 1; i < annotationsToDraw.length; i++) {
+                var start = annotationsToDraw[i].start;
+                var end = annotationsToDraw[i].end;
+                var features = annotationsToDraw[i].features;
+                var color = annotationsToDraw[i].color;
+                toReturn = toReturn + sequence.substring(prevEnd, start);
+                toReturn = toReturn + '<span title="' + features + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
+                prevEnd = end;
+            }
+            //append end of string
+            toReturn = toReturn + sequence.substring(annotationsToDraw[annotationsToDraw.length - 1].end, sequence.length);
+        } else {
+            toReturn = sequence;
+        }
+        return toReturn;
+    };
+
+
+    $('#seqTextArea_0').keydown(function() {
+        _sequence = $('#seqTextArea_0').val();
+        $('#highlight span').css("color", "transparent");
+        changeLength++;
+    });
+
+    $('#seqTextArea_0').keyup(function() {
+        var textArea = $('#seqTextArea_0')[0];
+        var unparsed = $('#seqTextArea_0').val();
+        changeLength = (unparsed.length - _sequence.length) * changeLength;
+        if (changeLength !== 0) {
+            _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
+        }
+        changeLength = 0;
+        var parsed = generateHighlights(unparsed, _annotations);
+
+        //set the html of the highlight layer
+        $('#highlight').html(parsed);
+        $('#highlight').css("z-index", -1);
+        $('#highlight span').css("color", "transparent");
+        $('#seqTextArea_0').css("color", "black");
+    });
+
+
+
+
+
+
+
+    var _sequence = ""; //store sequence to compare if insert or delete happened
+    var samples = [];
+    //Create dummy Genbank sequence/feature samples
+    var sample1 = {sequence: "aaaagctacaggggccaatgacgcccctagacagtttttaacccaaaa",
+        features: []};
+//                {name: "feature4", sequence: "aaaag", color: "brown"}
+    var sample2 = {sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
+        features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
+            {name: "feature3", sequence: "CAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATAT", color: "green"},
+            {name: "feature4", sequence: "TTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAA", color: "yellow"}]
+    };
+    var sample3 = {sequence: "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT",
+        features: [{name: "feature1", sequence: "ATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAA", color: "red"},
+            {name: "feature2", sequence: "TATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTAC", color: "cyan"},
+            {name: "feature3", sequence: "TCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAA", color: "green"},
+            {name: "feature4", sequence: "ACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTC", color: "yellow"}]
+    };
+    samples.push(sample1);
+    samples.push(sample2);
+    samples.push(sample3);
+
+
+//                //generate feature list
+                var _features = []; //stores current features
+                var _annotations = [];
+                for (var i = 0; i < samples.length; i++) {
+                    for (var j = 0; j < samples[i]["features"].length; j++) {
+                        var currentFeature = samples[i].features[j];
+                        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
+                    }
+                }
+                $('#annotate').click(function() {
+                    $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+                    _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
+                    var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
+                    $('#highlight_0').html(parsed);
+                    $('#highlight_0').css("z-index", -1);
+                    $('#highlight_0 span').css("color", "transparent");
+                    $('#seqTextArea_0').css("color", "black");
+                });
 });
