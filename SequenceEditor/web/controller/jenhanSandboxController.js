@@ -6,7 +6,9 @@ $(document).ready(function() {
     };
     var windows = [];
     var count = 0;
-    var changeLength = 0;
+    var changeLength = 0; //stores change length for updating indices
+    var _sequence = ""; //store sequence to compare if insert or delete happened
+
     $('#newButton').click(function() {
         $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1"><div class="pull-left"></div></div><div class="span7"><ul class="menu pull-left"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Edit<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="undo_' + count + '" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li><li><a id="redo_' + count + '" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li><li><a id="cut_' + count + '" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li><li><a id="copy_' + count + '" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li><li><a id="paste_' + count + '" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li><li><a id="delete_' + count + '" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;word-wrap: break-word;min-height:250px;z-index: -1;position:relative;width:90%"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
@@ -843,6 +845,38 @@ $(document).ready(function() {
             $('#highlight_' + idNumber).css("z-index", 1);
             $('#highlight_' + idNumber + ' span').css("color", "black");
         });
+
+
+        //key events
+        $('#seqTextArea_' + count).keydown(function() {
+            var idPattern = /\d/;
+            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+
+            _sequence = $('#seqTextArea_'+idNumber).val();
+            $('#highlight_'+idNumber+' span').css("color", "transparent");
+            changeLength++;
+        });
+
+        $('#seqTextArea_'+count).keyup(function() {
+            var idPattern = /\d/;
+            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+
+            var textArea = $('#seqTextArea_'+idNumber)[0];
+            var unparsed = $('#seqTextArea_'+idNumber).val();
+            changeLength = (unparsed.length - _sequence.length) * changeLength;
+            if (changeLength !== 0) {
+                _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
+            }
+            changeLength = 0;
+            var parsed = generateHighlights(unparsed, _annotations);
+
+            //set the html of the highlight layer
+            $('#highlight_'+idNumber).html(parsed);
+            $('#highlight_'+idNumber).css("z-index", -1);
+            $('#highlight_'+_idNumber+' span').css("color", "transparent");
+            $('#seqTextArea_'+idNumber).css("color", "black");
+        });
+
         // LAST STEP: Increment count variable
         count++;
     });
@@ -1129,13 +1163,11 @@ $(document).ready(function() {
             }
             return 0;
         });
-//                    var toshow = "";
         for (var i = 0; i < unresolvedAnnotations.length; i++) {
-//                        toshow = toshow + "\n" + unresolvedAnnotations[i].start + " " + unresolvedAnnotations[i].end;
         }
         var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
 
-        return resolvedAnnotations;   //TODO: Return resolvedAnnotations when resolveFeatureOverlap function is completed
+        return resolvedAnnotations;
     };
 
     //resolve overlaps between annotations
@@ -1194,12 +1226,10 @@ $(document).ready(function() {
                     }
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
                     toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
-//                                alert("features: " + featuresRepresented + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[spanOverlapping.length - 1].color);
                 }
                 else {
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
                     toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
-//                                alert("features: " + spanOverlapping[0].features + ", sequence: " + spanSequence + ", start: " + ind[mm] + ", end: " + ind[mm + 1] + ", color: " + spanOverlapping[0].color);
                 }
             }
         }
@@ -1253,28 +1283,6 @@ $(document).ready(function() {
     };
 
 
-    $('#seqTextArea_0').keydown(function() {
-        _sequence = $('#seqTextArea_0').val();
-        $('#highlight span').css("color", "transparent");
-        changeLength++;
-    });
-
-    $('#seqTextArea_0').keyup(function() {
-        var textArea = $('#seqTextArea_0')[0];
-        var unparsed = $('#seqTextArea_0').val();
-        changeLength = (unparsed.length - _sequence.length) * changeLength;
-        if (changeLength !== 0) {
-            _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
-        }
-        changeLength = 0;
-        var parsed = generateHighlights(unparsed, _annotations);
-
-        //set the html of the highlight layer
-        $('#highlight').html(parsed);
-        $('#highlight').css("z-index", -1);
-        $('#highlight span').css("color", "transparent");
-        $('#seqTextArea_0').css("color", "black");
-    });
 
 
 
@@ -1282,7 +1290,7 @@ $(document).ready(function() {
 
 
 
-    var _sequence = ""; //store sequence to compare if insert or delete happened
+
     var samples = [];
     //Create dummy Genbank sequence/feature samples
     var sample1 = {sequence: "aaaagctacaggggccaatgacgcccctagacagtttttaacccaaaa",
