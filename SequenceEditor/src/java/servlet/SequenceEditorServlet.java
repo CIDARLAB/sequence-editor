@@ -121,7 +121,7 @@ public class SequenceEditorServlet extends HttpServlet {
                         forwardOligoSymList = DNATools.createDNA(sequence1);
                         reverseOligoSymList = DNATools.createDNA(sequence2);
                         SimpleRichSequence forwardOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
-                        SimpleRichSequence reverseOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, forwardOligoSymList, 1.0);
+                        SimpleRichSequence reverseOligo = new SimpleRichSequence(new SimpleNamespace("org.biofab"), "", "", 1, reverseOligoSymList, 1.0);
                         Annealer AnnealerObject = new Annealer();
                         toReturn = AnnealerObject.anneal(forwardOligo, reverseOligo);
                         out.write(toReturn);
