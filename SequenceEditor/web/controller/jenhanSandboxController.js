@@ -6,11 +6,12 @@ $(document).ready(function() {
     };
     var windows = [];
     var count = 0;
+    var resize = 0; // tracks large or small interface display. resize = 0 : large interface; resize = 1 : small interface.
     var changeLength = 0; //stores change length for updating indices
     var _sequence = ""; //store sequence to compare if insert or delete happened
 
     $('#newButton').click(function() {
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + count + '" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><textarea class="seqTextArea pull-right" id="seqTextArea_' + count + '" style="overflow:auto;margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;background-color: transparent;">atgttaacccatccgtgactaagacattgaatgccctag</textarea><!--this is the highlight layer--><div class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;"></div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
         var parent = $('#highlight_' + count).parent();
@@ -41,6 +42,10 @@ $(document).ready(function() {
         var forwardArrayAndIndex = getForwardORFS(tempSeq);
         var reverseArrayAndIndex = getReverseORFS(tempSeq);
 
+        // Generate a generic annotations and features container to add to each window's info object
+        var annotations = [];
+        var features = [];
+
         //JSON Object holding all necessary info for each window
         //TODO: calculate this info for each window as they are added        
         var windowInfo = {sequence: $('#seqTextArea_' + count).text(),
@@ -61,9 +66,14 @@ $(document).ready(function() {
                     reverseCurrentORF: reverseArrayAndIndex[0],
                     reverseNumORF: reverseArrayAndIndex[1],
                     reverseIndex: reverseArrayAndIndex[2]
-                }]
+                }],
+            _annotations: annotations, // holds annotations of features for each sequence editor window
+            _features: features // holds features for given sequence in each sequence editor window
         };
         windows.push(windowInfo);           // Add current window JSON object full of information to windows array
+
+        windows[count]._features = _features;
+        windows[count]._annotations = _annotations;
 
         //i've added a hidden span on kevinSandbox.html with 0px padding; 
         $('#lengthCell_' + count).html(windows[count].seqLength);
@@ -485,10 +495,12 @@ $(document).ready(function() {
                 //Nothing highlighted, so change everything.
                 sequence = textArea.value.toLowerCase();
                 $(textAreaID).text(sequence);
+                $('#highlight_' + id).text(sequence);
             }
             else {
                 var lowerOut = sequence.toLowerCase();
                 $(textAreaID).replaceSelectedText(lowerOut, "select");
+                $('#highlight_' + id).replaceSelectedText(lowerOut, "select");
             }
         });
         $('#colorChanger_' + count).colorpicker().on('changeColor', function(ev) {
@@ -804,7 +816,16 @@ $(document).ready(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            alert("Features Highlight menu item chosen for " + bigInterfaceID);
+           
+           // This hardcodes a sequence into the current seqTextArea
+           //TODO: Alter this to take current text area value and determine if features are present
+//            $('#seqTextArea_' + id).val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+            windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id).val(), windows[id]._features);
+            var parsed = generateHighlights($('#seqTextArea_' + id).val(), windows[id]._annotations);
+            $('#highlight_' + id).html(parsed);
+            $('#highlight_' + id).css("z-index", -1);
+            $('#highlight_' + id + 'span').css("color", "transparent");
+            $('#seqTextArea_' + id).css("color", "black");
         });
         $('#selection_' + count).click(function() {
             var idPattern = /\d/;
@@ -812,15 +833,51 @@ $(document).ready(function() {
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Selection Highlight menu item chosen for " + bigInterfaceID);
         });
-        $('#resize_' + count).click(function() {
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//        <div id="testerArea">
+//    one div
+//    <button id="button">button</button>
+//</div>
+//<div id="testerArea2">
+//    other div
+//</div>
+//<script>
+//    
+//    $('#button').click(function(){
+//        $(this).text("i changed my text")
+//        $('#testerArea2').append($(this));
+//        
+//        
+//        alert('button moved but function still bound')
+//    })
+//</script>
+
+        $('.resize').click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
             var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "#resizable_"
-            $(bigInterfaceID).css("minWidth", "400px");
-            $(bigInterfaceID).css("width", "400px");
-            $("#revComp_" + id).parent().parent().parent().html('<div class="span1"><div class="pull-left"><button id="colorChanger_' + id + '" class="colorChanger btn"><i class="icon-tint"></i></button></div></div><div class="span1"><div class="btn-group" style="margin-left:5px;"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-th-list"></i><span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">File</a><ul class="dropdown-menu" style="width:225px"><li><a id="newSequence_' + id + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + id + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + id + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + id + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Find</a><ul class="dropdown-menu" style="width:250px"><li><a id="nextForwardORF_' + id + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + id + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + id + '" class="nextReverseORF" href="#">Next Reverse ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + id + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + id + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Highlight</a><ul class="dropdown-menu"><li><a id="features_' + id + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + id + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li><li><a id="revComp_' + id + '" class="revComp" href="#">Reverse Complement</a></li><li><a id="translate_' + id + '" class="translate" href="#">Translate</a></li><li><a id="uppercase_' + id + '" class="uppercase" href="#">To Uppercase</a></li><li><a id="lowercase_' + id + '" class="lowercase" href="#">To Lowercase</a></li></ul></div></div><div class="offset8 span2"><ul class="menu pull-right"><li class="btn-group"><button id="resize_' + id + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id=_' + id + '"closeWindow" class="closeWindow btn"><i class="icon-remove"></i></button></li></ul></div>');
-            $("#positionCell_" + id).parent().parent().parent().parent().parent().html('<div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + id + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + id + '" class="tempCell">0C</td><th>Feature:</th><td id="featureCell_' + id + '" class="featureCell">XbaI</td></tr><tbody><tr><th>Length:</th><td id="lengthCell_' + id + '" class="lengthCell">100</td><th>%GC</th><td id="gcCell_' + id + '" class="gcCell">50</td><td></td></tr></tbody></table></div>');
+
+//            if (resize === 0) {
+//                $(bigInterfaceID).css("minWidth", "400px");
+//                $(bigInterfaceID).css("width", "400px");
+//                $('#menuRow').append('<div class="span1"><div class="pull-left>"' + '                '>
+//');
+//");
+//
+////                $("#revComp_" + id).parent().parent().parent().html('<div class="span1"><div class="pull-left"><button id="colorChanger_' + id + '" class="colorChanger btn"><i class="icon-tint"></i></button></div></div><div class="span1"><div class="btn-group" style="margin-left:5px;"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-th-list"></i><span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">File</a><ul class="dropdown-menu" style="width:225px"><li><a id="newSequence_' + id + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + id + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + id + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + id + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Find</a><ul class="dropdown-menu" style="width:250px"><li><a id="nextForwardORF_' + id + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + id + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + id + '" class="nextReverseORF" href="#">Next Reverse ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + id + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + id + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Highlight</a><ul class="dropdown-menu"><li><a id="features_' + id + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + id + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li><li><a id="revComp_' + id + '" class="revComp" href="#">Reverse Complement</a></li><li><a id="translate_' + id + '" class="translate" href="#">Translate</a></li><li><a id="uppercase_' + id + '" class="uppercase" href="#">To Uppercase</a></li><li><a id="lowercase_' + id + '" class="lowercase" href="#">To Lowercase</a></li></ul></div></div><div class="offset8 span2"><ul class="menu pull-right"><li class="btn-group"><button id="resize_' + id + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id=_' + id + '"closeWindow" class="closeWindow btn"><i class="icon-remove"></i></button></li></ul></div>');
+////                $("#positionCell_" + id).parent().parent().parent().parent().parent().html('<div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + id + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + id + '" class="tempCell">0C</td><th>Feature:</th><td id="featureCell_' + id + '" class="featureCell">XbaI</td></tr><tbody><tr><th>Length:</th><td id="lengthCell_' + id + '" class="lengthCell">100</td><th>%GC</th><td id="gcCell_' + id + '" class="gcCell">50</td><td></td></tr></tbody></table></div>');
+//                resize = 1;
+//            }
+//            else if (resize === 1) {
+//                $(bigInterfaceID).css("minWidth", "650px");
+//                $(bigInterfaceID).css("width", "650px");
+//                resize = 0;
+//            }
         });
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         $('#closeWindow_' + count).click(function() {
             var idPattern = /\d/;
             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
@@ -882,6 +939,10 @@ $(document).ready(function() {
         // LAST STEP: Increment count variable
         count++;
     });
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////     FUNCTIONS     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     var findNumOfRows = function(seqLength, numberOfCols) {
         if (seqLength > 0) {
@@ -1279,16 +1340,16 @@ $(document).ready(function() {
     samples.push(sample2);
     samples.push(sample3);
 
-
-//                //generate feature list
+    // TEST CODE: hardcodes features for each window.
+    //generate feature list
     var _features = []; //stores current features
     var _annotations = [];
-    for (var i = 0; i < samples.length; i++) {
-        for (var j = 0; j < samples[i]["features"].length; j++) {
-            var currentFeature = samples[i].features[j];
-            _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
-        }
+    for (var j = 0; j < samples[2]["features"].length; j++) {
+        var currentFeature = samples[2].features[j];
+        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
     }
+
+
     $('#annotate').click(function() {
         $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
         _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
