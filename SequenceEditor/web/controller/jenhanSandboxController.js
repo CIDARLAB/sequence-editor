@@ -4,7 +4,7 @@ $(document).ready(function() {
         this.length = from < 0 ? this.length + from : from;
         return this.push.apply(this, rest);
     };
-    var windows = [];
+    var windows = [];   // stores sequence editor windows' information
     var count = 0;
     var aCount = "a" + 0; // tracks count of alignment windows opened. In case multiple alignments are opened at once.
     var resize = 0; // tracks large or small interface display. resize = 0 : large interface; resize = 1 : small interface.
@@ -36,14 +36,77 @@ $(document).ready(function() {
                     var sequenceDropped = $(textAreaDropped)[0].value;
                     $.get("SequenceEditorServlet", {"command": "align", "sequence1": sequenceDragged, "sequence2": sequenceDropped}, function(response) {
                         // Open draggable alignment window in testArea and bind a closeWindow button function to it 
-                        $('#testArea').append('<div class="resizable ui-widget-content" id="resizable_' + aCount + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1 offset11"><div class="btn-group pull-right"><button id="closeWindow_' + aCount + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + aCount + '" class="columnFirst pull-left">1</td><td id="columnLast_' + aCount + '" class="columnLast pull-right"></td></tr></table></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + aCount + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea><textarea id="seqTextArea_' + aCount + '" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + aCount + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + aCount + '" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell_' + aCount + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + aCount + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + aCount + '" class="gcCell">50</td></tr></table></div></div></div>');
+                        $('#testArea').append('<div class="resizable ui-widget-content" id="resizable_' + aCount + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1 offset11"><div class="btn-group pull-right"><button id="closeWindow_' + aCount + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + aCount + '" class="columnFirst pull-left">1</td><td id="columnLast_' + aCount + '" class="columnLast pull-right"></td></tr></table></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + aCount + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:9%;text-align: center;"></textarea><textarea id="seqTextArea_' + aCount + '" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea></div></div></div>');
                         $('#resizable_' + aCount).draggable({stack: ".resizable"});
                         $('#closeWindow_' + aCount).click(function() {
                             var idPattern = /\d/;
                             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
                             $('#resizable_a' + id).remove();
                         });
-                        $('#seqTextArea_' + aCount).text(response);
+                        var alignSeqs = []; // stores sequences that were aligned in separate strings
+                        alignSeqs = response.split(/[_|]+/);    // Split string at alignment characters to extract aligned sequence information
+                        alignSeqs[0] = alignSeqs[0].match(/[A-z-~]+/);
+                        alignSeqs[1] = alignSeqs[1].match(/[A-z-~]+/);
+                        var alignmentChars = response.match(/[_|]+/);   // stores alignment character string
+//                        alert(alignSeqs[0].toString() + " ... AND ... " + alignSeqs[alignSeqs.length - 1].toString() + " ... AND ... " + alignmentChars.toString());
+
+                        // This is done initially to gather columns, rows, sequence length information to initialize labels. The aligned sequence is created further below.
+                        $('#seqTextArea_' + aCount).text(response); // Set alignment to text area{
+
+
+                        // Initialize rows and columns labels
+                        var charWidth = $('#measureSpan').width() / 10;
+                        var numberOfCols = Math.floor($('#seqTextArea_' + aCount).width() / charWidth);
+                        $('#columnLast_' + aCount).text(numberOfCols);
+                        var seqLength = alignSeqs[0].toString().length;
+
+                        var hasScrollBar = 0;
+                        if ($('#seqTextArea_' + aCount).hasScrollBar()) {
+                            $('#columnLast_' + aCount).text(Math.floor($('#seqTextArea_' + aCount).width() / charWidth - 1));
+                            hasScrollBar = 1;
+                        } else {
+                            $('#columnLast_' + aCount).text(Math.floor($('#seqTextArea_' + aCount).width() / charWidth));
+                        }
+                        numberOfCols = Math.floor($('#seqTextArea_' + aCount).width() / charWidth - hasScrollBar);
+                        var kk = 0;
+                        var lineNumber = "";
+                        var numberOfRows = Math.ceil(seqLength / numberOfCols);
+                        while (kk < numberOfRows) {
+                            if (kk === 0) {
+                                lineNumber += "1\n\n1";
+                                $("#rowsTextArea_" + aCount).text(lineNumber);
+                                kk++;
+                            }
+                            else {
+                                lineNumber += "\r\n" + (numberOfCols * kk) + "\n\n" + (numberOfCols * kk);
+                                $("#rowsTextArea_" + aCount).text(lineNumber);
+                                kk++;
+                            }
+                        }
+                        $('#seqTextArea_' + aCount).filter_input({regex: '[]'});    // filter all keyboard characters. User cannot alter this alignment sequence.
+                        //link scrollbars together
+                        $('#seqTextArea_' + aCount).scroll(function() {
+                            var id = ($(this).attr('id')).match(/\d/);
+                            $('#rowsTextArea_a' + id).scrollTop($(this).scrollTop());
+                        });
+
+                        var qq = 0;
+                        var alignmentString = "";
+                        while (qq <= Math.floor(seqLength / numberOfCols)) {
+                            var start = qq * numberOfCols;
+                            var end = start + numberOfCols - 1;
+                            if (end < seqLength) {
+                                alignmentString += alignSeqs[0].toString().substring(start, end);
+                                alignmentString += alignmentChars.toString().substring(start, end);
+                                alignmentString += alignSeqs[1].toString().substring(start, end);
+                            } else {
+                                alignmentString += alignSeqs[0].toString().substring(start, seqLength) + "\n";
+                                alignmentString += alignmentChars.toString().substring(start, seqLength) + "\n";
+                                alignmentString += alignSeqs[1].toString().substring(start, seqLength);
+                            }
+                            qq++;
+                        }
+                        $('#seqTextArea_' + aCount).text(alignmentString); // Set alignment to text area
                     });
                     var countNum = aCount.match(/\d/);
                     countNum++;
@@ -52,8 +115,6 @@ $(document).ready(function() {
             },
             accept: ".sequenceWidget"
         });
-
-
         //this span contains 10 characters.
         var charWidth = $('#measureSpan').width() / 10;
         var numberOfCols = Math.floor($('#seqTextArea_' + count).width() / charWidth);
@@ -419,7 +480,6 @@ $(document).ready(function() {
             var scrollBar = 0;
             var seqLength = $('#seqTextArea_' + id).val().length;
 
-            //TODO: Implement rows listing upon resizing
             var hasScrollBar = 0;
             if ($('#seqTextArea_' + id).hasScrollBar()) {
                 $('#columnLast_' + id).text(Math.floor($('#seqTextArea_' + id).width() / charWidth - 1));
@@ -980,6 +1040,7 @@ $(document).ready(function() {
                 }
                 else {
                     lineNumber += "\r\n" + (numberOfCols * (kk));
+                    alert(lineNumber);
                     $('#rowsTextArea_' + count).text(lineNumber);
                     kk++;
                 }
