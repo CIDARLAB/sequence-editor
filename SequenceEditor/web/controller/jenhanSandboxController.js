@@ -22,9 +22,11 @@ $(document).ready(function() {
             minHeight: 400,
             minWidth: 400
         });
+
         $('#resizable_' + count).draggable({
             stack: ".resizable"
         });
+
         $('#resizable_' + count).droppable({
             drop: function(event, ui) {
                 if (!(($(ui.draggable).attr('id')).match(/\a\d/))) {    // check to make sure user didn't drag alignment window on top of sequence editor window
@@ -45,14 +47,13 @@ $(document).ready(function() {
                         });
                         var alignSeqs = []; // stores sequences that were aligned in separate strings
                         alignSeqs = response.split(/[_|]+/);    // Split string at alignment characters to extract aligned sequence information
-                        alignSeqs[0] = alignSeqs[0].match(/[A-z-~]+/);
-                        alignSeqs[1] = alignSeqs[1].match(/[A-z-~]+/);
+                        alignSeqs[0] = alignSeqs[0].match(/[A-z-~]+/).toString().replace(/-/g, "~");
+                        alignSeqs[1] = alignSeqs[1].match(/[A-z-~]+/).toString().replace(/-/g, "~");
                         var alignmentChars = response.match(/[_|]+/);   // stores alignment character string
-//                        alert(alignSeqs[0].toString() + " ... AND ... " + alignSeqs[alignSeqs.length - 1].toString() + " ... AND ... " + alignmentChars.toString());
+                        // alert(alignSeqs[0].toString() + "\n\n\n" + alignSeqs[alignSeqs.length - 1].toString() + "\n\n\n" + alignmentChars.toString());
 
                         // This is done initially to gather columns, rows, sequence length information to initialize labels. The aligned sequence is created further below.
-                        $('#seqTextArea_' + aCount).text(response); // Set alignment to text area{
-
+                        $('#seqTextArea_' + aCount).text(response); // Set alignment to text area
 
                         // Initialize rows and columns labels
                         var charWidth = $('#measureSpan').width() / 10;
@@ -73,12 +74,14 @@ $(document).ready(function() {
                         var numberOfRows = Math.ceil(seqLength / numberOfCols);
                         while (kk < numberOfRows) {
                             if (kk === 0) {
-                                lineNumber += "1\n\n1";
+                                // lineNumber += "1\n\n1\n";   // Double column line number format
+                                lineNumber += "\n1\n\n"
                                 $("#rowsTextArea_" + aCount).text(lineNumber);
                                 kk++;
                             }
                             else {
-                                lineNumber += "\r\n" + (numberOfCols * kk) + "\n\n" + (numberOfCols * kk);
+                                // lineNumber += "\r\n" + (numberOfCols * kk) + "\n\n" + (numberOfCols * kk) + "\n";   // Double column line number format
+                                lineNumber += "\r\n\n" + (numberOfCols * kk) + "\n\n";
                                 $("#rowsTextArea_" + aCount).text(lineNumber);
                                 kk++;
                             }
@@ -98,7 +101,7 @@ $(document).ready(function() {
                             if (end < seqLength) {
                                 alignmentString += alignSeqs[0].toString().substring(start, end);
                                 alignmentString += alignmentChars.toString().substring(start, end);
-                                alignmentString += alignSeqs[1].toString().substring(start, end);
+                                alignmentString += alignSeqs[1].toString().substring(start, end) + "\n\n";
                             } else {
                                 alignmentString += alignSeqs[0].toString().substring(start, seqLength) + "\n";
                                 alignmentString += alignmentChars.toString().substring(start, seqLength) + "\n";
@@ -115,6 +118,7 @@ $(document).ready(function() {
             },
             accept: ".sequenceWidget"
         });
+
         //this span contains 10 characters.
         var charWidth = $('#measureSpan').width() / 10;
         var numberOfCols = Math.floor($('#seqTextArea_' + count).width() / charWidth);
@@ -509,17 +513,16 @@ $(document).ready(function() {
          * Binds the Reverse Complement function (revComp()) to the revComp button click. 
          */
         $('#revComp_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-
             var textArea = $(textAreaID)[0];
             var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
             if (sequence.length === 0) {
                 //Nothing highlighted, so change everything.
                 sequence = textArea.value;
                 var revCompOut = revComp(sequence);
-                $(textAreaID).text(revCompOut);
+                // $(textAreaID).text(revCompOut);
+                textArea.value = revCompOut;
             }
             else {
                 var revCompOut = revComp(sequence);
@@ -531,8 +534,7 @@ $(document).ready(function() {
          * Translate function displays the sequence's codon representation.
          */
         $('#translate_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
@@ -544,51 +546,48 @@ $(document).ready(function() {
             $(textAreaID).setSelection(textArea.selectionStart, textArea.selectionEnd);
             alert(transOut);
         });
+
         /*
          * Uppercase function makes all selected text uppercase.
          */
         $('#uppercase_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-
             var textArea = $(textAreaID)[0];
             var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
             if (sequence.length === 0) {
                 //Nothing highlighted, so change everything.
-                sequence = textArea.value.toUpperCase();
-                $(textAreaID).text(sequence);
-            }
-            else {
+                textArea.value = textArea.value.toUpperCase();
+
+            } else {
                 var upperOut = sequence.toUpperCase();
                 $(textAreaID).replaceSelectedText(upperOut, "select");
             }
         });
+
         /*
          * Lowercase function makes all selected text lowercase.
          */
         $('#lowercase_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-
             var textArea = $(textAreaID)[0];
             var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
             if (sequence.length === 0) {
                 //Nothing highlighted, so change everything.
-                sequence = textArea.value.toLowerCase();
-                $(textAreaID).text(sequence);
-                $('#highlight_' + id).text(sequence);
+                textArea.value = textArea.value.toLowerCase();
             }
             else {
                 var lowerOut = sequence.toLowerCase();
                 $(textAreaID).replaceSelectedText(lowerOut, "select");
-                $('#highlight_' + id).replaceSelectedText(lowerOut, "select");
             }
         });
+
+        /*
+         * Customize theme (background color) function
+         */
         $('#colorChanger_' + count).colorpicker().on('changeColor', function(ev) {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
             var color = ev.color.toHex().toString();
@@ -770,8 +769,7 @@ $(document).ready(function() {
         jwerty.key('alt+q', false);
         // When shortcut Alt+q is pressed, call nextForwardORF function
         jwerty.key('alt+q', function() {
-            var idPattern = /\d/;
-            var id = (document.activeElement.id).match(idPattern);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextForwardORF(id, textAreaID);
         });
@@ -779,8 +777,7 @@ $(document).ready(function() {
         jwerty.key('alt+w', false);
         // When shortcut Alt+w is pressed, call previousForwardORF function
         jwerty.key('alt+w', function() {
-            var idPattern = /\d/;
-            var id = (document.activeElement.id).match(idPattern); // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousForwardORF(id, textAreaID);
         });
@@ -788,8 +785,7 @@ $(document).ready(function() {
         jwerty.key('alt+e', false);
         // When shortcut Alt+e is pressed, call nextReverseORF function
         jwerty.key('alt+a', function() {
-            var idPattern = /\d/;
-            var id = (document.activeElement.id).match(idPattern);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextReverseORF(id, textAreaID);
         });
@@ -797,8 +793,7 @@ $(document).ready(function() {
         jwerty.key('alt+r', false);
         // When shortcut Alt+r is pressed, call previousReverseORF function
         jwerty.key('alt+r', function() {
-            var idPattern = /\d/;
-            var id = (document.activeElement.id).match(idPattern);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousReverseORF(id, textAreaID);
         });
@@ -841,63 +836,55 @@ $(document).ready(function() {
 //    /* Menu Item Event Handlers */
 //
         $('#newSequence_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("New Sequence menu item chosen for " + bigInterfaceID);
         });
 
         $('#saveSequence_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Save Sequence menu item chosen for " + bigInterfaceID);
         });
 
         $('#close_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            alert("Close menu item chosen for " + bigInterfaceID);
+            $('#resizable_' + id).remove();
+            // alert("Close menu item chosen for " + bigInterfaceID);
         });
 
         $('#nextForwardORF_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextForwardORF(id, textAreaID);
         });
 
         $('#previousForwardORF_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousForwardORF(id, textAreaID);
         });
 
         $('#nextReverseORF_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextReverseORF(id, textAreaID);
         });
 
         $('#previousReverseORF_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousReverseORF(id, textAreaID);
         });
 
         $('#search_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Search menu item chosen for " + bigInterfaceID);
         });
         $('#features_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
             // This hardcodes a sequence into the current seqTextArea
@@ -911,8 +898,7 @@ $(document).ready(function() {
             $('#seqTextArea_' + id).css("color", "black");
         });
         $('#selection_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Selection Highlight menu item chosen for " + bigInterfaceID);
         });
@@ -937,8 +923,7 @@ $(document).ready(function() {
 //</script>
 
         $('.resize').click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "#resizable_"
 
 //            if (resize === 0) {
@@ -962,28 +947,24 @@ $(document).ready(function() {
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         $('#closeWindow_' + count).click(function() {
-            var idPattern = /\d/;
-            var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             $('#resizable_' + id).remove();
         });
 
         //layer switching for hover over
         $('#seqTextArea_' + count).mousedown(function() {
-            var idPattern = /\d/;
-            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             $('#highlight_' + idNumber).css("z-index", -1);
             $('#seqTextArea_' + idNumber).css("color", "black");
         });
         $('#highlight_' + count).mousedown(function() {
-            var idPattern = /\d/;
-            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             $('#highlight_' + idNumber).css("z-index", -1);
             $('#seqTextArea_' + idNumber).css("color", "black");
         });
         $('#seqTextArea_' + count).mouseleave(function() {
-            var idPattern = /\d/;
-            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             $('#highlight_' + idNumber).css("z-index", 1);
             $('#highlight_' + idNumber + ' span').css("color", "black");
         });
@@ -991,8 +972,7 @@ $(document).ready(function() {
 
         //key events
         $('#seqTextArea_' + count).keydown(function() {
-            var idPattern = /\d/;
-            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
 
             _sequence = $('#seqTextArea_' + idNumber).val();
             $('#highlight_' + idNumber + ' span').css("color", "transparent");
@@ -1000,8 +980,7 @@ $(document).ready(function() {
         });
 
         $('#seqTextArea_' + count).keyup(function() {
-            var idPattern = /\d/;
-            var idNumber = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
+            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
 
             var textArea = $('#seqTextArea_' + idNumber)[0];
             var unparsed = $('#seqTextArea_' + idNumber).val();
@@ -1394,14 +1373,6 @@ $(document).ready(function() {
         }
         return toReturn;
     };
-
-
-
-
-
-
-
-
 
 
     var samples = [];
