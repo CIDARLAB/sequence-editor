@@ -131,6 +131,8 @@ $(document).ready(function() {
         var reverseArrayAndIndex = getReverseORFS(tempSeq);
 
         // Generate a generic annotations and features container to add to each window's info object
+        var _annotations = [];
+        var _features = [];
         var annotations = [];
         var features = [];
 
@@ -176,11 +178,12 @@ $(document).ready(function() {
         $('#seqTextArea_' + count).scroll(function() {
             var id = ($(this).attr('id')).match(/\d/);
             $('#rowsTextArea_' + id).scrollTop($(this).scrollTop());
+            $('#highlight_' + id).scrollTop($(this).scrollTop());
         });
 
-        $('#seqTextArea_' + count).scroll(function() {
-            var id = ($(this).attr("id")).match(/\d/);
-            $('#highlight_' + id).scrollTop($(this).scrollTop());
+        $('#highlight_' + count).scroll(function() {
+            var id = ($(this).attr('id')).match(/\d/);
+            $('#seqTextArea_' + id).scrollTop($(this).scrollTop());
         });
 
         /***************************************************************************************/
@@ -596,6 +599,35 @@ $(document).ready(function() {
             $("#seqTextArea_" + id).css("background-color", "white");
         });
 
+        $('#seqTextArea_' + count).mouseenter(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var highlightID = "#seqTextArea_" + id;
+            $(this).focus();
+            $(highlightID).focus();
+        });
+
+        $('#highlight_' + count).mouseenter(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
+            $(this).focus();
+            $(textAreaID).focus();
+        });
+
+        $('#seqTextArea_' + count).mouseleave(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var highlightID = "#seqTextArea_" + id;
+            var textArea = $(this)[0];
+            $(this).blur();
+            $(highlightID).blur();
+        });        
+
+        $('#highlight_' + count).mouseleave(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
+            var textArea = $(textAreaID)[0];
+            $(this).blur();
+            $(textAreaID).blur();
+        });
 
         $('#resizable_' + count).mouseup(function() {
             var id = $(this).attr('id').match(/\d/);
@@ -612,6 +644,7 @@ $(document).ready(function() {
             var posCell = "#positionCell_" + id;
             var gcCell = "#gcCell_" + id;
             var lenCell = "#lengthCell_" + id;
+
             // Update rows display
             if (seqLength === 0) {
                 $(rowsTextArea).text("");
@@ -680,6 +713,7 @@ $(document).ready(function() {
             var posCell = "#positionCell_" + id;
             var gcCell = "#gcCell_" + id;
             var lengthCell = "#lengthCell_" + id;
+            
             // Update rows display
             if (seqLength === 0) {
                 $(rowsTextArea).text("");
@@ -883,6 +917,7 @@ $(document).ready(function() {
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Search menu item chosen for " + bigInterfaceID);
         });
+
         $('#features_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -894,13 +929,25 @@ $(document).ready(function() {
             var parsed = generateHighlights($('#seqTextArea_' + id).val(), windows[id]._annotations);
             $('#highlight_' + id).html(parsed);
             $('#highlight_' + id).css("z-index", -1);
-            $('#highlight_' + id + 'span').css("color", "transparent");
+            $('#highlight_' + id + ' span').css("color", "transparent");
             $('#seqTextArea_' + id).css("color", "black");
         });
+
         $('#selection_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            alert("Selection Highlight menu item chosen for " + bigInterfaceID);
+            // alert("Selection Highlight menu item chosen for " + bigInterfaceID);
+            
+            // Add selection to annotations list and generate highlights
+            var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+            var textArea = $(textAreaID)[0];
+            var seqSelect = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);   // Stores selected sequence locally
+            windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, start: textArea.selectionStart, end: textArea.selectionEnd, color: "orange"});
+            var parsed = generateHighlights($('#seqTextArea_' + id).val(), windows[id]._annotations);
+            $('#highlight_' + id).html(parsed);
+            $('#highlight_' + id).css("z-index", -1);
+            $('#highlight_' + id + ' span').css("color", "transparent");
+            $('#seqTextArea_' + id).css("color", "black");
         });
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1227,6 +1274,7 @@ $(document).ready(function() {
 
     //generates annotations: {featureName, start, end, color}
     var generateAnnotations = function(sequence, features) {
+        alert(features.length);
         var unresolvedAnnotations = [];                 //annotations with potential overlaps
         for (var i = 0; i < features.length; i++) {
             var matches = getIndicesOf(features[i].sequence, sequence, false);
@@ -1395,23 +1443,23 @@ $(document).ready(function() {
     samples.push(sample2);
     samples.push(sample3);
 
-    // TEST CODE: hardcodes features for each window.
-    //generate feature list
-    var _features = []; //stores current features
-    var _annotations = [];
-    for (var j = 0; j < samples[2]["features"].length; j++) {
-        var currentFeature = samples[2].features[j];
-        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
-    }
+    // // TEST CODE: hardcodes features for each window.
+    // //generate feature list
+    // var _features = []; //stores current features
+    // var _annotations = [];
+    // for (var j = 0; j < samples[2]["features"].length; j++) {
+    //     var currentFeature = samples[2].features[j];
+    //     _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
+    // }
 
 
-    $('#annotate').click(function() {
-        $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-        _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
-        var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
-        $('#highlight_0').html(parsed);
-        $('#highlight_0').css("z-index", -1);
-        $('#highlight_0 span').css("color", "transparent");
-        $('#seqTextArea_0').css("color", "black");
-    });
+    // $('#annotate').click(function() {
+    //     $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+    //     _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
+    //     var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
+    //     $('#highlight_0').html(parsed);
+    //     $('#highlight_0').css("z-index", -1);
+    //     $('#highlight_0 span').css("color", "transparent");
+    //     $('#seqTextArea_0').css("color", "black");
+    // });
 });
