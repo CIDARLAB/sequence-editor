@@ -94,8 +94,7 @@ Represents the resizable Sequence Editor window.
 ### SequenceEditor ###
 Represents the Sequence Editor text area.
 
-#### .translate() ####
-Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
+#### .translate() ####	- Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
 
 #### .revComp() ####
 Replaces the current selection (or the entire sequence if nothing is selected) in place with its reverse complement.
