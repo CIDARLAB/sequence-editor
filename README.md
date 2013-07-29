@@ -64,3 +64,15 @@ Find a javadoc. Describe the following functions in that manner.
 * what method does
 * inputs and what they are
 * outputs
+
+### Window Manager ###
+
+### Window ###
+
+#### save() ####
+
+#### open() ####
+
+#### translate() ####
+
+#### revComp() ####
