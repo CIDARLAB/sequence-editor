@@ -1014,7 +1014,6 @@ $(document).ready(function() {
             var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + idNumber)[0];
             var unparsed = $('#seqTextArea_' + idNumber).val();
-            alert(unparsed);
             changeLength = (unparsed.length - _sequence.length) * changeLength;
             if (changeLength !== 0) {
                 _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
