@@ -599,27 +599,7 @@ $(document).ready(function() {
             $("#seqTextArea_" + id).css("background-color", "white");
         });
 
-        $('#seqTextArea_' + count).mouseenter(function() {
-            var id = $(this).attr('id').match(/\d/);
-            var highlightID = "#seqTextArea_" + id;
-            $(this).focus();
-            $(highlightID).focus();
-        });
 
-        $('#highlight_' + count).mouseenter(function() {
-            var id = $(this).attr('id').match(/\d/);
-            var textAreaID = "#seqTextArea_" + id;
-            $(this).focus();
-            $(textAreaID).focus();
-        });
-
-        $('#highlight_' + count).mouseleave(function() {
-            var id = $(this).attr('id').match(/\d/);
-            var textAreaID = "#seqTextArea_" + id;
-            var textArea = $(textAreaID)[0];
-            $(this).blur();
-            $(textAreaID).blur();
-        });
 
         $('#resizable_' + count).mouseup(function() {
             var id = $(this).attr('id').match(/\d/);
@@ -927,8 +907,6 @@ $(document).ready(function() {
 
         $('#selection_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            // alert("Selection Highlight menu item chosen for " + bigInterfaceID);
             
             // Add selection to annotations list and generate highlights
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -940,48 +918,16 @@ $(document).ready(function() {
             $('#highlight_' + id).css("z-index", -1);
             $('#highlight_' + id + ' span').css("color", "transparent");
             $('#seqTextArea_' + id).css("color", "black");
+            // Remove selected text blue highlight when selection highlight option is chosen.
+            textArea.selectionStart = 0;
+            textArea.selectionEnd = 0;
         });
 
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//        <div id="testerArea">
-//    one div
-//    <button id="button">button</button>
-//</div>
-//<div id="testerArea2">
-//    other div
-//</div>
-//<script>
-//    
-//    $('#button').click(function(){
-//        $(this).text("i changed my text")
-//        $('#testerArea2').append($(this));
-//        
-//        
-//        alert('button moved but function still bound')
-//    })
-//</script>
 
-        $('.resize').click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "#resizable_"
-
-//            if (resize === 0) {
-//                $(bigInterfaceID).css("minWidth", "400px");
-//                $(bigInterfaceID).css("width", "400px");
-//                $('#menuRow').append('<div class="span1"><div class="pull-left>"' + '                '>
-//');
-//");
-//
-////                $("#revComp_" + id).parent().parent().parent().html('<div class="span1"><div class="pull-left"><button id="colorChanger_' + id + '" class="colorChanger btn"><i class="icon-tint"></i></button></div></div><div class="span1"><div class="btn-group" style="margin-left:5px;"><button class="btn dropdown-toggle" data-toggle="dropdown"><i class="icon-th-list"></i><span class="caret"></span></button><ul class="dropdown-menu" role="menu"><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">File</a><ul class="dropdown-menu" style="width:225px"><li><a id="newSequence_' + id + '" class="newSequence" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + id + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + id + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + id + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Find</a><ul class="dropdown-menu" style="width:250px"><li><a id="nextForwardORF_' + id + '" class="nextForwardORF" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + id + '" class="previousForwardORF" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + id + '" class="nextReverseORF" href="#">Next Reverse ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + id + '" class="previousReverseORF" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li><li><a id="search_' + id + '" class="search" href="#">Search<span class="shortcut pull-right">Ctrl+/</span></a></li></ul></li><li class="dropdown-submenu" role="menuitem"><a tabindex="-1" href="#">Highlight</a><ul class="dropdown-menu"><li><a id="features_' + id + '" class="features" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + id + '" class="selection" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li><li><a id="revComp_' + id + '" class="revComp" href="#">Reverse Complement</a></li><li><a id="translate_' + id + '" class="translate" href="#">Translate</a></li><li><a id="uppercase_' + id + '" class="uppercase" href="#">To Uppercase</a></li><li><a id="lowercase_' + id + '" class="lowercase" href="#">To Lowercase</a></li></ul></div></div><div class="offset8 span2"><ul class="menu pull-right"><li class="btn-group"><button id="resize_' + id + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id=_' + id + '"closeWindow" class="closeWindow btn"><i class="icon-remove"></i></button></li></ul></div>');
-////                $("#positionCell_" + id).parent().parent().parent().parent().parent().html('<div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + id + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + id + '" class="tempCell">0C</td><th>Feature:</th><td id="featureCell_' + id + '" class="featureCell">XbaI</td></tr><tbody><tr><th>Length:</th><td id="lengthCell_' + id + '" class="lengthCell">100</td><th>%GC</th><td id="gcCell_' + id + '" class="gcCell">50</td><td></td></tr></tbody></table></div>');
-//                resize = 1;
-//            }
-//            else if (resize === 1) {
-//                $(bigInterfaceID).css("minWidth", "650px");
-//                $(bigInterfaceID).css("width", "650px");
-//                resize = 0;
-//            }
-        });
+        // $('.resize').click(function() {
+        //     var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+        //     var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "#resizable_"
+        // });
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -991,11 +937,22 @@ $(document).ready(function() {
             $('#resizable_' + id).remove();
         });
 
+
         //layer switching for hover over
         $('#seqTextArea_' + count).mousedown(function() {
             var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             $('#highlight_' + idNumber).css("z-index", -1);
             $('#seqTextArea_' + idNumber).css("color", "black");
+        });
+
+        // Switch focus to seqTextArea when mouse enters text area region (necessary when first opening new window. Thereafter the highlight_.mouseenter() is used).
+        $('#seqTextArea_' + count).mouseenter(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
+            $(this).focus();
+            $(textAreaID).focus();
+            $('#highlight_' + id).css("z-index", -1);
+            $('#seqTextArea_' + id).css("color", "black");
         });
 
         $('#highlight_' + count).mousedown(function() {
@@ -1004,23 +961,44 @@ $(document).ready(function() {
             $('#seqTextArea_' + idNumber).css("color", "black");
         });
 
+        // Switch focus to associated seqTextArea when mouse enters highlight region.
+        $('#highlight_' + count).mouseenter(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
+            $(this).focus();
+            $(textAreaID).focus();
+            $('#highlight_' + id).css("z-index", -1);
+            $('#seqTextArea_' + id).css("color", "black");
+        });
+
         $('#seqTextArea_' + count).mouseleave(function() {
             var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            $('#highlight_' + idNumber).css("z-index", 1);
-            $('#highlight_' + idNumber + ' span').css("color", "black");
-
             var highlightID = "#highlight_" + idNumber;
+            $(highlightID).css("z-index", 1);
+            $(highlightID + ' span').css("color", "black");
+
             var textArea = $(this)[0];
 
             // var highlightDiv = document.getElementById("highlight_" + idNumber);
-            // var node = document.getElementById("highlight_" + idNumber).firstChild;
+            // // var node = document.getElementById("highlight_" + idNumber);
+            // var node = $(highlightDiv).html();
 
             // var range = rangy.createRange();
-            // range.setStart(node, textArea.selectionStart);
-            // range.setEnd(node, textArea.selectionEnd);
+            // range.setStart(node, textArea.selectionStart.toString);
+            // range.setEnd(node, textArea.selectionEnd.toString);
+            // $(node).select(range);
             
             $(this).blur();
             $(highlightID).blur();
+            // $(this).css('foreground', 'transparent');
+        });
+
+        $('#highlight_' + count).mouseleave(function() {
+            var id = $(this).attr('id').match(/\d/);
+            var textAreaID = "#seqTextArea_" + id;
+            var textArea = $(textAreaID)[0];
+            $(this).blur();
+            $(textAreaID).blur();
         });
 
 
@@ -1036,6 +1014,7 @@ $(document).ready(function() {
             var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + idNumber)[0];
             var unparsed = $('#seqTextArea_' + idNumber).val();
+            alert(unparsed);
             changeLength = (unparsed.length - _sequence.length) * changeLength;
             if (changeLength !== 0) {
                 _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);

@@ -325,6 +325,8 @@ $(document).ready(function() {
         };
     })(jQuery);
 
+    alert($('#seqTextArea').value);
+
     function getForwardORFS() {
         var text = ($('#seqTextArea')[0]).value.toString();
         var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;

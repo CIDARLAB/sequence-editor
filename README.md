@@ -138,7 +138,7 @@ Find a javadoc. Describe the following functions in that manner.
 ### Sequence ###
 - Represents a DNA sequence.
 
-#### Sequence(_sequence_) ####
+#### Sequence( sequence ) ####
 - **Parameters:** _sequence_ - A sequence string.
 - Constructs a sequence object.
 

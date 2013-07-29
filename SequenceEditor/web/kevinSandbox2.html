@@ -30,6 +30,19 @@ and open the template in the editor.
                 border-style: inset;
                 width:100%;
             }
+            #seqTextArea {
+                -moz-appearance: textfield-multiline;
+                -webkit-appearance: textarea;
+                background-color: cornsilk;
+                border: solid black 2px;
+                /*font: medium -moz-fixed;*/
+                /*font: -webkit-small-control;*/
+                height: 250px;
+                overflow: auto;
+                padding: 2px;
+                resize: both;
+                width: 100%;
+            }
             .menu li{
                 margin-left: 0px
             }
@@ -140,6 +153,7 @@ and open the template in the editor.
                 <div class="row-fluid">
                     <div class="offset1 span10" style="padding-right:15px">
                         <textarea id="seqTextArea" class="seqTextArea textBox">atgaccccgtggta</textarea>
+                        <!-- <div id="seqTextArea" contenteditable>atgaccccgtggta</div> -->
                     </div>
                 </div>
 
