@@ -66,20 +66,28 @@ Find a javadoc. Describe the following functions in that manner.
 * outputs
 
 ### WindowManager ###
+Represents a window manager that contains all sequence editor windows.
+
+#### WindowManager() ####
+Constructs a window manager. 
 
 #### .setConnection() ####
 
 #### .closeConnection() ####
+
+#### .newWindow() ####
 
 #### .getWindow() ####
 
 ---
 
 ### Window ###
-Represents the resizable Sequence Editor window.
+Represents a resizable sequence editor window.
+
+#### Window() ####
+Constructs a resizable sequence editor window.
 
 #### .changeTheme() ####
-
 
 #### .newSequence() ####
 
@@ -88,11 +96,6 @@ Represents the resizable Sequence Editor window.
 #### .saveSequence() ####
 
 #### .close() ####
-
----
-
-### SequenceEditor ###
-Represents the Sequence Editor text area.
 
 #### .translate() ####
 Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
@@ -124,19 +127,30 @@ Selects the next reverse Open Reading Frame.
 #### .previousReverseORF() ####
 Selects the previous reverse Open Reading Frame.
 
-#### .meltingTemp() ####
-Returns melting temperature of the sequence.
-
-#### .gcContent() ####
-Returns GC-content (guanine-cytosine content) of the sequence.
-
 #### .sequencePosition() ####
 Returns the position of the cursor within the sequence.
 
-#### .sequenceLength() ####
-Returns the sequence length.
-
 #### .currentFeature() ####
 Returns the name of the current selected feature.
+
+---
+
+### SequenceEditor ###
+Represents a sequence editor text area.
+
+#### SequenceEditor() ####
+Constructs a sequence editor text area.
+
+#### .meltingTemp(sequence) ####
++**Parameters:** _sequence_ - A sequence string.
++Returns melting temperature of the sequence.
+
+#### .gcContent(sequence) ####
++**Parameters:** _sequence_ - A sequence string.
++Returns GC-content (guanine-cytosine content) of the sequence.
+
+#### .sequenceLength(sequence) ####
++**Parameters:** _sequence_ - A sequence string.
++Returns the sequence length.
 
 ---
