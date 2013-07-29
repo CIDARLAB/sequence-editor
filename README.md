@@ -73,11 +73,13 @@ Find a javadoc. Describe the following functions in that manner.
 
 #### .getWindow() ####
 
+---
 
 ### Window ###
 Represents the resizable Sequence Editor window.
 
 #### .changeTheme() ####
+
 
 #### .newSequence() ####
 
@@ -87,47 +89,39 @@ Represents the resizable Sequence Editor window.
 
 #### .close() ####
 
-
+---
 
 ### SequenceEditor ###
 Represents the Sequence Editor text area.
 
-
 #### .translate() ####
 Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
-
 
 #### .revComp() ####
 Replaces the current selection (or the entire sequence if nothing is selected) in place with its reverse complement.
 
-
 #### .lowercase() ####
 Replaces the current selection (or the entire sequence if nothing is selected) in place with lowercase characters.
-
 
 #### .uppercase() ####
 Replaces the current selection (or the entire sequence if nothing is selected) in place with its uppercase characters.
 
-
 #### .features() ####
 Hightlights all features represented in the sequence contained within the text area based upon a continually updated list.
-
 
 #### .selection() ####
 Highlights the current selection.
 
-
 #### .nextForwardORF() ####
 Selects the next forward Open Reading Frame.
-
 
 #### .previousForwardORF() ####
 Selects the previous forward Open Reading Frame.
 
-
 #### .nextReverseORF() ####
 Selects the next reverse Open Reading Frame.
 
-
 #### .previousReverseORF() ####
 Selects the previous reverse Open Reading Frame.
+
+---
