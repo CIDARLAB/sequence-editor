@@ -66,10 +66,10 @@ Find a javadoc. Describe the following functions in that manner.
 * outputs
 
 ### WindowManager ###
-Represents a window manager that contains all sequence editor windows.
+- Represents a window manager that contains all sequence editor windows.
 
 #### WindowManager() ####
-Constructs a window manager. 
+- Constructs a window manager. 
 
 #### .setConnection() ####
 
@@ -82,10 +82,10 @@ Constructs a window manager.
 ---
 
 ### Window ###
-Represents a resizable sequence editor window.
+- Represents a resizable sequence editor window.
 
 #### Window() ####
-Constructs a resizable sequence editor window.
+- Constructs a resizable sequence editor window.
 
 #### .changeTheme() ####
 
@@ -98,59 +98,57 @@ Constructs a resizable sequence editor window.
 #### .close() ####
 
 #### .translate() ####
-Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
+- Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
 
 #### .revComp() ####
-Replaces the current selection (or the entire sequence if nothing is selected) in place with its reverse complement.
+- Replaces the current selection (or the entire sequence if nothing is selected) in place with its reverse complement.
 
 #### .lowercase() ####
-Replaces the current selection (or the entire sequence if nothing is selected) in place with lowercase characters.
+- Replaces the current selection (or the entire sequence if nothing is selected) in place with lowercase characters.
 
 #### .uppercase() ####
-Replaces the current selection (or the entire sequence if nothing is selected) in place with its uppercase characters.
+- Replaces the current selection (or the entire sequence if nothing is selected) in place with its uppercase characters.
 
 #### .features() ####
-Hightlights all features represented in the sequence contained within the text area based upon a continually updated list.
+- Highlights all features represented in the sequence contained within the text area based upon a continually updated list.
 
 #### .selection() ####
-Highlights the current selection.
+- Highlights the current selection.
 
 #### .nextForwardORF() ####
-Selects the next forward Open Reading Frame.
+- Selects the next forward Open Reading Frame.
 
 #### .previousForwardORF() ####
-Selects the previous forward Open Reading Frame.
+- Selects the previous forward Open Reading Frame.
 
 #### .nextReverseORF() ####
-Selects the next reverse Open Reading Frame.
+- Selects the next reverse Open Reading Frame.
 
 #### .previousReverseORF() ####
-Selects the previous reverse Open Reading Frame.
+- Selects the previous reverse Open Reading Frame.
 
 #### .sequencePosition() ####
-Returns the position of the cursor within the sequence.
+- Returns the position of the cursor within the sequence.
 
 #### .currentFeature() ####
-Returns the name of the current selected feature.
+- Returns the name of the current selected feature.
 
 ---
 
-### SequenceEditor ###
-Represents a sequence editor text area.
+### Sequence ###
+- Represents a DNA sequence.
 
-#### SequenceEditor() ####
-Constructs a sequence editor text area.
-
-#### .meltingTemp(sequence) ####
-	- **Parameters:** _sequence_ - A sequence string.
-	- Returns melting temperature of the sequence.
-
-#### .gcContent(sequence) ####
+#### Sequence(_sequence_) ####
 - **Parameters:** _sequence_ - A sequence string.
-- Returns GC-content (guanine-cytosine content) of the sequence.
+- Constructs a sequence object.
 
-#### .sequenceLength(sequence) ####
-- **Parameters:** _sequence_ - A sequence string.
-- Returns the sequence length.
+#### .meltingTemp() ####
+- **Returns:** Melting temperature of the sequence.
+
+#### .gcContent() ####
+- **Returns:** GC-content (guanine-cytosine content) of the sequence.
+
+#### .sequenceLength() ####
+- **Returns:** The sequence length.
 
 ---
