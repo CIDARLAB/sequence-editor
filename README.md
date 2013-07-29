@@ -142,15 +142,15 @@ Represents a sequence editor text area.
 Constructs a sequence editor text area.
 
 #### .meltingTemp(sequence) ####
-+**Parameters:** _sequence_ - A sequence string.
-+Returns melting temperature of the sequence.
+	- **Parameters:** _sequence_ - A sequence string.
+	- Returns melting temperature of the sequence.
 
 #### .gcContent(sequence) ####
-+**Parameters:** _sequence_ - A sequence string.
-+Returns GC-content (guanine-cytosine content) of the sequence.
+- **Parameters:** _sequence_ - A sequence string.
+- Returns GC-content (guanine-cytosine content) of the sequence.
 
 #### .sequenceLength(sequence) ####
-+**Parameters:** _sequence_ - A sequence string.
-+Returns the sequence length.
+- **Parameters:** _sequence_ - A sequence string.
+- Returns the sequence length.
 
 ---
