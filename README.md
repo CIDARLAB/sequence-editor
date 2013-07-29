@@ -124,4 +124,19 @@ Selects the next reverse Open Reading Frame.
 #### .previousReverseORF() ####
 Selects the previous reverse Open Reading Frame.
 
+#### .meltingTemp() ####
+Returns melting temperature of the sequence.
+
+#### .gcContent() ####
+Returns GC-content (guanine-cytosine content) of the sequence.
+
+#### .sequencePosition() ####
+Returns the position of the cursor within the sequence.
+
+#### .sequenceLength() ####
+Returns the sequence length.
+
+#### .currentFeature() ####
+Returns the name of the current selected feature.
+
 ---
