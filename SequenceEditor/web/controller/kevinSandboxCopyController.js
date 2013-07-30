@@ -518,18 +518,28 @@ $(document).ready(function() {
         $('#revComp_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            var textArea = $(textAreaID)[0];
-            var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
-            if (sequence.length === 0) {
+            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
+            var selectionText = getSelectionHtml();
+            // selectionIndices has properties "start" and "end" corresponding to visible text in div.
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            // alert(selectionIndices.start + " ... " + selectionIndices.end);
+            if (selectionText.length === 0) {
                 //Nothing highlighted, so change everything.
-                sequence = textArea.value;
-                var revCompOut = revComp(sequence);
-                // $(textAreaID).text(revCompOut);
-                textArea.value = revCompOut;
+                selectionText = wholeSequence;
+                var revCompOut = revComp(selectionText);
+                $(textAreaID).html(revCompOut);
+                // TODO: restore selection ranges upon reverse complement 
             }
             else {
-                var revCompOut = revComp(sequence);
-                $(textAreaID).replaceSelectedText(revCompOut, "select");
+                var revCompOut = revComp(selectionText);
+                $(textAreaID).replaceSelectedText(revCompOut, selectionText);
+                
+                //TODO: The code commented below is non-functional when any elements (ie. highlights) exist in the div's text element.
+                // var range = rangy.createTextRange();
+                // var node = document.getElementById('seqTextArea_' + id);
+                // range.setStart(node.firstChild, selectionIndices.start-3);
+                // range.setEnd(node.firstChild, selectionIndices.end-3);
+                // range.select();
             }
         });
 
