@@ -1,7 +1,3 @@
-<!--
-To change this template, choose Tools | Templates
-and open the template in the editor.
--->
 <!DOCTYPE html>
 <html>
     <head>
@@ -11,14 +7,63 @@ and open the template in the editor.
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
         <link href="css/bootstrap-colorpicker.css" rel="stylesheet" media="screen">
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+        <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
+        <script type="text/javascript" src="jsLibraries/jquery-ui.min.js"></script> 
 
-
+        <script src="jsLibraries/jquery.filter_input.js"></script>
+        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
+        <script type="text/javascript" src ="jsLibraries/rangyinputs_jquery.min.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-core.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-highlighter.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-textrange.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-cssclassapplier.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-selectionsaverestore.js"></script>
+        <script type="text/javascript" src="jsLibraries/rangy-serializer.js"></script>
+        <script src="jsLibraries/jwerty.js"></script> 
         <style>
-            .shortcut{
-                color: #afafaf;
+            .resizable { width: 150px; height: 150px; padding: 0.5em; }
+            .resizable h4 { text-align: center; margin: 0; }
+            textArea {
+                font-size: 12pt;
+                font-family: monospace;
+                padding:0px;
+                line-height: 12pt;
             }
-            .bigInterface{
-                border: solid black 1px;
+            .seqTextArea {
+                -moz-appearance: textfield-multiline;
+                -webkit-appearance: textarea;
+                background-color: whitesmoke;
+                border: solid black 2px;
+                font-size: 12pt;
+                font-family: monospace;
+                height: 250px;
+                overflow: auto;
+                padding: 2px;
+                resize: none;
+                width: 90%;
+                margin-left:0px;
+                overflow: auto;
+            }
+
+            div.ui-state-disabled.ui-draggable-disabled { opacity : 1;}
+
+            .highlight{
+                font-size: 12pt;
+                font-family: monospace; 
+                padding:0px;
+                line-height: 12pt;
+                color:transparent;
+            }
+            .highlight span{
+                line-height: 12pt;
+                font-size: 12pt;
+                font-family: monospace; 
+                background-color: lightblue;
+                word-wrap: break-word;
+                padding:0px;
+                margin: 0px;
+                border:0px;
             }
             .newSequence{}
             .openSequence{}
@@ -57,162 +102,15 @@ and open the template in the editor.
     </head>
     <body>
         <div class="container">
-            <div id="bigInterface_1" class="bigInterface">
-                <div class="row-fluid">
-                    <div class="span1 offset11">
-                        <div class="btn-group pull-right">
-                            <button id="closeWindow_1" class="closeWindow btn"><i class="icon-remove"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="offset1 span10">
-                        <table class="colsTextArea pull-right" style="width:90%;">
-                            <tr>
-                                <td id="columnFirst_1" class="columnFirst pull-left">1</td>
-                                <td id="columnLast_1" class="columnLast pull-right"></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="offset1 span10">
-                        <textarea id="rowsTextArea_1" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea>
-                        <textarea id="seqTextArea_1" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
-                    </div>
-                </div>
-                <div class='row-fluid'>
-                    <div class="offset4 span4">
-                        <table style="width:100%">
-                            <tr>
-                                <th>Position:</th><td id="positionCell_1" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_1" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell_1" class="featureCell">XbaI</td>
-                            </tr>
-                            <tr>
-                                <th>Length:</th><td id="lengthCell_1" class="lengthCell">100</td><th>% GC</th><td id="gcCell_1" class="gcCell">50</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
+            <button id="newButton" class="btn btn-large">New Widget</button>
         </div>
-        
-        <div class="container">
-            <div id="bigInterface_2" class="bigInterface">
-                <div class="row-fluid">
-                    <div class="span1">
-                        <div class="pull-left">
-                            <button id="colorChanger_2" class="colorChanger btn"><i class="icon-tint"></i></button>
-                        </div>
-                    </div>
-                    <div class="span7">
-                        <ul class="menu pull-left">
-                            <li class="btn-group" style="margin-left:0px;">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                    File
-                                    <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" style="width:225px;">
-                                    <li><a id="newSequence_2" class="newSequence" href='#'>New Sequence<span class="shortcut pull-right">Alt+N</span></a></li>
-                                    <li><a id="openSequence_2" class="openSequence" href='#'>Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li>
-                                    <li><a id="saveSequence_2" class="saveSequence" href='#'>Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li>
-                                    <li><a id="close_2" class="closeOption" href='#'>Close<span class="shortcut pull-right">Esc</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="btn-group" style="margin-left:0px">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    Edit
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a id="undo_2" class="undo" href="#">Undo<span class="shortcut pull-right">Ctrl+Z</span></a></li>
-                                    <li><a id="redo_2" class="redo" href="#">Redo<span class="shortcut pull-right">Ctrl+Y</span></a></li>
-                                    <li><a id="cut_2" class="cut" href="#">Cut<span class="shortcut pull-right">Ctrl+X</span></a></li>
-                                    <li><a id="copy_2" class="copy" href="#">Copy<span class="shortcut pull-right">Ctrl+C</span></a></li>
-                                    <li><a id="paste_2" class="paste" href="#">Paste<span class="shortcut pull-right">Ctrl+V</span></a></li>
-                                    <li><a id="delete_2" class="delete" href="#">Delete<span class="shortcut pull-right">Del</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="btn-group" style="margin-left:0px">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    Find
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" style="width:250px;">
-                                    <li><a id="nextForwardORF_2" class="nextForwardORF" href='#'>Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li>
-                                    <li><a id="previousForwardORF_2" class="previousForwardORF" href='#'>Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li>
-                                    <li><a id="nextReverseORF_2" class="nextReverseORF" href='#'>Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li>
-                                    <li><a id="previousReverseORF_2" class="previousReverseORF" href='#'>Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li>
-                                    <li><a id="search_2" class="search" href='#'>Search<span class="shortcut pull-right">Ctrl+/</span></a></li>
-                                </ul>
-                            </li>
-                            <li class="btn-group" style="margin-left:0px">
-                                <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                    Highlight
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a id="features_2" class="features" href='#'>Features<span class="shortcut pull-right">Alt+2</span></a></li>
-                                    <li><a id="selection_2" class="selection" href='#'>Selection<span class="shortcut pull-right">Alt+3</span></a></li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="span2">
-                        <div class="btn-group pull-right">
-                            <button id="revComp_2" class="revComp btn"><i class="icon-backward"></i></button>
-                            <button id="translate_2" class="translate btn"><i class="icon-text-width"></i></button>
-                            <button id="uppercase_2" class="uppercase btn"><i class="icon-arrow-up"></i></button>
-                            <button id="lowercase_2" class="lowercase btn"><i class="icon-arrow-down"></i></button>
-                        </div>
-                    </div>
-                    <div class="span2">
-                        <div class="btn-group pull-right">
-                            <button id="resize_2" class="resize btn"><i class="icon-fullscreen"></i></button>
-                            <button id="closeWindow_2" class="closeWindow btn"><i class="icon-remove"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="offset1 span10">
-                        <table class="colsTextArea pull-right" style="width:90%;">
-                            <tr>
-                                <td id="columnFirst_2" class="columnFirst pull-left">1</td>
-                                <td id="columnLast_2" class="columnLast pull-right"></td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="row-fluid">
-                    <div class="offset1 span10">
-                        <textarea id="rowsTextArea_2" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:5%;text-align: center;"></textarea>
-                        <textarea id="seqTextArea_2" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea>
-                    </div>
-                </div>
-                <div class='row-fluid'>
-                    <div class="offset4 span4">
-                        <table style="width:100%">
-                            <tr>
-                                <th>Position:</th><td id="positionCell_2" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_2" class="tempCell">0 C</td><th>Feature:</th><td id="featureCell_2" class="featureCell">XbaI</td>
-                            </tr>
-                            <tr>
-                                <th>Length:</th><td id="lengthCell_2" class="lengthCell">100</td><th>% GC</th><td id="gcCell_2" class="gcCell">50</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <span class="hidden" id="measureSpan" style="padding: 0px;font-family:monospace;font-size: 12pt">1234567890</span>
-
+        <button id ="annotate" class="btn btn-primary" > annotate </button>
+        <div id="testArea"></div>
+        <span class="hidden" id="measureSpan" style="padding: 0px;font-family: monospace;font-size: 12pt;background-color: transparent">1234567890</span>
 
         <!--javascript libraries-->
-        <script type="text/javascript" src="jsLibraries/jquery-1.9.1.min.js"></script> 
         <script src="jsLibraries/bootstrap.min.js"></script> 
-        <script src="jsLibraries/bootstrap-colorpicker.js"></script>
-        <script type="text/javascript" src ="jsLibraries/rangyinputs_jquery.min.js"></script>
-        <script src="jsLibraries/jwerty.js"></script> 
-        <script src="jsLibraries/jquery.filter_input.js"></script>
         <!--javascript goes here-->
-        <script type="text/javascript" src ="controller/kevinSandboxCopyController.js"></script> 
+        <script type="text/javascript" src ="controller/kevinSandboxCopyController.js"></script>
     </body>
 </html>

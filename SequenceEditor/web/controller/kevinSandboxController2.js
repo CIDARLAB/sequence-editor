@@ -325,10 +325,11 @@ $(document).ready(function() {
         };
     })(jQuery);
 
-    alert($('#seqTextArea').value);
+    alert(document.getElementById('seqTextArea').innerHTML);
 
     function getForwardORFS() {
-        var text = ($('#seqTextArea')[0]).value.toString();
+        // var text = ($('#seqTextArea')[0]).value.toString();
+        var text = (document.getElementById('seqTextArea').innerHTML);
         var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
         var forwardIndeces = [];
         while (seqPattern.test(text) === true) {

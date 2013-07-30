@@ -919,8 +919,7 @@ $(document).ready(function() {
             $('#highlight_' + id + ' span').css("color", "transparent");
             $('#seqTextArea_' + id).css("color", "black");
             // Remove selected text blue highlight when selection highlight option is chosen.
-            textArea.selectionStart = 0;
-            textArea.selectionEnd = 0;
+            textArea.selectionEnd = textArea.selectionStart;
         });
 
 
@@ -990,7 +989,6 @@ $(document).ready(function() {
             
             $(this).blur();
             $(highlightID).blur();
-            // $(this).css('foreground', 'transparent');
         });
 
         $('#highlight_' + count).mouseleave(function() {
@@ -1000,6 +998,9 @@ $(document).ready(function() {
             $(this).blur();
             $(textAreaID).blur();
         });
+
+
+
 
 
         //key events
@@ -1049,7 +1050,7 @@ $(document).ready(function() {
                 }
                 else {
                     lineNumber += "\r\n" + (numberOfCols * (kk));
-                    alert(lineNumber);
+                    // alert(lineNumber);
                     $('#rowsTextArea_' + count).text(lineNumber);
                     kk++;
                 }
@@ -1257,7 +1258,7 @@ $(document).ready(function() {
 
     //generates annotations: {featureName, start, end, color}
     var generateAnnotations = function(sequence, features) {
-        alert(features.length);
+        // alert(features.length);
         var unresolvedAnnotations = [];                 //annotations with potential overlaps
         for (var i = 0; i < features.length; i++) {
             var matches = getIndicesOf(features[i].sequence, sequence, false);
