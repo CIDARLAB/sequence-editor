@@ -12,7 +12,7 @@ $(document).ready(function() {
     var _sequence = ""; //store sequence to compare if insert or delete happened
 
     $('#newButton').click(function() {
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><div contenteditable class="seqTextArea pull-right" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div><!--this is the highlight layer--><div contenteditable="true" class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;">atgttaacccatccgtgactaagacattgaatgccctag</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;padding-left:0px;padding-right:0px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><div contenteditable class="seqTextArea pull-right" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div><!--this is the highlight layer--><div contenteditable="true" class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;">atgttaacccatccgtgactaagacattgaatgccctag</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
         var parent = $('#highlight_' + count).parent();
@@ -679,7 +679,7 @@ $(document).ready(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
-            var wholeSequence = document.getElementById('seqTextArea_' + id).innerHTML.toString();
+            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var selection = getSelectionHtml();
             // Grab current sequence length
             var seqLength = wholeSequence.length;
@@ -909,19 +909,20 @@ $(document).ready(function() {
 
         $('#selection_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            
-            // Add selection to annotations list and generate highlights
-            var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            var textArea = $(textAreaID)[0];
-            var seqSelect = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);   // Stores selected sequence locally
-            windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, start: textArea.selectionStart, end: textArea.selectionEnd, color: "orange"});
-            var parsed = generateHighlights($('#seqTextArea_' + id).val(), windows[id]._annotations);
-            $('#highlight_' + id).html(parsed);
-            $('#highlight_' + id).css("z-index", -1);
-            $('#highlight_' + id + ' span').css("color", "transparent");
-            $('#seqTextArea_' + id).css("color", "black");
-            // Remove selected text blue highlight when selection highlight option is chosen.
-            textArea.selectionEnd = textArea.selectionStart;
+            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
+            var seqSelect = getSelectionHtml();
+
+            // Applies a highlight to the current selection of text adding to any existing highlights.
+            rangy.init();
+            var randomCssClass = "rangyTemp_" + (+new Date());
+            var classApplier = rangy.createCssClassApplier(randomCssClass, true);
+            classApplier.applyToSelection();
+            // Now use jQuery to add the CSS colour and remove the class
+            $("." + randomCssClass).css( {"background-color": "orange"} ).removeClass(randomCssClass);
+
+            //TODO: Remove selection once highlight it chosen. 
+            //TODO: Store selection annotation/range to some container for later use (removal, manipulation, etc)
+            // windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, start: textArea.selectionStart, end: textArea.selectionEnd, color: "orange"});
         });
 
 
@@ -932,6 +933,7 @@ $(document).ready(function() {
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        // Close window when button is clicked
         $('#closeWindow_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
@@ -939,19 +941,16 @@ $(document).ready(function() {
         });
 
 
+        // Enable/Disable window draggable class so user can edit text in contenteditable div at the right time
         $('#seqTextArea_' + count).mouseenter(function() {
             var id = $(this).attr('id').match(/\d/);
             $('#resizable_' + id).draggable('disable');
         });
-
         $('#seqTextArea_' + count).mouseleave(function() {
             var id = $(this).attr('id').match(/\d/);
             $('#resizable_' + id).draggable('enable');
         });
 
-        $('#seqTextArea_' + count).mousedown(function() {
-            var id = $(this).attr('id').match(/\d/);
-        });
 
         //key events
         $('#seqTextArea_' + count).keydown(function() {
@@ -1356,6 +1355,7 @@ $(document).ready(function() {
         return toReturn;
     };
 
+    // TODO: Rewrite function so that it returns proper sequence string when highlight spans are present. Currently returns html for highlights.
     // Function returns current text selection
     function getSelectionHtml() {
         var html = "";
@@ -1366,7 +1366,8 @@ $(document).ready(function() {
                 for (var i = 0, len = sel.rangeCount; i < len; ++i) {
                     container.appendChild(sel.getRangeAt(i).cloneContents());
                 }
-                html = container.innerHTML.toString();
+                // html = container.innerHTML.toString();
+                html = container.innerText;
             }
         } else if (typeof document.selection != "undefined") {
             if (document.selection.type == "Text") {
@@ -1376,47 +1377,4 @@ $(document).ready(function() {
         // alert(html);
         return html;
     }
-
-
-
-
-    var samples = [];
-    //Create dummy Genbank sequence/feature samples
-    var sample1 = {sequence: "aaaagctacaggggccaatgacgcccctagacagtttttaacccaaaa",
-        features: []};
-//                {name: "feature4", sequence: "aaaag", color: "brown"}
-    var sample2 = {sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
-        features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
-            {name: "feature3", sequence: "CAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATAT", color: "green"},
-            {name: "feature4", sequence: "TTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAA", color: "yellow"}]
-    };
-    var sample3 = {sequence: "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT",
-        features: [{name: "feature1", sequence: "ATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAA", color: "red"},
-            {name: "feature2", sequence: "TATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTAC", color: "cyan"},
-            {name: "feature3", sequence: "TCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAA", color: "green"},
-            {name: "feature4", sequence: "ACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTC", color: "yellow"}]
-    };
-    samples.push(sample1);
-    samples.push(sample2);
-    samples.push(sample3);
-
-    // // TEST CODE: hardcodes features for each window.
-    // //generate feature list
-    // var _features = []; //stores current features
-    // var _annotations = [];
-    // for (var j = 0; j < samples[2]["features"].length; j++) {
-    //     var currentFeature = samples[2].features[j];
-    //     _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
-    // }
-
-
-    // $('#annotate').click(function() {
-    //     $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-    //     _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
-    //     var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
-    //     $('#highlight_0').html(parsed);
-    //     $('#highlight_0').css("z-index", -1);
-    //     $('#highlight_0 span').css("color", "transparent");
-    //     $('#seqTextArea_0').css("color", "black");
-    // });
 });
