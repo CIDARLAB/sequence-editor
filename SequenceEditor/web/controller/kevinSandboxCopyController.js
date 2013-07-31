@@ -521,14 +521,42 @@ $(document).ready(function() {
             var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var selectionText = getSelectionHtml();
             // selectionIndices has properties "start" and "end" corresponding to visible text in div.
-            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            if(selectionText !== "") {
+                var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            }
             // alert(selectionIndices.start + " ... " + selectionIndices.end);
             if (selectionText.length === 0) {
-                //Nothing highlighted, so change everything.
+                //Nothing is selected, so reverse complement everything.
                 selectionText = wholeSequence;
                 var revCompOut = revComp(selectionText);
                 $(textAreaID).html(revCompOut);
+                
                 // TODO: restore selection ranges upon reverse complement 
+                for (var ii=0; ii<windows[id]._annotations.length; ii++) {
+                    var range = rangy.createRange();
+                    var node = document.getElementById('seqTextArea_' + id);
+                    node = node.firstChild;
+                    for (var jj=0; jj<ii; jj++) {
+                        node = node.nextSibling.nextSibling;
+                    }
+                    if (ii===0) {
+                        range.setStart(node, windows[id]._annotations[ii].start);
+                        range.setEnd(node, windows[id]._annotations[ii].end);                
+                    }
+                    else {
+                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
+                        range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);
+                    }
+                    range.select();
+                    // alert("Selected");
+                    // Applies a highlight to the current selection of text adding to any existing highlights.
+                    rangy.init();
+                    var randomCssClass = "rangyTemp_" + (+new Date());
+                    var classApplier = rangy.createCssClassApplier(randomCssClass, true);
+                    classApplier.applyToSelection();
+                    // Now use jQuery to add the CSS colour and remove the class
+                    $("." + randomCssClass).css( {"background-color": windows[id]._annotations[ii].color} ).removeClass(randomCssClass);
+                }
             }
             else {
                 var revCompOut = revComp(selectionText);
@@ -919,6 +947,10 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var seqSelect = getSelectionHtml();
+            var sel = rangy.getSelection();
+            var savedSel = rangy.saveSelection();
+            // selectionIndices has properties "start" and "end" corresponding to visible text in div.
+            var selectionIndices = sel.getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
 
             // Applies a highlight to the current selection of text adding to any existing highlights.
             rangy.init();
@@ -928,9 +960,11 @@ $(document).ready(function() {
             // Now use jQuery to add the CSS colour and remove the class
             $("." + randomCssClass).css( {"background-color": "orange"} ).removeClass(randomCssClass);
 
-            //TODO: Remove selection once highlight it chosen. 
-            //TODO: Store selection annotation/range to some container for later use (removal, manipulation, etc)
-            // windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, start: textArea.selectionStart, end: textArea.selectionEnd, color: "orange"});
+            //Stores selection annotation/range to some container for later use (removal, manipulation, etc)
+            windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
+
+            // Removes selection once highlight it chosen
+            // sel.removeAllRanges();
         });
 
 
