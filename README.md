@@ -87,15 +87,25 @@ Find a javadoc. Describe the following functions in that manner.
 #### Window() ####
 - Constructs a resizable sequence editor window.
 
-#### .changeTheme() ####
+#### .changeTheme(Int color) ####
+- Enables user to select sequence editor window background color (theme).
+- **Parameter(s):** _color_ - Color (Hex RGB). 
 
-#### .newSequence() ####
+#### .newSequence(String newFileName) ####
+- Opens a new file in a sequence editor window.
+- **Parameter(s):** _newFileName_ - User-specified file name for new sequence.
 
-#### .openSequence() ####
+#### .openSequence(String fileOpenPath) ####
+- Loads an existing sequence in the current sequence editor window from the path specified by the user.
+- **Parameter(s):** _fileOpenPath_ - Path of existing GenBank or FASTA file. 
 
-#### .saveSequence() ####
+#### .saveSequence(String fileSavePath) ####
+- Saves current sequence to the file path specified by the user.
+- **Parameter(s):** _fileSavePath_ - Path to store the sequence file. 
 
-#### .close() ####
+#### .close(String sequenceFileName) ####
+- Closes the sequence editor window associated with a user-specified file name.
+- **Parameter(s):** _sequenceFileName_
 
 #### .translate() ####
 - Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
@@ -139,7 +149,7 @@ Find a javadoc. Describe the following functions in that manner.
 - Represents a DNA sequence.
 
 #### Sequence( sequence ) ####
-- **Parameters:** _sequence_ - A sequence string.
+- **Parameter(s):** _sequence_ - A sequence string.
 - Constructs a sequence object.
 
 #### .meltingTemp() ####
