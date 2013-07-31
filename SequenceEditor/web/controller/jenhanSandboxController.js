@@ -594,7 +594,7 @@ $(document).ready(function() {
             var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
 
             var color = ev.color.toHex().toString();
-            $(bigInterfaceID).css("background-color", color);
+            $('#resizable_' + id + '.ui-widget-content').css("background", color);
             $("#centralElement_" + id).css("background-color", color);
             $("#seqTextArea_" + id).css("background-color", "white");
         });
@@ -1427,23 +1427,23 @@ $(document).ready(function() {
     samples.push(sample2);
     samples.push(sample3);
 
-    // // TEST CODE: hardcodes features for each window.
-    // //generate feature list
-    // var _features = []; //stores current features
-    // var _annotations = [];
-    // for (var j = 0; j < samples[2]["features"].length; j++) {
-    //     var currentFeature = samples[2].features[j];
-    //     _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
-    // }
+    // TEST CODE: hardcodes features for each window.
+    //generate feature list
+    var _features = []; //stores current features
+    var _annotations = [];
+    for (var j = 0; j < samples[2]["features"].length; j++) {
+        var currentFeature = samples[2].features[j];
+        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
+    }
 
 
-    // $('#annotate').click(function() {
-    //     $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-    //     _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
-    //     var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
-    //     $('#highlight_0').html(parsed);
-    //     $('#highlight_0').css("z-index", -1);
-    //     $('#highlight_0 span').css("color", "transparent");
-    //     $('#seqTextArea_0').css("color", "black");
-    // });
+    $('#annotate').click(function() {
+        $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+        _annotations = generateAnnotations($('#seqTextArea_0').val(), _features);
+        var parsed = generateHighlights($('#seqTextArea_0').val(), _annotations);
+        $('#highlight_0').html(parsed);
+        $('#highlight_0').css("z-index", -1);
+        $('#highlight_0 span').css("color", "transparent");
+        $('#seqTextArea_0').css("color", "black");
+    });
 });
