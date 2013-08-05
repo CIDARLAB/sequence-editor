@@ -12,7 +12,7 @@ $(document).ready(function() {
     var _sequence = ""; //store sequence to compare if insert or delete happened
 
     $('#newButton').click(function() {
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="resize_' + count + '" class="resize btn"><i class="icon-fullscreen"></i></button><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><div contenteditable class="seqTextArea pull-right" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div><!--this is the highlight layer--><div contenteditable="true" class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;">atgttaacccatccgtgactaagacattgaatgccctag</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><div contenteditable class="seqTextArea pull-right" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div><!--this is the highlight layer--><div contenteditable="true" class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;">atgttaacccatccgtgactaagacattgaatgccctag</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
         var parent = $('#highlight_' + count).parent();
@@ -164,6 +164,12 @@ $(document).ready(function() {
 
         windows[count]._features = _features;
         windows[count]._annotations = _annotations;
+
+        windows[count].sequence = "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT";
+        windows[count]._features.push({name: "feature1", sequence: "AAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAAT", color: "red"});
+        windows[count]._features.push({name: "feature2", sequence: "CTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTA", color: "cyan"});
+        windows[count]._features.push({name: "feature3", sequence: "TTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCT", color: "green"});
+        windows[count]._features.push({name: "feature4", sequence: "ATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATC", color: "yellow"});
 
         //i've added a hidden span on kevinSandbox.html with 0px padding; 
         $('#lengthCell_' + count).html(windows[count].seqLength);
@@ -524,21 +530,16 @@ $(document).ready(function() {
             if(selectionText !== "") {
                 var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
             }
-            // alert(selectionIndices.start + " ... " + selectionIndices.end);
             if (selectionText.length === 0) {
-                //Nothing is selected, so reverse complement everything.
+                // Nothing is selected, so reverse complement everything.
                 selectionText = wholeSequence;
                 var revCompOut = revComp(selectionText);
                 $(textAreaID).html(revCompOut);
-                
-                // TODO: restore selection ranges upon reverse complement 
+                // Restore selection ranges upon reverse complement of entire sequence
                 for (var ii=0; ii<windows[id]._annotations.length; ii++) {
                     var range = rangy.createRange();
                     var node = document.getElementById('seqTextArea_' + id);
-                    node = node.firstChild;
-                    for (var jj=0; jj<ii; jj++) {
-                        node = node.nextSibling.nextSibling;
-                    }
+                    node = node.lastChild;
                     if (ii===0) {
                         range.setStart(node, windows[id]._annotations[ii].start);
                         range.setEnd(node, windows[id]._annotations[ii].end);                
@@ -548,7 +549,6 @@ $(document).ready(function() {
                         range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);
                     }
                     range.select();
-                    // alert("Selected");
                     // Applies a highlight to the current selection of text adding to any existing highlights.
                     rangy.init();
                     var randomCssClass = "rangyTemp_" + (+new Date());
@@ -557,6 +557,8 @@ $(document).ready(function() {
                     // Now use jQuery to add the CSS colour and remove the class
                     $("." + randomCssClass).css( {"background-color": windows[id]._annotations[ii].color} ).removeClass(randomCssClass);
                 }
+                var sel = rangy.getSelection();
+                sel.removeAllRanges();
             }
             else {
                 var revCompOut = revComp(selectionText);
@@ -930,17 +932,11 @@ $(document).ready(function() {
 
         $('#features_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-
             // This hardcodes a sequence into the current seqTextArea
             //TODO: Alter this to take current text area value and determine if features are present
-//            $('#seqTextArea_' + id).val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-            windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id).val(), windows[id]._features);
-            var parsed = generateHighlights($('#seqTextArea_' + id).val(), windows[id]._annotations);
-            $('#highlight_' + id).html(parsed);
-            $('#highlight_' + id).css("z-index", -1);
-            $('#highlight_' + id + ' span').css("color", "transparent");
-            $('#seqTextArea_' + id).css("color", "black");
+           $('#seqTextArea_' + id).html("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+            _annotations = generateAnnotations($('#seqTextArea_' + id).text(), windows[id]._features, id);
+            generateHighlights($('#seqTextArea_' + id).text(), windows[id]._annotations, id);
         });
 
         $('#selection_' + count).click(function() {
@@ -964,16 +960,9 @@ $(document).ready(function() {
             windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
 
             // Removes selection once highlight it chosen
-            // sel.removeAllRanges();
+            sel.removeAllRanges();
         });
 
-
-        // $('.resize').click(function() {
-        //     var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-        //     var bigInterfaceID = "#resizable_" + id; // concatenate the window id number on the end of "#resizable_"
-        // });
-
-        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Close window when button is clicked
         $('#closeWindow_' + count).click(function() {
@@ -996,28 +985,22 @@ $(document).ready(function() {
 
         //key events
         $('#seqTextArea_' + count).keydown(function() {
-            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            _sequence = $('#seqTextArea_' + idNumber).val();
-            $('#highlight_' + idNumber + ' span').css("color", "transparent");
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            _sequence = $('#seqTextArea_' + id).val();
+            $('#highlight_' + id + ' span').css("color", "transparent");
             changeLength++;
         });
 
         $('#seqTextArea_' + count).keyup(function() {
-            var idNumber = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var textArea = $('#seqTextArea_' + idNumber)[0];
-            var unparsed = $('#seqTextArea_' + idNumber).val();
+            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            var textArea = $('#seqTextArea_' + id)[0];
+            var unparsed = $('#seqTextArea_' + id).val();
             changeLength = (unparsed.length - _sequence.length) * changeLength;
             if (changeLength !== 0) {
                 _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
             }
             changeLength = 0;
-            var parsed = generateHighlights(unparsed, _annotations);
-
-            //set the html of the highlight layer
-            $('#highlight_' + idNumber).html(parsed);
-            $('#highlight_' + idNumber).css("z-index", -1);
-            $('#highlight_' + idNumber + ' span').css("color", "transparent");
-            $('#seqTextArea_' + idNumber).css("color", "black");
+            var parsed = generateHighlights(unparsed, _annotations, id);
         });
 
         // LAST STEP: Increment count variable
@@ -1248,8 +1231,7 @@ $(document).ready(function() {
     }
 
     //generates annotations: {featureName, start, end, color}
-    var generateAnnotations = function(sequence, features) {
-        alert(features.length);
+    var generateAnnotations = function(sequence, features, id) {
         var unresolvedAnnotations = [];                 //annotations with potential overlaps
         for (var i = 0; i < features.length; i++) {
             var matches = getIndicesOf(features[i].sequence, sequence, false);
@@ -1278,15 +1260,15 @@ $(document).ready(function() {
             }
             return 0;
         });
-        for (var i = 0; i < unresolvedAnnotations.length; i++) {
-        }
-        var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
+        // for (var i = 0; i < unresolvedAnnotations.length; i++) {
+        // }
+        var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence, id);
 
         return resolvedAnnotations;
     };
 
     //resolve overlaps between annotations
-    var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
+    var resolveFeatureOverlap = function(unresolvedAnnotations, sequence, id) {
         var toReturn = [];  // Annotations denoting overlaps
         for (var i = 0; i < unresolvedAnnotations.length; i++) {
             var overlapping = [];
@@ -1340,10 +1322,12 @@ $(document).ready(function() {
                         pp++;
                     }
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    windows[id]._annotations.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                     toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                 }
                 else {
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    windows[id]._annotations.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
                     toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
                 }
             }
@@ -1351,6 +1335,7 @@ $(document).ready(function() {
         return toReturn;
     };
 
+    //TODO: Refactor this function so it operates with contenteditable div
     var updateAnnotationIndices = function(index, annotations, changeLength) {
         var updatedAnnotations = [];
         if (changeLength !== 0) {
@@ -1373,35 +1358,55 @@ $(document).ready(function() {
         return annotations;
     };
 
-    var generateHighlights = function(sequence, annotationsToDraw) {
-        var toReturn = "";
-        //iterate through each feature and append regular text or a span
-        if (annotationsToDraw.length > 0) {
-            //append start of string
-            toReturn = sequence.substring(0, annotationsToDraw[0].start) + '<span title="' + annotationsToDraw[0].features + '" style="background-color:' + annotationsToDraw[0].color + '">' + sequence.substring(annotationsToDraw[0].start, annotationsToDraw[0].end) + '</span>';
-            var prevEnd = annotationsToDraw[0].end; //ending of the previous annotation
-            for (var i = 1; i < annotationsToDraw.length; i++) {
-                var start = annotationsToDraw[i].start;
-                var end = annotationsToDraw[i].end;
-                var features = annotationsToDraw[i].features;
-                var color = annotationsToDraw[i].color;
-                toReturn = toReturn + sequence.substring(prevEnd, start);
-                toReturn = toReturn + '<span title="' + features + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
-                prevEnd = end;
+    var generateHighlights = function(sequence, annotationsToDraw, id) {
+        for (var ii=0; ii<windows[id]._annotations.length; ii++) {
+            var range = rangy.createRange();
+            var node = document.getElementById('seqTextArea_' + id);
+            node = node.lastChild;  // Select the last child of the div to apply the next highlight. It's okay to do this because our features are ordered by index.
+
+            if ((windows[id]._annotations.length - 1) === ii) { // Last feature to highlight
+                range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
+                range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);
             }
-            //append end of string
-            toReturn = toReturn + sequence.substring(annotationsToDraw[annotationsToDraw.length - 1].end, sequence.length);
-        } else {
-            toReturn = sequence;
+            else {
+                if (ii===0) {
+                    if (windows[id]._annotations[ii].end >= windows[id]._annotations[ii+1].start) {
+                        range.setStart(node, windows[id]._annotations[ii].start);
+                        range.setEnd(node, windows[id]._annotations[ii+1].start - 1);
+                    } else {
+                        range.setStart(node, windows[id]._annotations[ii].start);
+                        range.setEnd(node, windows[id]._annotations[ii].end);   
+                    }
+                }
+                else {
+                    if (windows[id]._annotations[ii].end >= windows[id]._annotations[ii+1].start) {
+                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
+                        range.setEnd(node, (windows[id]._annotations[ii+1].start - 1) - windows[id]._annotations[ii-1].end);         
+                    } else {
+                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
+                        range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);                    
+                    }
+                }
+            }
+
+            range.select();
+            // Applies a highlight to the current selection of text adding to any existing highlights.
+            rangy.init();
+            var randomCssClass = "rangyTemp_" + (+new Date());
+            var classApplier = rangy.createCssClassApplier(randomCssClass, true);
+            classApplier.applyToSelection();
+            // Now use jQuery to add the CSS colour and remove the class
+            $("." + randomCssClass).css( {"background-color": windows[id]._annotations[ii].color} ).removeClass(randomCssClass);
         }
-        return toReturn;
+        var sel = rangy.getSelection();
+        sel.removeAllRanges();
     };
 
     // TODO: Rewrite function so that it returns proper sequence string when highlight spans are present. Currently returns html for highlights.
     // Function returns current text selection
     function getSelectionHtml() {
         var html = "";
-        if (typeof window.getSelection != "undefined") {
+        if (typeof window.getSelection !== "undefined") {
             var sel = window.getSelection();
             if (sel.rangeCount) {
                 var container = document.createElement("div");
@@ -1411,12 +1416,53 @@ $(document).ready(function() {
                 // html = container.innerHTML.toString();
                 html = container.innerText;
             }
-        } else if (typeof document.selection != "undefined") {
-            if (document.selection.type == "Text") {
+        } else if (typeof document.selection !== "undefined") {
+            if (document.selection.type === "Text") {
                 html = document.selection.createRange().htmlText;
             }
         }
-        // alert(html);
         return html;
     }
+
+
+
+
+// TEST CODE: hardcodes features for each window.
+    var samples = [];
+    //Create dummy Genbank sequence/feature samples
+    var sample1 = {sequence: "aaaagctacaggggccaatgacgcccctagacagtttttaacccaaaa",
+        features: []};
+//                {name: "feature4", sequence: "aaaag", color: "brown"}
+    var sample2 = {sequence: "ATGGAGCATACATATCAATATTCATGGATCATACCGTTTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGACTCCTACTTTTTCCGACGGCAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATATTTTATTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAATGAGGTTCAGTTTTTATTTGTTACTTTATGTGCCTCTTTATTA",
+        features: [{name: "feature1", sequence: "TTGTGCCACTTCCAATTCCTATTTTAATAGGAATTGGAC", color: "red"},
+            {name: "feature3", sequence: "CAACAAAAAATCTTCGTCGTATGTGGGCTCTTCCCAATAT", color: "green"},
+            {name: "feature4", sequence: "TTGTTAAGTATAGTTATGATTTTTTCGGTCGATCTGTCCATTCAGCAAATAAATAAAAGTTCTATCTATCAATATGTATGGTCTTGGACCATCAATAATGATTTTTCTTTCGAGTTTGGCTACTTTATTGATTCGCTTACCTAGTTCGAATTTGATAAAATTTATATTTTTTGGGAATTAGTTGGAATGTGTTCTTATCTATTAATAGGGTTTTGGTTCACACGACCCGCTGCGGCAAACGCCTGTCAAAAAGCATTTGTAACTAATCGGATAGGCGATTTTGGTTTATTATTAGGAATCTTAGGTTTTTATTGGATAACGGGAAGTTTCGAATTTCAAGATTTGTTCGAAATATTTAATAACTTGATTTATAATAA", color: "yellow"}]
+    };
+    var sample3 = {sequence: "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT",
+        features: [{name: "feature1", sequence: "ATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAA", color: "red"},
+            {name: "feature2", sequence: "TATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTAC", color: "cyan"},
+            {name: "feature3", sequence: "TCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAA", color: "green"},
+            {name: "feature4", sequence: "ACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTC", color: "yellow"}]
+    };
+    samples.push(sample1);
+    samples.push(sample2);
+    samples.push(sample3);
+
+
+    //generate feature list
+    var _features = []; //stores current features
+    var _annotations = [];
+    for (var j = 0; j < samples[2]["features"].length; j++) {
+        var currentFeature = samples[2].features[j];
+        _features.push({name: currentFeature.name, sequence: currentFeature.sequence, color: currentFeature.color});
+    }
+
+
+    $('#annotate').click(function() {
+        var id = 0;
+        $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
+        _annotations = generateAnnotations($('#seqTextArea_0').text(), _features, id);
+        generateHighlights($('#seqTextArea_0').text(), _annotations, id);
+    });
+
 });
