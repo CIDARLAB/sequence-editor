@@ -642,19 +642,20 @@ $(document).ready(function() {
         $('#resizable_' + count).mouseup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
-            var textArea = $(textAreaID)[0];
             var gcPattern = /[gc]/ig;
             var gcContent = 0;
-            var wholeSequence = document.getElementById('seqTextArea_' + id).innerHTML.toString();
+            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var selection = getSelectionHtml();
-            var inCodonPosStart = (textArea.selectionStart % 3);
-            var inCodonPosEnd = (textArea.selectionEnd % 3);
-            var seqLength = $(textAreaID).val().length;
+            var seqLength = wholeSequence.length;
             var rowsTextArea = "#rowsTextArea_" + id;
             var columnsLast = "#columnLast_" + id;
             var posCell = "#positionCell_" + id;
             var gcCell = "#gcCell_" + id;
             var lenCell = "#lengthCell_" + id;
+            // Get cursor position and selection indices (if any)
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            var inCodonPosStart = (selectionIndices.start % 3);
+            var inCodonPosEnd = (selectionIndices.end % 3);
 
             // Update rows display
             if (seqLength === 0) {
@@ -686,8 +687,8 @@ $(document).ready(function() {
                 }
             }
 
-            if (textArea.selectionStart === textArea.selectionEnd) {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            if (selectionIndices.start === selectionIndices.end) {
+                var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(wholeSequence)) {
@@ -698,7 +699,7 @@ $(document).ready(function() {
                 $(lenCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")-" + selectionIndices.end + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -716,7 +717,6 @@ $(document).ready(function() {
         $('#resizable_' + count).keyup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
-            var textArea = $(textAreaID)[0];
             var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var selection = getSelectionHtml();
             // Grab current sequence length
@@ -726,7 +726,11 @@ $(document).ready(function() {
             var posCell = "#positionCell_" + id;
             var gcCell = "#gcCell_" + id;
             var lengthCell = "#lengthCell_" + id;
-            
+            // Get cursor position and selection indices (if any)
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            var inCodonPosStart = (selectionIndices.start % 3);
+            var inCodonPosEnd = (selectionIndices.end % 3);
+
             // Update rows display
             if (seqLength === 0) {
                 $(rowsTextArea).text("");
@@ -759,10 +763,8 @@ $(document).ready(function() {
 
             var gcPattern = /[gc]/ig;
             var gcContent = 0;
-            var inCodonPosStart = (textArea.selectionStart % 3);
-            var inCodonPosEnd = (textArea.selectionEnd % 3);
-            if (textArea.selectionStart === textArea.selectionEnd) {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")";
+            if (selectionIndices.start === selectionIndices.end) {
+                var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(wholeSequence)) {
@@ -774,7 +776,7 @@ $(document).ready(function() {
                 $(lengthCell).html(seqLength);
             }
             else {
-                var posDisplay = textArea.selectionStart + "(" + inCodonPosStart + ")-" + textArea.selectionEnd + "(" + inCodonPosEnd + ")";
+                var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")-" + selectionIndices.end + "(" + inCodonPosEnd + ")";
                 $(posCell).html(posDisplay);
 
                 while (gcPattern.test(selection)) {
@@ -987,7 +989,7 @@ $(document).ready(function() {
         $('#seqTextArea_' + count).keydown(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             _sequence = $('#seqTextArea_' + id).val();
-            $('#highlight_' + id + ' span').css("color", "transparent");
+            // $('#highlight_' + id + ' span').css("color", "transparent");
             changeLength++;
         });
 
@@ -995,12 +997,12 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + id)[0];
             var unparsed = $('#seqTextArea_' + id).val();
-            changeLength = (unparsed.length - _sequence.length) * changeLength;
-            if (changeLength !== 0) {
-                _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
-            }
-            changeLength = 0;
-            var parsed = generateHighlights(unparsed, _annotations, id);
+            // changeLength = (unparsed.length - _sequence.length) * changeLength;
+            // if (changeLength !== 0) {
+            //     _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
+            // }
+            // changeLength = 0;
+            // var parsed = generateHighlights(unparsed, _annotations, id);
         });
 
         // LAST STEP: Increment count variable
