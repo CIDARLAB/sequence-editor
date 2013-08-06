@@ -525,7 +525,8 @@ $(document).ready(function() {
         $('#revComp_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
+            var textArea = $(textAreaID)[0];
+            var wholeSequence = textArea.innerText;
             var selectionText = getSelectionHtml();
             // selectionIndices has properties "start" and "end" corresponding to visible text in div.
             if (selectionText !== "") {
@@ -645,9 +646,10 @@ $(document).ready(function() {
         $('#resizable_' + count).mouseup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
+            var textArea = $(textAreaID)[0];
             var gcPattern = /[gc]/ig;
             var gcContent = 0;
-            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
+            var wholeSequence = textArea.innerText;
             var selection = getSelectionHtml();
             var seqLength = wholeSequence.length;
             var rowsTextArea = "#rowsTextArea_" + id;
@@ -720,7 +722,8 @@ $(document).ready(function() {
         $('#resizable_' + count).keyup(function() {
             var id = $(this).attr('id').match(/\d/);
             var textAreaID = "#seqTextArea_" + id;
-            var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
+            var textArea = $(textAreaID)[0];
+            var wholeSequence = textArea.innerText;
             var selection = getSelectionHtml();
             // Grab current sequence length
             var seqLength = wholeSequence.length;
@@ -870,19 +873,167 @@ $(document).ready(function() {
         jwerty.key('a', function() {
             var id = (document.activeElement.id).match(/\d/);
             windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+a', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
         });
         jwerty.key('c', function() {
             var id = (document.activeElement.id).match(/\d/);
             windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+c', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
         });
         jwerty.key('t', function() {
             var id = (document.activeElement.id).match(/\d/);
             windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+t', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
         });
         jwerty.key('g', function() {
             var id = (document.activeElement.id).match(/\d/);
             windows[id].needToResetORFList = 1;
+            changeLength++;
         });
+        jwerty.key('shift+g', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('u', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+u', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('r', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+r', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('y', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+y', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('s', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+s', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('w', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+w', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('k', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+k', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('m', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+m', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('b', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+b', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('d', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+d', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('h', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+h', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('v', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+v', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('n', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('shift+n', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
+            changeLength++;
+        });
+        jwerty.key('backspace', function() {
+            changeLength--;
+        });
+
 //    /***************************************************************************************/
 //    /* Menu Item Event Handlers */
 //
@@ -940,8 +1091,8 @@ $(document).ready(function() {
             // This hardcodes a sequence into the current seqTextArea
             //TODO: Alter this to take current text area value and determine if features are present
             $('#seqTextArea_' + id).html("aaaaggggagatcccccttttaaaaga");
-            windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id).text(), windows[id]._features);
-            var parsed = generateHighlights($('#seqTextArea_' + id).text(), windows[id]._annotations);
+            windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id)[0].innerText, windows[id]._features);
+            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
             $('#seqTextArea_' + id).html(parsed);
         });
 
@@ -993,22 +1144,19 @@ $(document).ready(function() {
         $('#seqTextArea_' + count).keydown(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             _sequence = $('#seqTextArea_' + id).val();
-            // $('#highlight_' + id + ' span').css("color", "transparent");
-            changeLength++;
         });
 
         $('#seqTextArea_' + count).keyup(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + id)[0];
-            var unparsed = $('#seqTextArea_' + id).text();
-            changeLength = (unparsed.length - _sequence.length) * changeLength;
+            var unparsed = textArea.innerText;
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
             if (changeLength !== 0) {
-                //TODO update won't work unless selection end is correctly found
-                windows[id]._annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
+                windows[id]._annotations = updateAnnotationIndices(selectionIndices.end, windows[id]._annotations, changeLength);
             }
             changeLength = 0;
             var parsed = generateHighlights(unparsed, windows[id]._annotations);
-             $('#seqTextArea_' + id).html(parsed);
+            $('#seqTextArea_' + id).html(parsed);
         });
 
         // LAST STEP: Increment count variable
@@ -1268,8 +1416,6 @@ $(document).ready(function() {
             }
             return 0;
         });
-        // for (var i = 0; i < unresolvedAnnotations.length; i++) {
-        // }
         var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
         return resolvedAnnotations;
     };
@@ -1328,11 +1474,11 @@ $(document).ready(function() {
                         }
                         pp++;
                     }
-                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1]);
                     toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                 }
                 else {
-                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
+                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1]);
                     toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
                 }
             }
