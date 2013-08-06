@@ -524,14 +524,14 @@ $(document).ready(function() {
          */
         $('#revComp_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            $('#seqTextArea_' + id).focus();
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
             var wholeSequence = textArea.innerText;
             var selectionText = getSelectionHtml();
             // selectionIndices has properties "start" and "end" corresponding to visible text in div.
-            if (selectionText !== "") {
-                var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
-            }
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+            // var cursorPosToRestore = selectionIndices.start;
             if (selectionText.length === 0) {
                 // Nothing is selected, so reverse complement everything.
                 selectionText = wholeSequence;
@@ -540,7 +540,7 @@ $(document).ready(function() {
                 // Restore selection ranges upon reverse complement of entire sequence
                 for (var ii = 0; ii < windows[id]._annotations.length; ii++) {
                     var range = rangy.createRange();
-                    var node = document.getElementById('seqTextArea_' + id);
+                    var node = textArea;
                     node = node.lastChild;
                     if (ii === 0) {
                         range.setStart(node, windows[id]._annotations[ii].start);
@@ -561,6 +561,41 @@ $(document).ready(function() {
                 }
                 var sel = rangy.getSelection();
                 sel.removeAllRanges();
+                textArea.focus();
+                // var node = textArea.firstChild;
+                // var nodeStart = 0;
+                // var nodeEnd = 0;
+                // nodeEnd += node.innerText.length;
+                // var gotIt = 0;
+                // alert(nodeStart + " ... " + nodeEnd);
+                // if (cursorPosToRestore <= 0) {
+                //     var range = rangy.createRange();
+                //     range.setStart(node, 0);
+                //     range.setEnd(node, 0);
+                //     range.select();
+                // } else {
+                //     while (gotIt === 0) {
+                //         if (cursorPosToRestore >= nodeStart && cursorPosToRestore < nodeEnd) {
+                //             var pos = cursorPosToRestore - nodeStart;
+                //             var range = rangy.createRange();
+                //             range.collapseToPoint(node, pos);
+                //             // range.select();
+                //             gotIt = 1;
+                //         } else {
+                //             if (node.length) {
+                //                 nodeStart += node.length;
+                //             } else {
+                //                 nodeStart += node.innerText.length;
+                //             }
+                //             node = node.nextSibling;
+                //             if (node.length) {
+                //                 nodeEnd += node.length;
+                //             } else {
+                //                 nodeEnd += node.innerText.length;
+                //             }
+                //         }
+                //     }
+                // }
             }
             else {
                 var revCompOut = revComp(selectionText);
@@ -1031,6 +1066,8 @@ $(document).ready(function() {
             changeLength++;
         });
         jwerty.key('backspace', function() {
+            var id = (document.activeElement.id).match(/\d/);
+            windows[id].needToResetORFList = 1;
             changeLength--;
         });
 
