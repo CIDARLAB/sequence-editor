@@ -166,11 +166,11 @@ $(document).ready(function() {
         windows[count]._features = _features;
         windows[count]._annotations = _annotations;
 
-        windows[count].sequence = "TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT";
-        windows[count]._features.push({name: "feature1", sequence: "AAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAAT", color: "red"});
-        windows[count]._features.push({name: "feature2", sequence: "CTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTA", color: "cyan"});
-        windows[count]._features.push({name: "feature3", sequence: "TTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCT", color: "green"});
-        windows[count]._features.push({name: "feature4", sequence: "ATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATC", color: "yellow"});
+        windows[count].sequence = "aaaaggggagatcccccttttaaaaga";
+        windows[count]._features.push({name: "feature1", sequence: "aaaa", color: "red"});
+        windows[count]._features.push({name: "feature2", sequence: "gggg", color: "cyan"});
+        windows[count]._features.push({name: "feature3", sequence: "cccc", color: "green"});
+        windows[count]._features.push({name: "feature4", sequence: "tttt", color: "yellow"});
 
         //i've added a hidden span on kevinSandbox.html with 0px padding; 
         $('#lengthCell_' + count).html(windows[count].seqLength);
@@ -528,7 +528,7 @@ $(document).ready(function() {
             var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var selectionText = getSelectionHtml();
             // selectionIndices has properties "start" and "end" corresponding to visible text in div.
-            if(selectionText !== "") {
+            if (selectionText !== "") {
                 var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
             }
             if (selectionText.length === 0) {
@@ -537,17 +537,17 @@ $(document).ready(function() {
                 var revCompOut = revComp(selectionText);
                 $(textAreaID).html(revCompOut);
                 // Restore selection ranges upon reverse complement of entire sequence
-                for (var ii=0; ii<windows[id]._annotations.length; ii++) {
+                for (var ii = 0; ii < windows[id]._annotations.length; ii++) {
                     var range = rangy.createRange();
                     var node = document.getElementById('seqTextArea_' + id);
                     node = node.lastChild;
-                    if (ii===0) {
+                    if (ii === 0) {
                         range.setStart(node, windows[id]._annotations[ii].start);
-                        range.setEnd(node, windows[id]._annotations[ii].end);                
+                        range.setEnd(node, windows[id]._annotations[ii].end);
                     }
                     else {
-                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
-                        range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);
+                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii - 1].end);
+                        range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii - 1].end);
                     }
                     range.select();
                     // Applies a highlight to the current selection of text adding to any existing highlights.
@@ -556,7 +556,7 @@ $(document).ready(function() {
                     var classApplier = rangy.createCssClassApplier(randomCssClass, true);
                     classApplier.applyToSelection();
                     // Now use jQuery to add the CSS colour and remove the class
-                    $("." + randomCssClass).css( {"background-color": windows[id]._annotations[ii].color} ).removeClass(randomCssClass);
+                    $("." + randomCssClass).css({"background-color": windows[id]._annotations[ii].color}).removeClass(randomCssClass);
                 }
                 var sel = rangy.getSelection();
                 sel.removeAllRanges();
@@ -564,7 +564,7 @@ $(document).ready(function() {
             else {
                 var revCompOut = revComp(selectionText);
                 $(textAreaID).replaceSelectedText(revCompOut, selectionText);
-                
+
                 //TODO: The code commented below is non-functional when any elements (ie. highlights) exist in the div's text element.
                 // var range = rangy.createTextRange();
                 // var node = document.getElementById('seqTextArea_' + id);
@@ -939,9 +939,10 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             // This hardcodes a sequence into the current seqTextArea
             //TODO: Alter this to take current text area value and determine if features are present
-            $('#seqTextArea_' + id).html("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-            _annotations = generateAnnotations($('#seqTextArea_' + id)[0].innerText, windows[id]._features, id);
-            generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations, id);
+            $('#seqTextArea_' + id).html("aaaaggggagatcccccttttaaaaga");
+            windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id).text(), windows[id]._features);
+            var parsed = generateHighlights($('#seqTextArea_' + id).text(), windows[id]._annotations);
+            $('#seqTextArea_' + id).html(parsed);
         });
 
         $('#selection_' + count).click(function() {
@@ -959,7 +960,7 @@ $(document).ready(function() {
             var classApplier = rangy.createCssClassApplier(randomCssClass, true);
             classApplier.applyToSelection();
             // Now use jQuery to add the CSS colour and remove the class
-            $("." + randomCssClass).css( {"background-color": "orange"} ).removeClass(randomCssClass);
+            $("." + randomCssClass).css({"background-color": "orange"}).removeClass(randomCssClass);
 
             //Stores selection annotation/range to some container for later use (removal, manipulation, etc)
             windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
@@ -999,13 +1000,15 @@ $(document).ready(function() {
         $('#seqTextArea_' + count).keyup(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + id)[0];
-            var unparsed = $('#seqTextArea_' + id).val();
-            // changeLength = (unparsed.length - _sequence.length) * changeLength;
-            // if (changeLength !== 0) {
-            //     _annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
-            // }
-            // changeLength = 0;
-            // var parsed = generateHighlights(unparsed, _annotations, id);
+            var unparsed = $('#seqTextArea_' + id).text();
+            changeLength = (unparsed.length - _sequence.length) * changeLength;
+            if (changeLength !== 0) {
+                //TODO update won't work unless selection end is correctly found
+                windows[id]._annotations = updateAnnotationIndices(textArea.selectionEnd, _annotations, changeLength);
+            }
+            changeLength = 0;
+            var parsed = generateHighlights(unparsed, windows[id]._annotations);
+             $('#seqTextArea_' + id).html(parsed);
         });
 
         // LAST STEP: Increment count variable
@@ -1236,7 +1239,7 @@ $(document).ready(function() {
     }
 
     //generates annotations: {featureName, start, end, color}
-    var generateAnnotations = function(sequence, features, id) {
+    var generateAnnotations = function(sequence, features) {
         var unresolvedAnnotations = [];                 //annotations with potential overlaps
         for (var i = 0; i < features.length; i++) {
             var matches = getIndicesOf(features[i].sequence, sequence, false);
@@ -1267,13 +1270,12 @@ $(document).ready(function() {
         });
         // for (var i = 0; i < unresolvedAnnotations.length; i++) {
         // }
-        var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence, id);
-
+        var resolvedAnnotations = resolveFeatureOverlap(unresolvedAnnotations, sequence);
         return resolvedAnnotations;
     };
 
     //resolve overlaps between annotations
-    var resolveFeatureOverlap = function(unresolvedAnnotations, sequence, id) {
+    var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
         var toReturn = [];  // Annotations denoting overlaps
         for (var i = 0; i < unresolvedAnnotations.length; i++) {
             var overlapping = [];
@@ -1327,12 +1329,10 @@ $(document).ready(function() {
                         pp++;
                     }
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
-                    windows[id]._annotations.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                     toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                 }
                 else {
                     var spanSequence = sequence.substring(ind[mm], ind[mm + 1] - 1);
-                    windows[id]._annotations.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
                     toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
                 }
             }
@@ -1363,48 +1363,28 @@ $(document).ready(function() {
         return annotations;
     };
 
-    var generateHighlights = function(sequence, annotationsToDraw, id) {
-        for (var ii=0; ii<windows[id]._annotations.length; ii++) {
-            var range = rangy.createRange();
-            var node = document.getElementById('seqTextArea_' + id);
-            node = node.lastChild;  // Select the last child of the div to apply the next highlight. It's okay to do this because our features are ordered by index.
-
-            if ((windows[id]._annotations.length - 1) === ii) { // Last feature to highlight
-                range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
-                range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);
+    var generateHighlights = function(sequence, annotationsToDraw) {
+        var toReturn = "";
+        //iterate through each feature and append regular text or a span
+        if (annotationsToDraw.length > 0) {
+            //append start of string
+            toReturn = sequence.substring(0, annotationsToDraw[0].start) + '<span title="' + annotationsToDraw[0].features + '" style="background-color:' + annotationsToDraw[0].color + '">' + sequence.substring(annotationsToDraw[0].start, annotationsToDraw[0].end) + '</span>';
+            var prevEnd = annotationsToDraw[0].end; //ending of the previous annotation
+            for (var i = 1; i < annotationsToDraw.length; i++) {
+                var start = annotationsToDraw[i].start;
+                var end = annotationsToDraw[i].end;
+                var features = annotationsToDraw[i].features;
+                var color = annotationsToDraw[i].color;
+                toReturn = toReturn + sequence.substring(prevEnd, start);
+                toReturn = toReturn + '<span title="' + features + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
+                prevEnd = end;
             }
-            else {
-                if (ii===0) {
-                    if (windows[id]._annotations[ii].end >= windows[id]._annotations[ii+1].start) {
-                        range.setStart(node, windows[id]._annotations[ii].start);
-                        range.setEnd(node, windows[id]._annotations[ii+1].start - 1);
-                    } else {
-                        range.setStart(node, windows[id]._annotations[ii].start);
-                        range.setEnd(node, windows[id]._annotations[ii].end);   
-                    }
-                }
-                else {
-                    if (windows[id]._annotations[ii].end >= windows[id]._annotations[ii+1].start) {
-                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
-                        range.setEnd(node, (windows[id]._annotations[ii+1].start - 1) - windows[id]._annotations[ii-1].end);         
-                    } else {
-                        range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii-1].end);
-                        range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii-1].end);                    
-                    }
-                }
-            }
-
-            range.select();
-            // Applies a highlight to the current selection of text adding to any existing highlights.
-            rangy.init();
-            var randomCssClass = "rangyTemp_" + (+new Date());
-            var classApplier = rangy.createCssClassApplier(randomCssClass, true);
-            classApplier.applyToSelection();
-            // Now use jQuery to add the CSS colour and remove the class
-            $("." + randomCssClass).css( {"background-color": windows[id]._annotations[ii].color} ).removeClass(randomCssClass);
+            //append end of string
+            toReturn = toReturn + sequence.substring(annotationsToDraw[annotationsToDraw.length - 1].end, sequence.length);
+        } else {
+            toReturn = sequence;
         }
-        var sel = rangy.getSelection();
-        sel.removeAllRanges();
+        return toReturn;
     };
 
     // TODO: Rewrite function so that it returns proper sequence string when highlight spans are present. Currently returns html for highlights.
@@ -1465,8 +1445,8 @@ $(document).ready(function() {
     $('#annotate').click(function() {
         var id = 0;
         $('#seqTextArea_0').val("TCAATAAAACTATGGGGTAAAGAAGAACAAAAAATAATTAACAGAAATTTTCGTTTATCTCCTTTATTAATATTAACGATGAATAATAATGAGAAGCCATATAGAATTGGTGATAATGTAAAAAAAGGGGCTCTTATTACTATTACGAGTTTTGGCTACAAGAAGGCTTTTTCTTATCCTCATGAATCGGATAATACTATGCTATTTCCTATGCTTATATTGGCTCTATTTACTTTTTTTGTTGGAGCCATAGCAATTCCTTTTAATCAAGAAGGACTACATTTGGATATATTATCCAAATTATTAACTCCATCTATAAATCTTTTACATCAAAATTCAAATGATTTTGAGGATTGGTATCAATTTTTAACAAATGCAACTCTTTCAGTGAGTATAGCCTGTTTCGGAATATTTACAGCATTCCTTTTATATAAGCCTTTTTATTCATCTTTACAAAATTTGAACTTACTAAATTTATTTTCGAAAGGGGGTCCTAAAAGAATTTTTTTGGATAAAATAATATACTTGATATACGATTGGTCATATAATCGTGGTTACATAGATACGTTTTATTCAGTATCCTTAACAAAAGGTATAAGAGGATTGGCCGAACTAACTCATTTTTTTGATAGGCGAGTAATCGATGGAATTACAAATGGAGTACGCATCACAAGTTTTTTTATAGGCGAAGGTATCAAATATT");
-        _annotations = generateAnnotations($('#seqTextArea_0').text(), _features, id);
-        generateHighlights($('#seqTextArea_0').text(), _annotations, id);
+        _annotations = generateAnnotations($('#seqTextArea_0').text(), _features);
+        var parsed = generateHighlights($('#seqTextArea_0').text(), _annotations);
     });
 
 });
