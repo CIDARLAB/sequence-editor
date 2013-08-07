@@ -12,7 +12,9 @@ $(document).ready(function() {
     var _sequence = ""; //store sequence to compare if insert or delete happened
 
     $('#newButton').click(function() {
-        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + count + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:7%;text-align: center;"></textarea><div contenteditable class="seqTextArea pull-right" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div><!--this is the highlight layer--><div contenteditable="true" class="pull-right highlight" id="highlight_' + count + '" style="overflow:auto;margin-left: 0px;resize: none;word-wrap: break-word;min-height:250px;height: 250px;z-index: -1;position: relative;width: 90%;">atgttaacccatccgtgactaagacattgaatgccctag</div></div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:white;border: transparent 2px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:250px;overflow:hidden;padding-top:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
+        
+
         $('#seqTextArea_' + count).focus();
 
         $('#highlight_' + count).css("top", -1 * (parseInt($('#seqTextArea_' + count).css("height")) + parseInt($('#seqTextArea_' + count).css("margin-bottom")) + parseInt($('#seqTextArea_' + count).css("border-width"))));
@@ -69,19 +71,17 @@ $(document).ready(function() {
                         } else {
                             $('#columnLast_' + aCount).text(Math.floor($('#seqTextArea_' + aCount).width() / charWidth));
                         }
-                        numberOfCols = Math.floor($('#seqTextArea_' + aCount).width() / charWidth - hasScrollBar);
+                        numberOfCols = Math.floor($('#seqTextArea_' + aCount).width() / charWidth - (hasScrollBar*2));
                         var kk = 0;
                         var lineNumber = "";
                         var numberOfRows = Math.ceil(seqLength / numberOfCols);
                         while (kk < numberOfRows) {
                             if (kk === 0) {
-                                // lineNumber += "1\n\n1\n";   // Double column line number format
                                 lineNumber += "\n1\n\n"
                                 $("#rowsTextArea_" + aCount).text(lineNumber);
                                 kk++;
                             }
                             else {
-                                // lineNumber += "\r\n" + (numberOfCols * kk) + "\n\n" + (numberOfCols * kk) + "\n";   // Double column line number format
                                 lineNumber += "\r\n\n" + (numberOfCols * kk) + "\n\n";
                                 $("#rowsTextArea_" + aCount).text(lineNumber);
                                 kk++;
@@ -501,7 +501,7 @@ $(document).ready(function() {
             } else {
                 $('#columnLast_' + id).text(Math.floor($('#seqTextArea_' + id).width() / charWidth));
             }
-            windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
+            windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - (hasScrollBar*2));
             var kk = 0;
             var lineNumber = "";
             windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
@@ -513,7 +513,7 @@ $(document).ready(function() {
                 }
                 else {
                     lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
-                    $("#rowsTextArea_" + id).text(lineNumber);
+                    $("#rowsTextArea_" + id).html(lineNumber);
                     kk++;
                 }
             }
@@ -633,13 +633,20 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/);  // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;      // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
+            var wholeSequence = textArea.innerText;
             var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
             if (selectionIndices.start === selectionIndices.end) {
                 textArea.innerText = textArea.innerText.toUpperCase();  //Nothing highlighted, so change everything.
+                var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
+                $('#seqTextArea_' + id).html(parsed);
             } else {
                 var upperOut = getSelectionHtml().toUpperCase();
-                alert(upperOut);
-                // TODO: Replace selection with this uppercase counterpart
+                var firstHalf = wholeSequence.substring(0, selectionIndices.start);
+                var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
+                var wholeSequence = firstHalf + upperOut + secondHalf;
+                $(textAreaID).text(wholeSequence);
+                var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
+                $('#seqTextArea_' + id).html(parsed);
             }
         });
 
@@ -650,14 +657,21 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
+            var wholeSequence = textArea.innerText;
             var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
             if (selectionIndices.start === selectionIndices.end) {
                 textArea.innerText = textArea.innerText.toLowerCase();  //Nothing highlighted, so change everything.
+                var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
+                $('#seqTextArea_' + id).html(parsed);
             }
             else {
                 var lowerOut = getSelectionHtml().toLowerCase();
-                alert(lowerOut);
-                // TODO: Replace selection with this lowercase counterpart
+                var firstHalf = wholeSequence.substring(0, selectionIndices.start);
+                var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
+                var wholeSequence = firstHalf + lowerOut + secondHalf;
+                $(textAreaID).text(wholeSequence);
+                var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
+                $('#seqTextArea_' + id).html(parsed);
             }
         });
 
@@ -705,7 +719,7 @@ $(document).ready(function() {
                 } else {
                     $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
                 }
-                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
+                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - (hasScrollBar*2));
                 var kk = 0;
                 var lineNumber = "";
                 windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
@@ -717,7 +731,7 @@ $(document).ready(function() {
                     }
                     else {
                         lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
-                        $(rowsTextArea).text(lineNumber);
+                        $(rowsTextArea).html(lineNumber);
                         kk++;
                     }
                 }
@@ -780,7 +794,7 @@ $(document).ready(function() {
                 } else {
                     $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
                 }
-                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - hasScrollBar);
+                windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - (hasScrollBar*2));
                 var kk = 0;
                 var lineNumber = "";
                 windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
@@ -792,7 +806,7 @@ $(document).ready(function() {
                     }
                     else {
                         lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
-                        $(rowsTextArea).text(lineNumber);
+                        $(rowsTextArea).html(lineNumber);
                         kk++;
                     }
                 }
@@ -1213,8 +1227,8 @@ $(document).ready(function() {
                 }
                 else {
                     lineNumber += "\r\n" + (numberOfCols * (kk));
-                    alert(lineNumber);
-                    $('#rowsTextArea_' + count).text(lineNumber);
+                    // alert(lineNumber);
+                    $('#rowsTextArea_' + count).html(lineNumber);
                     kk++;
                 }
             }
