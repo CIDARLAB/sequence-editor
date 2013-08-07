@@ -633,17 +633,16 @@ $(document).ready(function() {
          * Uppercase function makes all selected text uppercase.
          */
         $('#uppercase_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
+            var id = ($(this).attr('id')).match(/\d/);  // match the id number associated with the current window
+            var textAreaID = "#seqTextArea_" + id;      // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
-            var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
-            if (sequence.length === 0) {
-                //Nothing highlighted, so change everything.
-                textArea.value = textArea.value.toUpperCase();
-
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
+            if (selectionIndices.start === selectionIndices.end) {
+                textArea.innerText = textArea.innerText.toUpperCase();  //Nothing highlighted, so change everything.
             } else {
-                var upperOut = sequence.toUpperCase();
-                $(textAreaID).replaceSelectedText(upperOut, "select");
+                var upperOut = getSelectionHtml().toUpperCase();
+                alert(upperOut);
+                // TODO: Replace selection with this uppercase counterpart
             }
         });
 
@@ -654,14 +653,14 @@ $(document).ready(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
-            var sequence = textArea.value.substring(textArea.selectionStart, textArea.selectionEnd);
-            if (sequence.length === 0) {
-                //Nothing highlighted, so change everything.
-                textArea.value = textArea.value.toLowerCase();
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
+            if (selectionIndices.start === selectionIndices.end) {
+                textArea.innerText = textArea.innerText.toLowerCase();  //Nothing highlighted, so change everything.
             }
             else {
-                var lowerOut = sequence.toLowerCase();
-                $(textAreaID).replaceSelectedText(lowerOut, "select");
+                var lowerOut = getSelectionHtml().toLowerCase();
+                alert(lowerOut);
+                // TODO: Replace selection with this lowercase counterpart
             }
         });
 
