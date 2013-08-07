@@ -13,7 +13,8 @@ $(document).ready(function() {
 
     $('#newButton').click(function() {
         $('#testArea').append('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="min-width:650px;min-height:400px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span7"><div class="pull-left"><ul class="menu"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span2"><div class="btn-group pull-right"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2 offset1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:white;border: transparent 2px;box-shadow: none;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:240px;overflow:hidden;padding-top:5px;padding-bottom:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset4 span4"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td></tr><tr><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>');
-        
+        // Below is the highlight layer, taken so info table aligns within the window.
+        // <!--this is the highlight layer--><div class="span2" style="position:relative;z-index:-1;padding:0px;margin:0px"></div><div contenteditable="true" class="span9 highlight" id="highlight_' + count + '">atgttaacccatccgtgactaagacattgaatgccctag</div>
 
         $('#seqTextArea_' + count).focus();
 
@@ -706,6 +707,7 @@ $(document).ready(function() {
             var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
             var inCodonPosStart = (selectionIndices.start % 3);
             var inCodonPosEnd = (selectionIndices.end % 3);
+            windows[id].needToResetORFList = 1;
 
             // Update rows display
             if (seqLength === 0) {
@@ -870,7 +872,14 @@ $(document).ready(function() {
         jwerty.key('alt+q', function() {
             var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
-            nextForwardORF(id, textAreaID);
+            var textArea = $(textAreaID)[0];
+            // var node1 = textArea.firstChild;
+            // var node2 = node1.nextSibling;
+            // var range = rangy.createRange();
+            // range.setStart(node2, 1);
+            // range.setEnd(node2, 3);
+            // range.select();
+            // nextForwardORF(id, textAreaID);
         });
 
         jwerty.key('alt+w', false);
@@ -1141,6 +1150,7 @@ $(document).ready(function() {
             windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id)[0].innerText, windows[id]._features);
             var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
             $('#seqTextArea_' + id).html(parsed);
+            windows[id].needToResetORFList = 1;
         });
 
         $('#selection_' + count).click(function() {
@@ -1204,6 +1214,7 @@ $(document).ready(function() {
             changeLength = 0;
             var parsed = generateHighlights(unparsed, windows[id]._annotations);
             $('#seqTextArea_' + id).html(parsed);
+            windows[id].needToResetORFList = 1;
         });
 
         // LAST STEP: Increment count variable
@@ -1227,7 +1238,6 @@ $(document).ready(function() {
                 }
                 else {
                     lineNumber += "\r\n" + (numberOfCols * (kk));
-                    // alert(lineNumber);
                     $('#rowsTextArea_' + count).html(lineNumber);
                     kk++;
                 }
@@ -1270,13 +1280,69 @@ $(document).ready(function() {
     }
 
 
+///////////////////////////////////
+
+function getTextNodesIn(node) {
+    var textNodes = [];
+    if (node.nodeType == 3) {
+        textNodes.push(node);
+    } else {
+        var children = node.childNodes;
+        for (var i = 0, len = children.length; i < len; ++i) {
+            textNodes.push.apply(textNodes, getTextNodesIn(children[i]));
+        }
+    }
+    return textNodes;
+}
+
+function setSelectionRange(el, start, end) {
+    if (document.createRange && window.getSelection) {
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var textNodes = getTextNodesIn(el);
+        var foundStart = false;
+        var charCount = 0, endCharCount;
+
+        for (var i = 0, textNode; textNode = textNodes[i++]; ) {
+            endCharCount = charCount + textNode.length;
+            if (!foundStart && start >= charCount && (start < endCharCount || (start == endCharCount && i < textNodes.length))) {
+                range.setStart(textNode, start - charCount);
+                foundStart = true;
+            }
+            if (foundStart && end <= endCharCount) {
+                range.setEnd(textNode, end - charCount);
+                break;
+            }
+            charCount = endCharCount;
+        }
+
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+    } else if (document.selection && document.body.createTextRange) {
+        var textRange = document.body.createTextRange();
+        textRange.moveToElementText(el);
+        textRange.collapse(true);
+        textRange.moveEnd("character", end);
+        textRange.moveStart("character", start);
+        textRange.select();
+    }
+}
+
+///////////////////////////////////
+
+
+
     /*
      * Next Forward ORF function
      * @return: Highlights Next Forward ORF
      */
     function nextForwardORF(id, textAreaID) {
+
+        // setSelectionRange(document.getElementById("seqTextArea_0"), 2, 7);
+
         if (windows[id].needToResetORFList) {
-            var forwardArrayAndIndex = getForwardORFS($(textAreaID).val().toString());
+            var forwardArrayAndIndex = getForwardORFS($(textAreaID)[0].innerText);
             windows[id].forwardArrayAndIndex[0].forwardCurrentORF = forwardArrayAndIndex[0];
             windows[id].forwardArrayAndIndex[0].forwardNumORF = forwardArrayAndIndex[1];
             windows[id].forwardArrayAndIndex[0].forwardIndex = forwardArrayAndIndex[2];
@@ -1288,7 +1354,8 @@ $(document).ready(function() {
 
         if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
             if (windows[id].forwardNextOrPrevious === 2 || windows[id].forwardNextOrPrevious === 1) {
-                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
                 windows[id].forwardLoopCountORF += 1;
                 if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
                     windows[id].forwardLoopCountORF = 0;
@@ -1299,7 +1366,8 @@ $(document).ready(function() {
                 if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
                     windows[id].forwardLoopCountORF = (windows[id].forwardLoopCountORF - (windows[id].forwardArrayAndIndex[0].forwardNumORF - 1)) - 1;
                 }
-                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
                 windows[id].forwardLoopCountORF += 1;
                 if (windows[id].forwardLoopCountORF >= windows[id].forwardArrayAndIndex[0].forwardNumORF) {
                     windows[id].forwardLoopCountORF = 0;
@@ -1316,7 +1384,7 @@ $(document).ready(function() {
      */
     function nextReverseORF(id, textAreaID) {
         if (windows[id].needToResetORFList) {
-            var reverseArrayAndIndex = getReverseORFS($(textAreaID).val().toString());
+            var reverseArrayAndIndex = getReverseORFS($(textAreaID)[0].innerText);
             windows[id].reverseArrayAndIndex[0].reverseCurrentORF = reverseArrayAndIndex[0];
             windows[id].reverseArrayAndIndex[0].reverseNumORF = reverseArrayAndIndex[1];
             windows[id].reverseArrayAndIndex[0].reverseIndex = reverseArrayAndIndex[2];
@@ -1328,7 +1396,8 @@ $(document).ready(function() {
 
         if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
             if (windows[id].reverseNextOrPrevious === 2 || windows[id].reverseNextOrPrevious === 1) {
-                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
                 windows[id].reverseLoopCountORF += 1;
                 if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
                     windows[id].reverseLoopCountORF = 0;
@@ -1339,7 +1408,8 @@ $(document).ready(function() {
                 if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
                     windows[id].reverseLoopCountORF = (windows[id].reverseLoopCountORF - (windows[id].reverseArrayAndIndex[0].reverseNumORF - 1)) - 1;
                 }
-                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
                 windows[id].reverseLoopCountORF += 1;
                 if (windows[id].reverseLoopCountORF >= windows[id].reverseArrayAndIndex[0].reverseNumORF) {
                     windows[id].reverseLoopCountORF = 0;
@@ -1351,7 +1421,7 @@ $(document).ready(function() {
 
     function previousForwardORF(id, textAreaID) {
         if (windows[id].needToResetORFList) {
-            var forwardArrayAndIndex = getForwardORFS($(textAreaID).val().toString());
+            var forwardArrayAndIndex = getForwardORFS($(textAreaID)[0].innerText);
             windows[id].forwardArrayAndIndex[0].forwardCurrentORF = forwardArrayAndIndex[0];
             windows[id].forwardArrayAndIndex[0].forwardNumORF = forwardArrayAndIndex[1];
             windows[id].forwardArrayAndIndex[0].forwardIndex = forwardArrayAndIndex[2];
@@ -1363,7 +1433,8 @@ $(document).ready(function() {
 
         if (windows[id].forwardArrayAndIndex[0].forwardNumORF !== 0) {
             if (windows[id].forwardNextOrPrevious === 0 || windows[id].forwardNextOrPrevious === 2) {
-                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
                 windows[id].forwardLoopCountORF -= 1;
                 if (windows[id].forwardLoopCountORF < 0) {
                     windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
@@ -1374,7 +1445,8 @@ $(document).ready(function() {
                 if (windows[id].forwardLoopCountORF < 0) {
                     windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF + windows[id].forwardLoopCountORF;
                 }
-                $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF] - ((windows[id].forwardArrayAndIndex[0].forwardCurrentORF[windows[id].forwardLoopCountORF]).length), windows[id].forwardArrayAndIndex[0].forwardIndex[windows[id].forwardLoopCountORF]);
                 windows[id].forwardLoopCountORF -= 1;
                 if (windows[id].forwardLoopCountORF < 0) {
                     windows[id].forwardLoopCountORF = windows[id].forwardArrayAndIndex[0].forwardNumORF - 1;
@@ -1386,7 +1458,7 @@ $(document).ready(function() {
 
     function previousReverseORF(id, textAreaID) {
         if (windows[id].needToResetORFList) {
-            var reverseArrayAndIndex = getReverseORFS($(textAreaID).val().toString());
+            var reverseArrayAndIndex = getReverseORFS($(textAreaID)[0].innerText);
             windows[id].reverseArrayAndIndex[0].reverseCurrentORF = reverseArrayAndIndex[0];
             windows[id].reverseArrayAndIndex[0].reverseNumORF = reverseArrayAndIndex[1];
             windows[id].reverseArrayAndIndex[0].reverseIndex = reverseArrayAndIndex[2];
@@ -1398,7 +1470,8 @@ $(document).ready(function() {
 
         if (windows[id].reverseArrayAndIndex[0].reverseNumORF !== 0) {
             if (windows[id].reverseNextOrPrevious === 0 || windows[id].reverseNextOrPrevious === 2) {
-                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
                 windows[id].reverseLoopCountORF -= 1;
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
@@ -1409,7 +1482,8 @@ $(document).ready(function() {
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF + windows[id].reverseLoopCountORF;
                 }
-                $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
+                // $(textAreaID).setSelection(windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF] - ((windows[id].reverseArrayAndIndex[0].reverseCurrentORF[windows[id].reverseLoopCountORF]).length), windows[id].reverseArrayAndIndex[0].reverseIndex[windows[id].reverseLoopCountORF]);
                 windows[id].reverseLoopCountORF -= 1;
                 if (windows[id].reverseLoopCountORF < 0) {
                     windows[id].reverseLoopCountORF = windows[id].reverseArrayAndIndex[0].reverseNumORF - 1;
@@ -1540,13 +1614,12 @@ $(document).ready(function() {
             for (var i = 0; i < annotations.length; i++) {
                 var start = annotations[i].start;
                 var end = annotations[i].end;
-                if (start + changeLength >= index) {
-                    //change is before annotation
+                if (start + changeLength >= index) {    //change is before annotation
                     annotations[i].start = start + changeLength;
                     annotations[i].end = end + changeLength;
                 }
                 if (index > start + changeLength && index < end + changeLength) {
-                    //ignore features that should be removed
+                    // Ignore features that should be removed
                 } else {
                     updatedAnnotations.push(annotations[i]);
                 }
@@ -1558,10 +1631,8 @@ $(document).ready(function() {
 
     var generateHighlights = function(sequence, annotationsToDraw) {
         var toReturn = "";
-        //iterate through each feature and append regular text or a span
-        if (annotationsToDraw.length > 0) {
-            //append start of string
-            toReturn = sequence.substring(0, annotationsToDraw[0].start) + '<span title="' + annotationsToDraw[0].features + '" style="background-color:' + annotationsToDraw[0].color + '">' + sequence.substring(annotationsToDraw[0].start, annotationsToDraw[0].end) + '</span>';
+        if (annotationsToDraw.length > 0) { //iterate through each feature and append regular text or a span
+            toReturn = sequence.substring(0, annotationsToDraw[0].start) + '<span title="' + annotationsToDraw[0].features + '" style="background-color:' + annotationsToDraw[0].color + '">' + sequence.substring(annotationsToDraw[0].start, annotationsToDraw[0].end) + '</span>';   //append start of string
             var prevEnd = annotationsToDraw[0].end; //ending of the previous annotation
             for (var i = 1; i < annotationsToDraw.length; i++) {
                 var start = annotationsToDraw[i].start;
@@ -1572,8 +1643,7 @@ $(document).ready(function() {
                 toReturn = toReturn + '<span title="' + features + '" style="background-color:' + color + '">' + sequence.substring(start, end) + '</span>';
                 prevEnd = end;
             }
-            //append end of string
-            toReturn = toReturn + sequence.substring(annotationsToDraw[annotationsToDraw.length - 1].end, sequence.length);
+            toReturn = toReturn + sequence.substring(annotationsToDraw[annotationsToDraw.length - 1].end, sequence.length); //append end of string
         } else {
             toReturn = sequence;
         }
