@@ -529,16 +529,12 @@ $(document).ready(function() {
             var textArea = $(textAreaID)[0];
             var wholeSequence = textArea.innerText;
             var selectionText = getSelectionHtml();
-            // selectionIndices has properties "start" and "end" corresponding to visible text in div.
-            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
-            // var cursorPosToRestore = selectionIndices.start;
-            if (selectionText.length === 0) {
-                // Nothing is selected, so reverse complement everything.
+            var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));   // selectionIndices has properties "start" and "end" corresponding to visible text in div.
+            if (selectionText.length === 0) {   // Nothing is selected, so reverse complement everything.
                 selectionText = wholeSequence;
                 var revCompOut = revComp(selectionText);
                 $(textAreaID).html(revCompOut);
-                // Restore selection ranges upon reverse complement of entire sequence
-                for (var ii = 0; ii < windows[id]._annotations.length; ii++) {
+                for (var ii = 0; ii < windows[id]._annotations.length; ii++) {  // Restore selection ranges upon reverse complement of entire sequence
                     var range = rangy.createRange();
                     var node = textArea;
                     node = node.lastChild;
@@ -551,17 +547,19 @@ $(document).ready(function() {
                         range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii - 1].end);
                     }
                     range.select();
-                    // Applies a highlight to the current selection of text adding to any existing highlights.
                     rangy.init();
                     var randomCssClass = "rangyTemp_" + (+new Date());
                     var classApplier = rangy.createCssClassApplier(randomCssClass, true);
                     classApplier.applyToSelection();
-                    // Now use jQuery to add the CSS colour and remove the class
-                    $("." + randomCssClass).css({"background-color": windows[id]._annotations[ii].color}).removeClass(randomCssClass);
+                    $("." + randomCssClass).css({"background-color": windows[id]._annotations[ii].color}).removeClass(randomCssClass);  // Applies a highlight to the current selection of text adding to any existing highlights.
                 }
                 var sel = rangy.getSelection();
                 sel.removeAllRanges();
                 textArea.focus();
+
+                // THIS IS CODE TO FIND ELEMENT THE CURSOR WAS IN TO REPLACE IT WHEN ALL HIGHLIGHTS ARE RESTORED ...
+                // ... BUT APPARENTLY CURSOR PLACEMENT DOESN"T WORK IN CHROME ... 
+                // var cursorPosToRestore = selectionIndices.start;
                 // var node = textArea.firstChild;
                 // var nodeStart = 0;
                 // var nodeEnd = 0;
@@ -599,14 +597,13 @@ $(document).ready(function() {
             }
             else {
                 var revCompOut = revComp(selectionText);
-                $(textAreaID).replaceSelectedText(revCompOut, selectionText);
-
-                //TODO: The code commented below is non-functional when any elements (ie. highlights) exist in the div's text element.
-                // var range = rangy.createTextRange();
-                // var node = document.getElementById('seqTextArea_' + id);
-                // range.setStart(node.firstChild, selectionIndices.start-3);
-                // range.setEnd(node.firstChild, selectionIndices.end-3);
-                // range.select();
+                var completeHTML = $(textAreaID).html();
+                var firstHalf = wholeSequence.substring(0, selectionIndices.start);
+                var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
+                var wholeSequence = firstHalf + revCompOut + secondHalf;
+                $(textAreaID).text(wholeSequence);
+                var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
+                $('#seqTextArea_' + id).html(parsed);
             }
         });
 
