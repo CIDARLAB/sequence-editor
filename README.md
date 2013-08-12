@@ -77,7 +77,10 @@ Find a javadoc. Describe the following functions in that manner.
 
 #### .newWindow() ####
 
-#### .getWindow() ####
+#### .getWindow(Int id) ####
+- Gets sequence editor window associated with parameter id.
+- Example: For id = **2**, "sequenceWindow_**2**" will be selected.
+- **Parameter(s):** _id_ - Integer representing desired window with associated id value.
 
 ---
 
@@ -160,5 +163,8 @@ Find a javadoc. Describe the following functions in that manner.
 
 #### .sequenceLength() ####
 - **Returns:** The sequence length.
+
+#### .cursorPosition() ####
+- **Returns:** String representing cursor position and selection if one exists.
 
 ---

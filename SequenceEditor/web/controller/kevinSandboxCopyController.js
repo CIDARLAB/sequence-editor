@@ -207,8 +207,8 @@ $(document).ready(function() {
          * @returns {String}
          */
         // <editor-fold defaultstate="collapsed" desc="revComp">
-        function revComp(sequence, isDna) {
-            isDna = true; //Temporarily set isDna to true. TODO: remove when logic is in place to provide this info to function
+        function revComp(sequence) {
+            var isDna = true; //Temporarily set isDna to true. TODO: remove when logic is in place to provide this info to function
             var revText = (sequence).split('').reverse().join('');
             var reverseComp = "";
             var jj = 0;
@@ -571,47 +571,8 @@ $(document).ready(function() {
                     classApplier.applyToSelection();
                     $("." + randomCssClass).css({"background-color": windows[id]._annotations[ii].color}).removeClass(randomCssClass);  // Applies a highlight to the current selection of text adding to any existing highlights.
                 }
-                var sel = rangy.getSelection();
-                sel.removeAllRanges();
+                setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.start);
                 textArea.focus();
-
-                // THIS IS CODE TO FIND ELEMENT THE CURSOR WAS IN TO REPLACE IT WHEN ALL HIGHLIGHTS ARE RESTORED ...
-                // ... BUT APPARENTLY CURSOR PLACEMENT DOESN"T WORK IN CHROME ... 
-                // var cursorPosToRestore = selectionIndices.start;
-                // var node = textArea.firstChild;
-                // var nodeStart = 0;
-                // var nodeEnd = 0;
-                // nodeEnd += node.innerText.length;
-                // var gotIt = 0;
-                // alert(nodeStart + " ... " + nodeEnd);
-                // if (cursorPosToRestore <= 0) {
-                //     var range = rangy.createRange();
-                //     range.setStart(node, 0);
-                //     range.setEnd(node, 0);
-                //     range.select();
-                // } else {
-                //     while (gotIt === 0) {
-                //         if (cursorPosToRestore >= nodeStart && cursorPosToRestore < nodeEnd) {
-                //             var pos = cursorPosToRestore - nodeStart;
-                //             var range = rangy.createRange();
-                //             range.collapseToPoint(node, pos);
-                //             // range.select();
-                //             gotIt = 1;
-                //         } else {
-                //             if (node.length) {
-                //                 nodeStart += node.length;
-                //             } else {
-                //                 nodeStart += node.innerText.length;
-                //             }
-                //             node = node.nextSibling;
-                //             if (node.length) {
-                //                 nodeEnd += node.length;
-                //             } else {
-                //                 nodeEnd += node.innerText.length;
-                //             }
-                //         }
-                //     }
-                // }
             }
             else {
                 var revCompOut = revComp(selectionText);
@@ -622,6 +583,7 @@ $(document).ready(function() {
                 $(textAreaID).text(wholeSequence);
                 var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
                 $('#seqTextArea_' + id).html(parsed);
+                setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);
             }
         });
 
@@ -1115,9 +1077,7 @@ $(document).ready(function() {
             html: true,
             content: function() {
                 var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-                // var tagInfo = windows[id].fileName;
-                // var author = windows[id].author;
-                var htmlInfo = "<p><strong>TITLE:&nbsp;&nbsp;</strong>" + windows[id].fileName + "</p><p><strong>AUTHOR:&nbsp;&nbsp;</strong>" + windows[id].author + "</p>";
+                var htmlInfo = "<p><strong>TITLE:&nbsp;&nbsp;</strong>" + windows[id].fileName + "</p><p><strong>AUTHOR:&nbsp;&nbsp;</strong>" + windows[id].author + "</p><p><strong>WINDOW ID:&nbsp;&nbsp;</strong>" + id + "</p>";
                 return htmlInfo;
             }
         });
@@ -1210,7 +1170,6 @@ $(document).ready(function() {
         // Close window when button is clicked
         $('#closeWindow_' + count).click(function() {
             var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-            var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             $('#resizable_' + id).remove();
         });
 
