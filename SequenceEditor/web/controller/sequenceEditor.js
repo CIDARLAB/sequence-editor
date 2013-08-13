@@ -1,11 +1,3 @@
-$(document).ready(function() {
-    Array.prototype.remove = function(from, to) {
-        var rest = this.slice((to || from) + 1 || this.length);
-        this.length = from < 0 ? this.length + from : from;
-        return this.push.apply(this, rest);
-    };
-
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -13,10 +5,10 @@ function WindowManager() {
     // Does this constructor need to take any input parameters?
 };
 
-function sequenceWindow(fileName, author) {
+function sequenceWindow(fileName, author) { // Sequence Window object
     // What properties will each window have?
-    this.fileName = fileName;
-    this.author = author;
+    // this.fileName = fileName;
+    // this.author = author;
 };
 
 WindowManager.prototype = {
@@ -25,7 +17,7 @@ WindowManager.prototype = {
         return document.getElementById('seqTextArea_' + id);
     },
     newWindow: function() {
-        // Create new window 
+        // Create new sequence editor window 
     },
     setConnection: function() {
         // Sets window manager's connection
@@ -36,11 +28,13 @@ WindowManager.prototype = {
 };
 
 sequenceWindow.prototype = {
-    fileName: function() {
-        return this.fileName();
+    setFileName: function(fileName) {  // Sets specified window's file name.
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        windows[id].fileName = fileName;
     },
-    author: function() {
-        return this.author();
+    setAuthor: function(author) {    // Sets specified window's author.
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        windows[id].author = author;
     },
     // File menu options
     newSequence: function() {
@@ -53,170 +47,92 @@ sequenceWindow.prototype = {
         // No return value? Save current file as the name provided.
     },
     close: function() {
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
         $('#resizable_' + id).remove();
     },
-    changeTheme: function(color) {
-        // Change the sequence editor window's background color theme.
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+    changeTheme: function(color) {  // Change the sequence editor window's background color theme.
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
         $('#resizable_' + id + '.ui-widget-content').css("background", color);
         $("#centralElement_" + id).css("background-color", color);
         $("#seqTextArea_" + id).css("background-color", "white");
     },
-
     // Sequence manipulation functions
-    translate: function() {
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-        var textArea = $(textAreaID)[0];
-        var sequence = "";      
-        var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
-        if (selectionIndices.start === selectionIndices.end) {  // Nothing highlighted so change everything.
-            sequence = textArea.innerText;
-        } else {
-            sequence = getSelectionHtml();
-        }
-        var transOut = translateSequence(sequence);
-        alert(transOut);
-        // return translation?
+    translateSequence: function() {
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#translate_' + id).click();
     },
-
-    revComp: function() {
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-        $('#seqTextArea_' + id).focus();
-        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-        var textArea = $(textAreaID)[0];
-        var wholeSequence = textArea.innerText;
-        var selectionText = getSelectionHtml();
-        var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));   // selectionIndices has properties "start" and "end" corresponding to visible text in div.
-        if (selectionText.length === 0) {   // Nothing is selected, so reverse complement everything.
-            selectionText = wholeSequence;
-            var revCompOut = reverseComplement(selectionText);
-            $(textAreaID).html(revCompOut);
-            for (var ii = 0; ii < windows[id]._annotations.length; ii++) {  // Restore selection ranges upon reverse complement of entire sequence
-                var range = rangy.createRange();
-                var node = textArea;
-                node = node.lastChild;
-                if (ii === 0) {
-                    range.setStart(node, windows[id]._annotations[ii].start);
-                    range.setEnd(node, windows[id]._annotations[ii].end);
-                }
-                else {
-                    range.setStart(node, windows[id]._annotations[ii].start - windows[id]._annotations[ii - 1].end);
-                    range.setEnd(node, windows[id]._annotations[ii].end - windows[id]._annotations[ii - 1].end);
-                }
-                range.select();
-                rangy.init();
-                var randomCssClass = "rangyTemp_" + (+new Date());
-                var classApplier = rangy.createCssClassApplier(randomCssClass, true);
-                classApplier.applyToSelection();
-                $("." + randomCssClass).css({"background-color": windows[id]._annotations[ii].color}).removeClass(randomCssClass);  // Applies a highlight to the current selection of text adding to any existing highlights.
-            }
-            setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.start);
-            textArea.focus();
-        }
-        else {
-            var revCompOut = reverseComplement(selectionText);
-            var completeHTML = $(textAreaID).html();
-            var firstHalf = wholeSequence.substring(0, selectionIndices.start);
-            var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
-            var wholeSequence = firstHalf + revCompOut + secondHalf;
-            $(textAreaID).text(wholeSequence);
-            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-            $('#seqTextArea_' + id).html(parsed);
-            setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);
-        }
-        // return reverse complement?
+    reverseComplement: function() {
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#revComp_' + id).click();
     },
-
     lowercase: function() {
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-        var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-        var textArea = $(textAreaID)[0];
-        var wholeSequence = textArea.innerText;
-        var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
-        if (selectionIndices.start === selectionIndices.end) {
-            textArea.innerText = textArea.innerText.toLowerCase();  //Nothing highlighted, so change everything.
-            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-            $('#seqTextArea_' + id).html(parsed);
-        }
-        else {
-            var lowerOut = getSelectionHtml().toLowerCase();
-            var firstHalf = wholeSequence.substring(0, selectionIndices.start);
-            var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
-            var wholeSequence = firstHalf + lowerOut + secondHalf;
-            $(textAreaID).text(wholeSequence);
-            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-            $('#seqTextArea_' + id).html(parsed);
-        }
-        // return lowercase selection
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#lowercase_' + id).click();
     },
     uppercase: function() {
-        var id = ($(this).attr('id')).match(/\d/);  // match the id number associated with the current window
-        var textAreaID = "#seqTextArea_" + id;      // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
-        var textArea = $(textAreaID)[0];
-        var wholeSequence = textArea.innerText;
-        var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(textArea);
-        if (selectionIndices.start === selectionIndices.end) {
-            textArea.innerText = textArea.innerText.toUpperCase();  //Nothing highlighted, so change everything.
-            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-            $('#seqTextArea_' + id).html(parsed);
-        } else {
-            var upperOut = getSelectionHtml().toUpperCase();
-            var firstHalf = wholeSequence.substring(0, selectionIndices.start);
-            var secondHalf = wholeSequence.substring(selectionIndices.end, wholeSequence.length);
-            var wholeSequence = firstHalf + upperOut + secondHalf;
-            $(textAreaID).text(wholeSequence);
-            var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-            $('#seqTextArea_' + id).html(parsed);
-        }
-        // return uppercase selection
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#uppercase_' + id).click();
     },
-
     // Highlight functions
     features: function() {  // Highlight the current list of features in this sequence
-        var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
-        // This hardcodes a sequence into the current seqTextArea
-        //TODO: Alter this to take current text area value and determine if features are present
-        $('#seqTextArea_' + id).html("aaaaggggagatcccccttttaaaaga");
-        windows[id]._annotations = generateAnnotations($('#seqTextArea_' + id)[0].innerText, windows[id]._features);
-        var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
-        $('#seqTextArea_' + id).html(parsed);
-        windows[id].needToResetORFList = 1;
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#features_' + id).click();
     },
-    selection: function() {
-        // Highlight the user's selection
+    selection: function() {   // Highlight the current selection
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#selection_' + id).click();
     },
-
     // ORF search functions
     nextForwardORF: function() {
-        return this.nextForwardORF();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#nextForwardORF_' + id).click();
     },
     previousForwardORF: function() {
-        return this.previousForwardORF();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#previousForwardORF_' + id).click();
     },
     nextReverseORF: function() {
-        return this.nextReverseORF();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#nextReverseORF_' + id).click();
     },
     previousReverseORF: function() {
-        return this.previousReverseORF();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        $('#previousReverseORF_' + id).click();
     },
-
     // Sequence information functions
     meltingTemp: function() {
-        return this.meltingTemp();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        return parseInt($('#tempCell_' + id).html().toString().match(/\d+/));
     },
     gcContent: function() {
-        return this.gcContent();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        return parseInt($('#gcCell_' + id).html());
     },
     currentFeature: function() {
-        return this.currentFeature();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        return $('#featureCell_' + id).html().toString();
     },
     sequenceLength: function() {
-        return this.sequenceLength();
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        return parseInt($('#lengthCell_' + id).html());
     },
     cursorPosition: function() {
-        return this.cursorPosition();   // Returns string with cursor and selection information
+        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var cursorPos = [];
+        if ($('#positionCell_' + id).html().toString().match(/[-]/)) {
+            // Range selected, parse accordingly
+            var rangeIndices = $('#positionCell_' + id).html().toString().split("(");
+            var rangeStart = rangeIndices[0];
+            rangeIndices = rangeIndices[1].split("-");
+            var rangeEnd = rangeIndices[1];
+            cursorPos[0] = rangeStart;
+            cursorPos[1] = rangeEnd; 
+        } else {
+            // Nothing selected, just parse out cursor position
+            var rangeIndices = $('#positionCell_' + id).html().toString().split("(");
+            cursorPos[0] = rangeIndices[0];
+        }
+        return cursorPos;   // Returns string with cursor and selection information
     }
 };
 
@@ -224,6 +140,13 @@ sequenceWindow.prototype = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+
+$(document).ready(function() {
+    Array.prototype.remove = function(from, to) {
+        var rest = this.slice((to || from) + 1 || this.length);
+        this.length = from < 0 ? this.length + from : from;
+        return this.push.apply(this, rest);
+    };
     var windows = [];   // stores sequence editor windows' information
     var count = 0;
     var aCount = "a" + 0; // tracks count of alignment windows opened. In case multiple alignments are opened at once.
@@ -254,18 +177,18 @@ sequenceWindow.prototype = {
         $('#resizable_' + count).droppable({
             drop: function(event, ui) {
                 if (!(($(ui.draggable).attr('id')).match(/\a\d/))) {    // check to make sure user didn't drag alignment window on top of sequence editor window
-                    var idDragged = ($(ui.draggable).attr('id')).match(/\d/); // match the id number associated with the current window
-                    var idDropped = ($(this).attr("id")).match(/\d/);
-                    var textAreaDragged = "#seqTextArea_" + idDragged;
-                    var textAreaDropped = "#seqTextArea_" + idDropped;
-                    var sequenceDragged = $(textAreaDragged)[0].value;
-                    var sequenceDropped = $(textAreaDropped)[0].value;
-                    $.get("SequenceEditorServlet", {"command": "align", "sequence1": sequenceDragged, "sequence2": sequenceDropped}, function(response) {
+                    var idDragged = ($(ui.draggable).attr('id')).match(/\d+/); // match the id number associated with the current window
+                var idDropped = ($(this).attr("id")).match(/\d+/);
+                var textAreaDragged = "#seqTextArea_" + idDragged;
+                var textAreaDropped = "#seqTextArea_" + idDropped;
+                var sequenceDragged = $(textAreaDragged)[0].value;
+                var sequenceDropped = $(textAreaDropped)[0].value;
+                $.get("SequenceEditorServlet", {"command": "align", "sequence1": sequenceDragged, "sequence2": sequenceDropped}, function(response) {
                         // Open draggable alignment window in testArea and bind a closeWindow button function to it 
                         $('#testArea').append('<div class="resizable ui-widget-content" id="resizable_' + aCount + '" style="min-width:650px;min-height:400px;border:solid black 1px" class="bigInterface"><div class="row-fluid"><div class="span1 offset11"><div class="btn-group pull-right"><button id="closeWindow_' + aCount + '" class="closeWindow btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset1 span10"><table class="colsTextArea pull-right" style="width:90%;"><tr><td id="columnFirst_' + aCount + '" class="columnFirst pull-left">1</td><td id="columnLast_' + aCount + '" class="columnLast pull-right"></td></tr></table></div></div><div class="row-fluid"><div class="offset1 span10"><textarea id="rowsTextArea_' + aCount + '" disabled class="rowsTextArea" style="margin-right:0px;border:none;cursor:default;background-color:transparent;resize:none;overflow: hidden;min-height: 250px;width:9%;text-align: center;"></textarea><textarea spellcheck="false" id="seqTextArea_' + aCount + '" class="seqTextArea pull-right" style="margin-left:0px;resize:none;font-size:12pt;font-family: monospace;min-height: 250px;width:90%;">atgttaacccatccgtgactaagacattgaatgccctag</textarea></div></div></div>');
                         $('#resizable_' + aCount).draggable({stack: ".resizable"});
                         $('#closeWindow_' + aCount).click(function() {
-                            var idPattern = /\d/;
+                            var idPattern = /\d+/;
                             var id = ($(this).attr('id')).match(idPattern); // match the id number associated with the current window
                             $('#resizable_a' + id).remove();
                         });
@@ -311,7 +234,7 @@ sequenceWindow.prototype = {
                         $('#seqTextArea_' + aCount).filter_input({regex: '[]'});    // filter all keyboard characters. User cannot alter this alignment sequence.
                         //link scrollbars together
                         $('#seqTextArea_' + aCount).scroll(function() {
-                            var id = ($(this).attr('id')).match(/\d/);
+                            var id = ($(this).attr('id')).match(/\d+/);
                             $('#rowsTextArea_a' + id).scrollTop($(this).scrollTop());
                         });
 
@@ -333,13 +256,13 @@ sequenceWindow.prototype = {
                         }
                         $('#seqTextArea_' + aCount).text(alignmentString); // Set alignment to text area
                     });
-                    var countNum = aCount.match(/\d/);
-                    countNum++;
-                    aCount = "a" + countNum;
-                }
-            },
-            accept: ".sequenceWidget"
-        });
+var countNum = aCount.match(/\d+/);
+countNum++;
+aCount = "a" + countNum;
+}
+},
+accept: ".sequenceWidget"
+});
 
         //this span contains 10 characters.
         var charWidth = $('#measureSpan').width() / 10;
@@ -361,26 +284,26 @@ sequenceWindow.prototype = {
         //JSON Object holding all necessary info for each window
         //TODO: calculate this info for each window as they are added        
         var windowInfo = {sequence: $('#seqTextArea_' + count).text(),
-            seqLength: $('#seqTextArea_' + count).text().length,
-            fileName: "newSequence_" + count,
-            author: "anonymous",
-            numOfCols: numberOfCols,
-            numOfRows: numberOfRows,
-            needToResetORFList: 0,
-            forwardNextOrPrevious: 1,
-            forwardLoopCountORF: 0,
-            forwardArrayAndIndex: [{
-                    forwardCurrentORF: forwardArrayAndIndex[0],
-                    forwardNumORF: forwardArrayAndIndex[1],
-                    forwardIndex: forwardArrayAndIndex[2]
-                }],
-            reverseNextOrPrevious: 2,
-            reverseLoopCountORF: 0,
-            reverseArrayAndIndex: [{
-                    reverseCurrentORF: reverseArrayAndIndex[0],
-                    reverseNumORF: reverseArrayAndIndex[1],
-                    reverseIndex: reverseArrayAndIndex[2]
-                }],
+        seqLength: $('#seqTextArea_' + count).text().length,
+        fileName: "newSequence_" + count,
+        author: "anonymous",
+        numOfCols: numberOfCols,
+        numOfRows: numberOfRows,
+        needToResetORFList: 0,
+        forwardNextOrPrevious: 1,
+        forwardLoopCountORF: 0,
+        forwardArrayAndIndex: [{
+            forwardCurrentORF: forwardArrayAndIndex[0],
+            forwardNumORF: forwardArrayAndIndex[1],
+            forwardIndex: forwardArrayAndIndex[2]
+        }],
+        reverseNextOrPrevious: 2,
+        reverseLoopCountORF: 0,
+        reverseArrayAndIndex: [{
+            reverseCurrentORF: reverseArrayAndIndex[0],
+            reverseNumORF: reverseArrayAndIndex[1],
+            reverseIndex: reverseArrayAndIndex[2]
+        }],
             _annotations: annotations, // holds annotations of features for each sequence editor window
             _features: features // holds features for given sequence in each sequence editor window
         };
@@ -406,13 +329,13 @@ sequenceWindow.prototype = {
 
         //link scrollbars together
         $('#seqTextArea_' + count).scroll(function() {
-            var id = ($(this).attr('id')).match(/\d/);
+            var id = ($(this).attr('id')).match(/\d+/);
             $('#rowsTextArea_' + id).scrollTop($(this).scrollTop());
             $('#highlight_' + id).scrollTop($(this).scrollTop());
         });
 
         $('#highlight_' + count).scroll(function() {
-            var id = ($(this).attr('id')).match(/\d/);
+            var id = ($(this).attr('id')).match(/\d+/);
             $('#seqTextArea_' + id).scrollTop($(this).scrollTop());
         });
 
@@ -498,206 +421,206 @@ sequenceWindow.prototype = {
                 triplet = sequence.substring(ii, ii + 3);
                 switch (triplet) {
                     case "TTT":
-                        translatedSeq += "F";
-                        break;
+                    translatedSeq += "F";
+                    break;
                     case "TTC":
-                        translatedSeq += "F";
-                        break;
+                    translatedSeq += "F";
+                    break;
                     case "TTA":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "TTG":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "CTT":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "CTC":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "CTA":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "CTG":
-                        translatedSeq += "L";
-                        break;
+                    translatedSeq += "L";
+                    break;
                     case "ATT":
-                        translatedSeq += "I";
-                        break;
+                    translatedSeq += "I";
+                    break;
                     case "ATC":
-                        translatedSeq += "I";
-                        break;
+                    translatedSeq += "I";
+                    break;
                     case "ATA":
-                        translatedSeq += "I";
-                        break;
+                    translatedSeq += "I";
+                    break;
                     case "ATG":
-                        translatedSeq += "M";
-                        break;
+                    translatedSeq += "M";
+                    break;
                     case "GTT":
-                        translatedSeq += "V";
-                        break;
+                    translatedSeq += "V";
+                    break;
                     case "GTC":
-                        translatedSeq += "V";
-                        break;
+                    translatedSeq += "V";
+                    break;
                     case "GTA":
-                        translatedSeq += "V";
-                        break;
+                    translatedSeq += "V";
+                    break;
                     case "GTG":
-                        translatedSeq += "V";
-                        break;
+                    translatedSeq += "V";
+                    break;
                     case "TCT":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "TCC":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "TCA":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "TCG":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "CCT":
-                        translatedSeq += "P";
-                        break;
+                    translatedSeq += "P";
+                    break;
                     case "CCC":
-                        translatedSeq += "P";
-                        break;
+                    translatedSeq += "P";
+                    break;
                     case "CCA":
-                        translatedSeq += "P";
-                        break;
+                    translatedSeq += "P";
+                    break;
                     case "CCG":
-                        translatedSeq += "P";
-                        break;
+                    translatedSeq += "P";
+                    break;
                     case "ACT":
-                        translatedSeq += "T";
-                        break;
+                    translatedSeq += "T";
+                    break;
                     case "ACC":
-                        translatedSeq += "T";
-                        break;
+                    translatedSeq += "T";
+                    break;
                     case "ACA":
-                        translatedSeq += "T";
-                        break;
+                    translatedSeq += "T";
+                    break;
                     case "ACG":
-                        translatedSeq += "T";
-                        break;
+                    translatedSeq += "T";
+                    break;
                     case "GCT":
-                        translatedSeq += "A";
-                        break;
+                    translatedSeq += "A";
+                    break;
                     case "GCC":
-                        translatedSeq += "A";
-                        break;
+                    translatedSeq += "A";
+                    break;
                     case "GCA":
-                        translatedSeq += "A";
-                        break;
+                    translatedSeq += "A";
+                    break;
                     case "GCG":
-                        translatedSeq += "A";
-                        break;
+                    translatedSeq += "A";
+                    break;
                     case "TAT":
-                        translatedSeq += "Y";
-                        break;
+                    translatedSeq += "Y";
+                    break;
                     case "TAC":
-                        translatedSeq += "Y";
-                        break;
+                    translatedSeq += "Y";
+                    break;
                     case "CAT":
-                        translatedSeq += "H";
-                        break;
+                    translatedSeq += "H";
+                    break;
                     case "CAC":
-                        translatedSeq += "H";
-                        break;
+                    translatedSeq += "H";
+                    break;
                     case "CAA":
-                        translatedSeq += "Q";
-                        break;
+                    translatedSeq += "Q";
+                    break;
                     case "CAG":
-                        translatedSeq += "Q";
-                        break;
+                    translatedSeq += "Q";
+                    break;
                     case "AAT":
-                        translatedSeq += "N";
-                        break;
+                    translatedSeq += "N";
+                    break;
                     case "AAC":
-                        translatedSeq += "N";
-                        break;
+                    translatedSeq += "N";
+                    break;
                     case "AAA":
-                        translatedSeq += "K";
-                        break;
+                    translatedSeq += "K";
+                    break;
                     case "AAG":
-                        translatedSeq += "K";
-                        break;
+                    translatedSeq += "K";
+                    break;
                     case "GAT":
-                        translatedSeq += "D";
-                        break;
+                    translatedSeq += "D";
+                    break;
                     case "GAC":
-                        translatedSeq += "D";
-                        break;
+                    translatedSeq += "D";
+                    break;
                     case "GAA":
-                        translatedSeq += "E";
-                        break;
+                    translatedSeq += "E";
+                    break;
                     case "GAG":
-                        translatedSeq += "E";
-                        break;
+                    translatedSeq += "E";
+                    break;
                     case "TGT":
-                        translatedSeq += "C";
-                        break;
+                    translatedSeq += "C";
+                    break;
                     case "TGC":
-                        translatedSeq += "C";
-                        break;
+                    translatedSeq += "C";
+                    break;
                     case "TGG":
-                        translatedSeq += "W";
-                        break;
+                    translatedSeq += "W";
+                    break;
                     case "CGT":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "CGC":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "CGA":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "CGG":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "AGT":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "AGC":
-                        translatedSeq += "S";
-                        break;
+                    translatedSeq += "S";
+                    break;
                     case "AGA":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "AGG":
-                        translatedSeq += "R";
-                        break;
+                    translatedSeq += "R";
+                    break;
                     case "GGT":
-                        translatedSeq += "G";
-                        break;
+                    translatedSeq += "G";
+                    break;
                     case "GGC":
-                        translatedSeq += "G";
-                        break;
+                    translatedSeq += "G";
+                    break;
                     case "GGA":
-                        translatedSeq += "G";
-                        break;
+                    translatedSeq += "G";
+                    break;
                     case "GGG":
-                        translatedSeq += "G";
-                        break;
+                    translatedSeq += "G";
+                    break;
                         // Stop Sequences
-                    case "TAA":
+                        case "TAA":
                         translatedSeq += "*";
                         break;
-                    case "TAG":
+                        case "TAG":
                         translatedSeq += "*";
                         break;
-                    case "TGA":
+                        case "TGA":
                         translatedSeq += "*";
                         break;
-                    default:
+                        default:
                         translatedSeq += "X";
                         break;
+                    }
+                    ii += 3;
                 }
-                ii += 3;
+                return translatedSeq;
             }
-            return translatedSeq;
-        }
 // </editor-fold>
 
         // Checks to see if an element has a scrollbar
@@ -719,8 +642,8 @@ sequenceWindow.prototype = {
         /* 
          * Updates column width whenever window is resized
          */
-        $('#resizable_' + count).resize(function() {
-            var id = ($(this).attr('id')).match(/\d/);
+         $('#resizable_' + count).resize(function() {
+            var id = ($(this).attr('id')).match(/\d+/);
             var scrollBar = 0;
             var seqLength = $('#seqTextArea_' + id).text().length;
 
@@ -760,8 +683,8 @@ sequenceWindow.prototype = {
         /*
          * Binds the Reverse Complement function (revComp()) to the revComp button click. 
          */
-        $('#revComp_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+         $('#revComp_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             $('#seqTextArea_' + id).focus();
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
@@ -810,8 +733,8 @@ sequenceWindow.prototype = {
         /*
          * Translate function displays the sequence's codon representation.
          */
-        $('#translate_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+         $('#translate_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
             var sequence = "";
@@ -829,8 +752,8 @@ sequenceWindow.prototype = {
         /*
          * Uppercase function makes all selected text uppercase.
          */
-        $('#uppercase_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/);  // match the id number associated with the current window
+         $('#uppercase_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;      // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
             var wholeSequence = textArea.innerText;
@@ -853,8 +776,8 @@ sequenceWindow.prototype = {
         /*
          * Lowercase function makes all selected text lowercase.
          */
-        $('#lowercase_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+         $('#lowercase_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             var textArea = $(textAreaID)[0];
             var wholeSequence = textArea.innerText;
@@ -878,8 +801,8 @@ sequenceWindow.prototype = {
         /*
          * Customize theme (background color) function
          */
-        $('#colorChanger_' + count).colorpicker().on('changeColor', function(ev) {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+         $('#colorChanger_' + count).colorpicker().on('changeColor', function(ev) {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var color = ev.color.toHex().toString();
             $('#resizable_' + id + '.ui-widget-content').css("background", color);
             $("#centralElement_" + id).css("background-color", color);
@@ -888,8 +811,8 @@ sequenceWindow.prototype = {
 
 
 
-        $('#resizable_' + count).mouseup(function() {
-            var id = $(this).attr('id').match(/\d/);
+         $('#resizable_' + count).mouseup(function() {
+            var id = $(this).attr('id').match(/\d+/);
             var textAreaID = "#seqTextArea_" + id;
             var textArea = $(textAreaID)[0];
             var gcPattern = /[gc]/ig;
@@ -965,12 +888,12 @@ sequenceWindow.prototype = {
         });
 
 
-        $('#resizable_' + count).keyup(function() {
-            var id = $(this).attr('id').match(/\d/);
-            var textAreaID = "#seqTextArea_" + id;
-            var textArea = $(textAreaID)[0];
-            var wholeSequence = textArea.innerText;
-            var selection = getSelectionHtml();
+$('#resizable_' + count).keyup(function() {
+    var id = $(this).attr('id').match(/\d+/);
+    var textAreaID = "#seqTextArea_" + id;
+    var textArea = $(textAreaID)[0];
+    var wholeSequence = textArea.innerText;
+    var selection = getSelectionHtml();
             // Grab current sequence length
             var seqLength = wholeSequence.length;
             var rowsTextArea = "#rowsTextArea_" + id;
@@ -1044,32 +967,32 @@ sequenceWindow.prototype = {
             windows[id].needToResetORFList = 1;
         });
 
-        /***************************************************************************************/
-        /* Hotkey Event Handlers */
+/***************************************************************************************/
+/* Hotkey Event Handlers */
 
 
-        jwerty.key('alt+n', false);
-        jwerty.key('alt+n', function() {
-            var id = (document.activeElement.id).match(/\d/);
-            alert('ID: newSequence shortcode called from seqTextArea_' + id);
-        });
+jwerty.key('alt+n', false);
+jwerty.key('alt+n', function() {
+    var id = (document.activeElement.id).match(/\d+/);
+    alert('ID: newSequence shortcode called from seqTextArea_' + id);
+});
 
-        jwerty.key('alt+s', false);
-        jwerty.key('alt+s', function() {
-            var id = (document.activeElement.id).match(/\d/);
-            alert('ID: saveSequence shortcode selected from seqTextArea_' + id);
-        });
+jwerty.key('alt+s', false);
+jwerty.key('alt+s', function() {
+    var id = (document.activeElement.id).match(/\d+/);
+    alert('ID: saveSequence shortcode selected from seqTextArea_' + id);
+});
 
-        jwerty.key('esc', false);
-        jwerty.key('esc', function() {
-            var id = (document.activeElement.id).match(/\d/);
-            alert('ID: close shortcode selected from seqTextArea_' + id);
-        });
+jwerty.key('esc', false);
+jwerty.key('esc', function() {
+    var id = (document.activeElement.id).match(/\d+/);
+    alert('ID: close shortcode selected from seqTextArea_' + id);
+});
 
-        jwerty.key('alt+q', false);
+jwerty.key('alt+q', false);
         // When shortcut Alt+q is pressed, call nextForwardORF function
         jwerty.key('alt+q', function() {
-            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d+/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             var textArea = $(textAreaID)[0];
             // var node1 = textArea.firstChild;
@@ -1084,7 +1007,7 @@ sequenceWindow.prototype = {
         jwerty.key('alt+w', false);
         // When shortcut Alt+w is pressed, call previousForwardORF function
         jwerty.key('alt+w', function() {
-            var id = (document.activeElement.id).match(/\d/); // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousForwardORF(id, textAreaID);
         });
@@ -1092,7 +1015,7 @@ sequenceWindow.prototype = {
         jwerty.key('alt+e', false);
         // When shortcut Alt+e is pressed, call nextReverseORF function
         jwerty.key('alt+a', function() {
-            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d+/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextReverseORF(id, textAreaID);
         });
@@ -1100,191 +1023,191 @@ sequenceWindow.prototype = {
         jwerty.key('alt+r', false);
         // When shortcut Alt+r is pressed, call previousReverseORF function
         jwerty.key('alt+r', function() {
-            var id = (document.activeElement.id).match(/\d/);     // match the id number associated with the current window
+            var id = (document.activeElement.id).match(/\d+/);     // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id;               // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousReverseORF(id, textAreaID);
         });
 
         jwerty.key('ctrl+/', false);
         jwerty.key('ctrl+/', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             alert('ID: search shortcode selected in seqTextArea_' + id);
         });
 
         jwerty.key('alt+2', false);
         jwerty.key('alt+2', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             alert('ID: features shortcode selected in seqTextArea_' + id);
         });
 
         jwerty.key('alt+3', false);
         jwerty.key('alt+3', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             alert('ID: selection shortcode selected in seqTextArea_' + id);
         });
 
         jwerty.key('a', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+a', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('c', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+c', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('t', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+t', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('g', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+g', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('u', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+u', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('r', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+r', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('y', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+y', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('s', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+s', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('w', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+w', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('k', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+k', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('m', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+m', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('b', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+b', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('d', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+d', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('h', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+h', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('v', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+v', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('n', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('shift+n', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength++;
         });
         jwerty.key('backspace', function() {
-            var id = (document.activeElement.id).match(/\d/);
+            var id = (document.activeElement.id).match(/\d+/);
             windows[id].needToResetORFList = 1;
             changeLength--;
         });
@@ -1293,66 +1216,66 @@ sequenceWindow.prototype = {
 //    /* Menu Item Event Handlers */
 //
 
-        $('#windowTag_' + count).popover({
-            html: true,
-            content: function() {
-                var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#windowTag_' + count).popover({
+    html: true,
+    content: function() {
+                var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
                 var htmlInfo = "<p><strong>TITLE:&nbsp;&nbsp;</strong>" + windows[id].fileName + "</p><p><strong>AUTHOR:&nbsp;&nbsp;</strong>" + windows[id].author + "</p><p><strong>WINDOW ID:&nbsp;&nbsp;</strong>" + id + "</p>";
                 return htmlInfo;
             }
         });
 
-        $('#newSequence_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#newSequence_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("New Sequence menu item chosen for " + bigInterfaceID);
         });
 
-        $('#saveSequence_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#saveSequence_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Save Sequence menu item chosen for " + bigInterfaceID);
         });
 
-        $('#close_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#close_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             $('#resizable_' + id).remove();
             // alert("Close menu item chosen for " + bigInterfaceID);
         });
 
-        $('#nextForwardORF_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#nextForwardORF_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextForwardORF(id, textAreaID);
         });
 
-        $('#previousForwardORF_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#previousForwardORF_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousForwardORF(id, textAreaID);
         });
 
-        $('#nextReverseORF_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#nextReverseORF_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             nextReverseORF(id, textAreaID);
         });
 
-        $('#previousReverseORF_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#previousReverseORF_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textAreaID = "#seqTextArea_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area f
             previousReverseORF(id, textAreaID);
         });
 
-        $('#search_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#search_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var bigInterfaceID = "bigInterface_" + id; // concatenate the window id number on the end of "seqTextArea" to explicitly change that text area
             alert("Search menu item chosen for " + bigInterfaceID);
         });
 
-        $('#features_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#features_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             // This hardcodes a sequence into the current seqTextArea
             //TODO: Alter this to take current text area value and determine if features are present
             $('#seqTextArea_' + id).html("aaaaggggagatcccccttttaaaaga");
@@ -1362,8 +1285,8 @@ sequenceWindow.prototype = {
             windows[id].needToResetORFList = 1;
         });
 
-        $('#selection_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+$('#selection_' + count).click(function() {
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var wholeSequence = document.getElementById('seqTextArea_' + id).innerText;
             var seqSelect = getSelectionHtml();
             var sel = rangy.getSelection();
@@ -1389,30 +1312,30 @@ sequenceWindow.prototype = {
 
         // Close window when button is clicked
         $('#closeWindow_' + count).click(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             $('#resizable_' + id).remove();
         });
 
 
         // Enable/Disable window draggable class so user can edit text in contenteditable div at the right time
         $('#seqTextArea_' + count).mouseenter(function() {
-            var id = $(this).attr('id').match(/\d/);
+            var id = $(this).attr('id').match(/\d+/);
             $('#resizable_' + id).draggable('disable');
         });
         $('#seqTextArea_' + count).mouseleave(function() {
-            var id = $(this).attr('id').match(/\d/);
+            var id = $(this).attr('id').match(/\d+/);
             $('#resizable_' + id).draggable('enable');
         });
 
 
         //key events
         $('#seqTextArea_' + count).keydown(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             _sequence = $('#seqTextArea_' + id).val();
         });
 
         $('#seqTextArea_' + count).keyup(function() {
-            var id = ($(this).attr('id')).match(/\d/); // match the id number associated with the current window
+            var id = ($(this).attr('id')).match(/\d+/); // match the id number associated with the current window
             var textArea = $('#seqTextArea_' + id)[0];
             var unparsed = textArea.innerText;
             var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
@@ -1433,59 +1356,59 @@ sequenceWindow.prototype = {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////     FUNCTIONS     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var findNumOfRows = function(seqLength, numberOfCols) {
-        if (seqLength > 0) {
-            var kk = 0;
-            var lineNumber = "";
-            var numberOfRows = Math.ceil(seqLength / numberOfCols);
-            while (kk < numberOfRows) {
-                if (kk === 0) {
-                    lineNumber += "1";
-                    $('#rowsTextArea_' + count).text(lineNumber);
-                    kk++;
-                }
-                else {
-                    lineNumber += "\r\n" + (numberOfCols * (kk));
-                    $('#rowsTextArea_' + count).html(lineNumber);
-                    kk++;
-                }
+var findNumOfRows = function(seqLength, numberOfCols) {
+    if (seqLength > 0) {
+        var kk = 0;
+        var lineNumber = "";
+        var numberOfRows = Math.ceil(seqLength / numberOfCols);
+        while (kk < numberOfRows) {
+            if (kk === 0) {
+                lineNumber += "1";
+                $('#rowsTextArea_' + count).text(lineNumber);
+                kk++;
+            }
+            else {
+                lineNumber += "\r\n" + (numberOfCols * (kk));
+                $('#rowsTextArea_' + count).html(lineNumber);
+                kk++;
             }
         }
-        return numberOfRows;
-    };
-
-
-    function getForwardORFS(sequence) {
-        var forwardIndeces = [];
-        var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
-        while (seqPattern.test(sequence) === true) {
-            forwardIndeces.push(seqPattern.lastIndex);
-        }
-        var arrayForwardORF = sequence.match(seqPattern);
-        if (arrayForwardORF === null) {
-            return ["", 0];
-        }
-        else {
-            var numORF = arrayForwardORF.length;
-        }
-        return [arrayForwardORF, numORF, forwardIndeces];
     }
+    return numberOfRows;
+};
 
-    function getReverseORFS(sequence) {
-        var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
-        var reverseIndeces = [];
-        while (seqPattern.test(sequence) === true) {
-            reverseIndeces.push(seqPattern.lastIndex);
-        }
-        var arrayReverseORF = sequence.match(seqPattern);
-        if (arrayReverseORF === null) {
-            return ["", 0];
-        }
-        else {
-            var numORF = arrayReverseORF.length;
-        }
-        return [arrayReverseORF, numORF, reverseIndeces];
+
+function getForwardORFS(sequence) {
+    var forwardIndeces = [];
+    var seqPattern = /atg(?:[atgc]{3}(?!taa|tag|tga))*(?:[atcg]{3})(?:taa|tag|tga)/ig;
+    while (seqPattern.test(sequence) === true) {
+        forwardIndeces.push(seqPattern.lastIndex);
     }
+    var arrayForwardORF = sequence.match(seqPattern);
+    if (arrayForwardORF === null) {
+        return ["", 0];
+    }
+    else {
+        var numORF = arrayForwardORF.length;
+    }
+    return [arrayForwardORF, numORF, forwardIndeces];
+}
+
+function getReverseORFS(sequence) {
+    var seqPattern = /(?:tta|cta|tca)(?:[atgc]{3}(?!cat))*(?:[atcg]{3})(?:cat)/ig;
+    var reverseIndeces = [];
+    while (seqPattern.test(sequence) === true) {
+        reverseIndeces.push(seqPattern.lastIndex);
+    }
+    var arrayReverseORF = sequence.match(seqPattern);
+    if (arrayReverseORF === null) {
+        return ["", 0];
+    }
+    else {
+        var numORF = arrayReverseORF.length;
+    }
+    return [arrayReverseORF, numORF, reverseIndeces];
+}
 
 
 ///////////////////////////////////
@@ -1545,7 +1468,7 @@ function setSelectionRange(el, start, end) {
      * Next Forward ORF function
      * @return: Highlights Next Forward ORF
      */
-    function nextForwardORF(id, textAreaID) {
+     function nextForwardORF(id, textAreaID) {
 
         // setSelectionRange(document.getElementById("seqTextArea_0"), 2, 7);
 
@@ -1590,7 +1513,7 @@ function setSelectionRange(el, start, end) {
      * Next Reverse ORF function
      * @return: Highlights Next Reverse ORF
      */
-    function nextReverseORF(id, textAreaID) {
+     function nextReverseORF(id, textAreaID) {
         if (windows[id].needToResetORFList) {
             var reverseArrayAndIndex = getReverseORFS($(textAreaID)[0].innerText);
             windows[id].reverseArrayAndIndex[0].reverseCurrentORF = reverseArrayAndIndex[0];

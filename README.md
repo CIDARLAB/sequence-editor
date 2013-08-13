@@ -80,7 +80,7 @@ Find a javadoc. Describe the following functions in that manner.
 #### .getWindow(Int id) ####
 - Gets sequence editor window associated with parameter id.
 - Example: For id = **2**, "sequenceWindow_**2**" will be selected.
-- **Parameter(s):** _id_ - Integer representing desired window with associated id value.
+- **Parameter(s):** _id_ - Integer representing desired window with associated ID value.
 
 ---
 
@@ -90,30 +90,37 @@ Find a javadoc. Describe the following functions in that manner.
 #### Window() ####
 - Constructs a resizable sequence editor window.
 
+#### .setFileName(String fileName) ####
+- Enables user to select sequence editor window background color (theme).
+- **Parameter(s):** **_fileName_** - String file name.
+
+#### .setAuthor(String author) ####
+- Enables user to select sequence editor window background color (theme).
+- **Parameter(s):** **_author_** - String file name.
+
 #### .changeTheme(Int color) ####
 - Enables user to select sequence editor window background color (theme).
-- **Parameter(s):** _color_ - Color (Hex RGB). 
+- **Parameter(s):** **_color_** - Color (Hex RGB). 
 
 #### .newSequence(String newFileName) ####
 - Opens a new file in a sequence editor window.
-- **Parameter(s):** _newFileName_ - User-specified file name for new sequence.
+- **Parameter(s):** **_newFileName_** - User-specified file name for new sequence.
 
 #### .openSequence(String fileOpenPath) ####
 - Loads an existing sequence in the current sequence editor window from the path specified by the user.
-- **Parameter(s):** _fileOpenPath_ - Path of existing GenBank or FASTA file. 
+- **Parameter(s):** **_fileOpenPath_** - Path of existing GenBank or FASTA file. 
 
 #### .saveSequence(String fileSavePath) ####
 - Saves current sequence to the file path specified by the user.
-- **Parameter(s):** _fileSavePath_ - Path to store the sequence file. 
+- **Parameter(s):** **_fileSavePath_** - Path to store the sequence file. 
 
-#### .close(String sequenceFileName) ####
-- Closes the sequence editor window associated with a user-specified file name.
-- **Parameter(s):** _sequenceFileName_
+#### .close() ####
+- Closes the sequence editor window associated with a user-specified sequence window ID.
 
-#### .translate() ####
+#### .translateSequence() ####
 - Outputs an alert containing the translation sequence. If a substring of the full sequence is selected when translate is chosen, only that selection will be translated. If nothing is selected the full sequence contained in the text area will be translated.
 
-#### .revComp() ####
+#### .reverseComplement() ####
 - Replaces the current selection (or the entire sequence if nothing is selected) in place with its reverse complement.
 
 #### .lowercase() ####
@@ -156,15 +163,15 @@ Find a javadoc. Describe the following functions in that manner.
 - Constructs a sequence object.
 
 #### .meltingTemp() ####
-- **Returns:** Melting temperature of the sequence.
+- **Returns:** [Integer] Melting temperature (Celsius) of the sequence.
 
 #### .gcContent() ####
-- **Returns:** GC-content (guanine-cytosine content) of the sequence.
+- **Returns:** [Integer] GC-content (guanine-cytosine content) of the sequence.
 
 #### .sequenceLength() ####
-- **Returns:** The sequence length.
+- **Returns:** [Integer] The sequence length.
 
 #### .cursorPosition() ####
-- **Returns:** String representing cursor position and selection if one exists.
+- **Returns:** [Array of Integer(s)] If a selection exists in the sequence editor window the array will contain two values (starting index of the range, ending index of the range). Otherwise, the returned array will contain only one value (current cursor position).
 
 ---
