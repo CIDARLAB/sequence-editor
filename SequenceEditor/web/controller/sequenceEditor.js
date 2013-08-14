@@ -13,7 +13,7 @@ function sequenceWindow(fileName, author) { // Sequence Window object
 WindowManager.prototype = {
     getWindow: function(id) {
         // Get window by variable "id" (integer)
-        return document.getElementById('seqTextArea_' + id);
+        return document.getElementById('resizable_' + id);
     },
     newWindow: function(appendToId) {
         // Create new sequence editor window. Append to element whose id is passed as a parameter. 
@@ -770,6 +770,7 @@ function newWindow(appendToId) {
             var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
             $('#seqTextArea_' + id).html(parsed);
         }
+        setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);    
     });
 
     /*
@@ -795,6 +796,7 @@ function newWindow(appendToId) {
             var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
             $('#seqTextArea_' + id).html(parsed);
         }
+        setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);
     });
 
     /*

@@ -75,7 +75,9 @@ Find a javadoc. Describe the following functions in that manner.
 
 #### .closeConnection() ####
 
-#### .newWindow() ####
+#### .newWindow(String appendToId) ####
+- Creates new sequence editor window, appending it to the element whose ID is passed as a parameter.
+- **Parameter(s):** **_appendToId_** - [String] ID of element to which the new window will be appended. If no argument is passed to the function the new window is appended to the body by default.
 
 #### .getWindow(Int id) ####
 - Gets sequence editor window associated with parameter id.

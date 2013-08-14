@@ -625,6 +625,7 @@ $(document).ready(function() {
                 var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
                 $('#seqTextArea_' + id).html(parsed);
             }
+            setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);
         });
 
         /*
@@ -650,6 +651,7 @@ $(document).ready(function() {
                 var parsed = generateHighlights($('#seqTextArea_' + id)[0].innerText, windows[id]._annotations);
                 $('#seqTextArea_' + id).html(parsed);
             }
+            setSelectionRange(document.getElementById("seqTextArea_" + id), selectionIndices.start, selectionIndices.end);
         });
 
         /*
