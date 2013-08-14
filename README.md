@@ -79,18 +79,19 @@ Find a javadoc. Describe the following functions in that manner.
 - Creates new sequence editor window, appending it to the element whose ID is passed as a parameter.
 - **Parameter(s):** **_appendToId_** - [String] ID of element to which the new window will be appended. If no argument is passed to the function the new window is appended to the body by default.
 
-#### .getWindow(Int id) ####
+#### .getWindow(String uuid) ####
 - Gets sequence editor window associated with parameter id.
-- Example: For id = **2**, "sequenceWindow_**2**" will be selected.
-- **Parameter(s):** _id_ - Integer representing desired window with associated ID value.
+- **Parameter(s):** _uuid_ - [String] Represents desired window with associated UUID value (ex: uuid = "**sequenceWindow_4**").
 
 ---
 
-### Window ###
+### sequenceWindow ###
 - Represents a resizable sequence editor window.
 
-#### Window() ####
+#### sequenceWindow(String uuid) ####
 - Constructs a resizable sequence editor window.
+- Constructor called by WindowManager.newWindow() method.
+- **Parameter(s):** **_uuid_** - [String] Unique sequence window identifier. (ex: "sequenceWindow_3") 
 
 #### .setFileName(String fileName) ####
 - Enables user to select sequence editor window background color (theme).
