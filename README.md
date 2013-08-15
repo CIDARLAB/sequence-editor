@@ -135,8 +135,9 @@ Find a javadoc. Describe the following functions in that manner.
 #### .features() ####
 - Highlights all features represented in the sequence contained within the text area based upon a continually updated list.
 
-#### .selection() ####
-- Highlights the current selection.
+#### .selection(Int start, Int end) ####
+- Highlights the selection defined by _start_ and _end_ arguments.
+- **Parameter(s):** **_start_** - [Integer] Start of desired selection range, **_end_** - [Integer] End of desired selection range.
 
 #### .nextForwardORF() ####
 - Selects the next forward Open Reading Frame.

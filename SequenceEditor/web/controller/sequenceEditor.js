@@ -29,11 +29,11 @@ WindowManager.prototype = {
 
 sequenceWindow.prototype = {
     setFileName: function(fileName) {  // Sets specified window's file name.
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         windows[id].fileName = fileName;
     },
     setAuthor: function(author) {    // Sets specified window's author.
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         windows[id].author = author;
     },
     // File menu options
@@ -47,31 +47,31 @@ sequenceWindow.prototype = {
         // No return value? Save current file as the name provided.
     },
     close: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         
         $('#resizable_' + id).remove();
     },
     changeTheme: function(color) {  // Change the sequence editor window's background color theme.
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#resizable_' + id + '.ui-widget-content').css("background", color);
         $("#centralElement_" + id).css("background-color", color);
         $("#seqTextArea_" + id).css("background-color", "white");
     },
     // Sequence manipulation functions
     translateSequence: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#translate_' + id).click();
     },
     reverseComplement: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#revComp_' + id).click();
     },
     lowercase: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#lowercase_' + id).click();
     },
     uppercase: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#uppercase_' + id).click();
     },
     // Highlight functions
@@ -81,45 +81,46 @@ sequenceWindow.prototype = {
         $('#features_' + id).click();
     },
     selection: function() {   // Highlight the current selection
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
+        // setSelectionRange(document.getElementById("seqTextArea_" + id), start, end);
         $('#selection_' + id).click();
     },
     // ORF search functions
     nextForwardORF: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#nextForwardORF_' + id).click();
     },
     previousForwardORF: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#previousForwardORF_' + id).click();
     },
     nextReverseORF: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#nextReverseORF_' + id).click();
     },
     previousReverseORF: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         $('#previousReverseORF_' + id).click();
     },
     // Sequence information functions
     meltingTemp: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         return parseInt($('#tempCell_' + id).html().toString().match(/\d+/));
     },
     gcContent: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         return parseInt($('#gcCell_' + id).html());
     },
     currentFeature: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         return $('#featureCell_' + id).html().toString();
     },
     sequenceLength: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         return parseInt($('#lengthCell_' + id).html());
     },
     cursorPosition: function() {
-        var id = ($(this).attr('id')).match(/\d+/);  // match the id number associated with the current window
+        var id = this.uuid.match(/\d+/);  // match the id number associated with the current window
         var cursorPos = [];
         if ($('#positionCell_' + id).html().toString().match(/[-]/)) {
             // Range selected, parse accordingly
@@ -153,13 +154,11 @@ var _sequence = ""; //store sequence to compare if insert or delete happened
 
 
 
-
-
 function createNewWindow(appendToId) {
     if (typeof appendToId === "undefined" || appendToId === null) {
-        $('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="opacity:1;width:150px; height:150px; padding:0.5em; display:none;min-width:650px;min-height:370px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span5"><div class="pull-left"><ul class="menu" style="margin-left:0px;"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span4"><div class="btn-group" style="text-align:center;"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-left"><button id="windowTag_' + count + '" class="btn" data-toggle="popover" data-placement="bottom" data-content="Window Tag Info"><i class="icon-tag"></i></button></div></div><div class="span1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="span2" style="padding:0px;margin:0px"></div><div class="span9" style="margin-left:0px"><table class="colsTextArea pull-left" style="width:100%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:transparent;border: transparent 2px;box-shadow: none;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:240px;overflow:hidden;padding-top:5px;padding-bottom:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '" style="-moz-appearance:textfield-multiline; -webkit-appearance:textarea; background-color:white; border:solid black 2px; font-size:12pt; font-family:monospace; height:250px; overflow:auto; padding:2px; resize:none; margin-left:0px; margin-bottom:10px;">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>').appendTo('body').fadeIn('fast');
+        $('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="opacity:1;width:150px; height:150px; padding:0.5em; display:none;min-width:650px;min-height:370px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span5"><div class="pull-left"><ul class="menu" style="margin-left:0px;"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span4"><div class="btn-group" style="text-align:center;"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-left"><button id="windowTag_' + count + '" class="btn" data-toggle="popover" data-placement="bottom" data-content="Window Tag Info"><i class="icon-tag"></i></button></div></div><div class="span1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="span2" style="padding:0px;margin:0px"></div><div class="span9" style="margin-left:0px"><table class="colsTextArea pull-left" style="width:100%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:transparent;border: transparent 2px;box-shadow: none;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:240px;overflow:hidden;padding-top:5px;padding-bottom:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '" style="-moz-appearance:textfield-multiline; -webkit-appearance:textarea; background-color:white; border:solid black 2px; font-size:12pt; font-family:monospace; height:250px; overflow:auto; padding:2px; resize:none; margin-left:0px; margin-bottom:10px;">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div><span class="hidden" id="measureSpan" style="padding: 0px;font-family: monospace;font-size: 12pt;background-color: transparent">1234567890</span>').appendTo('body').fadeIn('fast');
     } else {
-        $('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="opacity:1;width:150px; height:150px; padding:0.5em; display:none;min-width:650px;min-height:370px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span5"><div class="pull-left"><ul class="menu" style="margin-left:0px;"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span4"><div class="btn-group" style="text-align:center;"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-left"><button id="windowTag_' + count + '" class="btn" data-toggle="popover" data-placement="bottom" data-content="Window Tag Info"><i class="icon-tag"></i></button></div></div><div class="span1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="offset2 span9"><table class="colsTextArea pull-left" style="width:100%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:transparent;border: transparent 2px;box-shadow: none;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:240px;overflow:hidden;padding-top:5px;padding-bottom:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '" style="-moz-appearance:textfield-multiline; -webkit-appearance:textarea; background-color:white; border:solid black 2px; font-size:12pt; font-family:monospace; height:250px; overflow:auto; padding:2px; resize:none; margin-left:0px; margin-bottom:10px;">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div>').appendTo('#' + appendToId).fadeIn('fast');
+        $('<div class="resizable sequenceWidget ui-widget-content" id="resizable_' + count + '" style="opacity:1;width:150px; height:150px; padding:0.5em; display:none;min-width:650px;min-height:370px;border:solid black 1px;" class="bigInterface"><div class="row-fluid" id="menuRow"><div class="span5"><div class="pull-left"><ul class="menu" style="margin-left:0px;"><li class="btn-group" style="margin-left:0px;"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">File<span class="caret"></span></a><ul class="dropdown-menu" style="width:225px;"><li><a id="colorChanger_' + count + '" href="#">Change Theme</a></li><li><a id="newSequence_' + count + '" href="#">New Sequence<span class="shortcut pull-right">Alt+N</span></a></li><li><a id="openSequence_' + count + '" class="openSequence" href="#">Open Sequence<span class="shortcut pull-right">Alt+O</span></a></li><li><a id="saveSequence_' + count + '" class="saveSequence" href="#">Save Sequence<span class="shortcut pull-right">Alt+S</span></a></li><li><a id="close_' + count + '" class="closeOption" href="#">Close<span class="shortcut pull-right">Esc</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Find<span class="caret"></span></button><ul class="dropdown-menu" style="width:250px;"><li><a id="nextForwardORF_' + count + '" href="#">Next Forward ORF<span class="shortcut pull-right">Alt+Q</span></a></li><li><a id="previousForwardORF_' + count + '" href="#">Previous Forward ORF<span class="shortcut pull-right">Alt+W</span></a></li><li><a id="nextReverseORF_' + count + '" href="#">Next Reverve ORF<span class="shortcut pull-right">Alt+E</span></a></li><li><a id="previousReverseORF_' + count + '" href="#">Previous Reverse ORF<span class="shortcut pull-right">Alt+R</span></a></li></ul></li><li class="btn-group" style="margin-left:0px"><button class="btn dropdown-toggle" data-toggle="dropdown">Highlight<span class="caret"></span></button><ul class="dropdown-menu"><li><a id="features_' + count + '" href="#">Features<span class="shortcut pull-right">Alt+2</span></a></li><li><a id="selection_' + count + '" href="#">Selection<span class="shortcut pull-right">Alt+3</span></a></li></ul></li></ul></div></div><div class="span4"><div class="btn-group" style="text-align:center;"><button id="revComp_' + count + '" class="btn"><i class="icon-backward"></i></button><button id="translate_' + count + '" class="btn"><i class="icon-text-width"></i></button><button id="uppercase_' + count + '" class="btn"><i class="icon-arrow-up"></i></button><button id="lowercase_' + count + '" class="btn"><i class="icon-arrow-down"></i></button></div></div><div class="span2"><div class="btn-group pull-left"><button id="windowTag_' + count + '" class="btn" data-toggle="popover" data-placement="bottom" data-content="Window Tag Info"><i class="icon-tag"></i></button></div></div><div class="span1"><div class="btn-group pull-right"><button id="closeWindow_' + count + '" class="btn"><i class="icon-remove"></i></button></div></div></div><div class="row-fluid"><div class="span2" style="padding:0px;margin:0px"></div><div class="span9" style="margin-left:0px"><table class="colsTextArea pull-left" style="width:100%;"><tr><td id="columnFirst_' + count + '" class="columnFirst pull-left">1</td><td id="columnLast_' + count + '" class="columnLast pull-right"></td></tr></table></div></div><div id="centralElement_' + count + '" class="row-fluid"><div class="span2" style="padding:0px;margin:0px"><textArea id="rowsTextArea_' + count + '" disabled class="rowsTextArea pull-right" style="background-color:transparent;border: transparent 2px;box-shadow: none;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:14px;line-height:20px;text-align:center;height:240px;overflow:hidden;padding-top:5px;padding-bottom:5px;resize:none;width:75%;margin:0px;cursor:default"></textarea></div><div contenteditable class="seqTextArea span9" id="seqTextArea_' + count + '" style="-moz-appearance:textfield-multiline; -webkit-appearance:textarea; background-color:white; border:solid black 2px; font-size:12pt; font-family:monospace; height:250px; overflow:auto; padding:2px; resize:none; margin-left:0px; margin-bottom:10px;">atgttaacccatccgtgactaagacattgaatgccctag</div></div><div class="row-fluid"><div class="offset1 span10"><table style="width:100%"><tr><th>Position:</th><td id="positionCell_' + count + '" class="positionCell">0(0)</td><th>Temp:</th><td id="tempCell_' + count + '" class="tempCell">0(C)</td><th>Feature:</th><td id="featureCell_' + count + '" class="featureCell">XbaI</td><th>Length:</th><td id="lengthCell_' + count + '" class="lengthCell">100</td><th>% GC</th><td id="gcCell_' + count + '" class="gcCell">50</td></tr></table></div></div></div><span class="hidden" id="measureSpan" style="padding: 0px;font-family: monospace;font-size: 12pt;background-color: transparent">1234567890</span>').appendTo('#' + appendToId).fadeIn('fast');
     }
 
     $('#seqTextArea_' + count).focus();
@@ -1300,16 +1299,22 @@ $('#selection_' + count).click(function() {
         // selectionIndices has properties "start" and "end" corresponding to visible text in div.
         var selectionIndices = sel.getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
 
-        // Applies a highlight to the current selection of text adding to any existing highlights.
-        rangy.init();
-        var randomCssClass = "rangyTemp_" + (+new Date());
-        var classApplier = rangy.createCssClassApplier(randomCssClass, true);
-        classApplier.applyToSelection();
-        // Now use jQuery to add the CSS colour and remove the class
-        $("." + randomCssClass).css({"background-color": "orange"}).removeClass(randomCssClass);
+        windows[id]._features.push({name: "userSelect", sequence: seqSelect, color: "orange"});
+        windows[id]._annotations = generateAnnotations(wholeSequence, windows[id]._features);
+        var parsed = generateHighlights(wholeSequence, windows[id]._annotations);
+        $('#seqTextArea_' + id).html(parsed);
+        windows[id].needToResetORFList = 1;
+
+        // // Applies a highlight to the current selection of text adding to any existing highlights.
+        // rangy.init();
+        // var randomCssClass = "rangyTemp_" + (+new Date());
+        // var classApplier = rangy.createCssClassApplier(randomCssClass, true);
+        // classApplier.applyToSelection();
+        // // Now use jQuery to add the CSS colour and remove the class
+        // $("." + randomCssClass).css({"background-color": "orange"}).removeClass(randomCssClass);
 
         //Stores selection annotation/range to some container for later use (removal, manipulation, etc)
-        windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
+        // windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
 
         // Removes selection once highlight it chosen
         sel.removeAllRanges();
@@ -1693,8 +1698,18 @@ var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
             var compared = unresolvedAnnotations[j];
             if (current.end > compared.start) {
                 overlapping.push(compared);
+                var k = j+1;
+                while(k < unresolvedAnnotations.length) {
+                    var nextCompare = unresolvedAnnotations[k];
+                    if (compared.end > nextCompare.start) {
+                        overlapping.push(nextCompare);
+                        i++;
+                        j+=1;
+                    }
+                    k++;
+                }
                 i++;
-            }
+            } 
             // Increment variable j and get next feature to compare with current
             j += 1;
             compared = unresolvedAnnotations[j];
@@ -1709,6 +1724,11 @@ var resolveFeatureOverlap = function(unresolvedAnnotations, sequence) {
         ind.sort(function(a, b) {
             return a - b;
         });
+        // Remove duplicates from ind array
+        var uniqueInds = [];
+        $.each(ind, function(i, el){
+            if($.inArray(el, uniqueInds) === -1) uniqueInds.push(el);
+        });        
         // for each span push represented features to spanOverlapping array of feature objects
         for (var mm = 0; mm < ind.length - 1; mm++) {
             var spanOverlapping = [];   // features represented in overlapping spans 

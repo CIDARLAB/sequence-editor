@@ -1149,17 +1149,23 @@ $(document).ready(function() {
             var savedSel = rangy.saveSelection();
             // selectionIndices has properties "start" and "end" corresponding to visible text in div.
             var selectionIndices = sel.getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
-
-            // Applies a highlight to the current selection of text adding to any existing highlights.
-            rangy.init();
-            var randomCssClass = "rangyTemp_" + (+new Date());
-            var classApplier = rangy.createCssClassApplier(randomCssClass, true);
-            classApplier.applyToSelection();
-            // Now use jQuery to add the CSS colour and remove the class
-            $("." + randomCssClass).css({"background-color": "orange"}).removeClass(randomCssClass);
+            
+            windows[id]._features.push({name: "userSelect", sequence: seqSelect, color: "orange"});
+            windows[id]._annotations = generateAnnotations(wholeSequence, windows[id]._features);
+            var parsed = generateHighlights(wholeSequence, windows[id]._annotations);
+            $('#seqTextArea_' + id).html(parsed);
+            windows[id].needToResetORFList = 1;
+                
+            // // Applies a highlight to the current selection of text adding to any existing highlights.
+            // rangy.init();
+            // var randomCssClass = "rangyTemp_" + (+new Date());
+            // var classApplier = rangy.createCssClassApplier(randomCssClass, true);
+            // classApplier.applyToSelection();
+            // // Now use jQuery to add the CSS colour and remove the class
+            // $("." + randomCssClass).css({"background-color": "orange"}).removeClass(randomCssClass);
 
             //Stores selection annotation/range to some container for later use (removal, manipulation, etc)
-            windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
+            // windows[id]._annotations.push({features: "userSelect", sequence: seqSelect, range: savedSel, start: selectionIndices.start, end: selectionIndices.end, color: "orange"});
 
             // Removes selection once highlight it chosen
             sel.removeAllRanges();
@@ -1203,11 +1209,6 @@ $(document).ready(function() {
             $('#seqTextArea_' + id).html(parsed);
             windows[id].needToResetORFList = 1;
         });
-
-
-        testObject["sequenceWindow_" + count] = windows[count];
-        alert(testObject["sequenceWindow_" + count].fileName);
-
 
         // LAST STEP: Increment count variable
         count++;
@@ -1521,10 +1522,10 @@ function setSelectionRange(el, start, end) {
             }
             else {
                 if (a.end < b.end) {
-                    return -1;
+                    return 1;
                 }
                 else if (a.end > b.end) {
-                    return 1;
+                    return -1;
                 }
             }
             return 0;
@@ -1545,8 +1546,18 @@ function setSelectionRange(el, start, end) {
                 var compared = unresolvedAnnotations[j];
                 if (current.end > compared.start) {
                     overlapping.push(compared);
+                    var k = j+1;
+                    while(k < unresolvedAnnotations.length) {
+                        var nextCompare = unresolvedAnnotations[k];
+                        if (compared.end > nextCompare.start) {
+                            overlapping.push(nextCompare);
+                            i++;
+                            j+=1;
+                        }
+                        k++;
+                    }
                     i++;
-                }
+                } 
                 // Increment variable j and get next feature to compare with current
                 j += 1;
                 compared = unresolvedAnnotations[j];
@@ -1561,20 +1572,28 @@ function setSelectionRange(el, start, end) {
             ind.sort(function(a, b) {
                 return a - b;
             });
+            // Remove duplicates from ind array
+            var uniqueInds = [];
+            $.each(ind, function(i, el){
+                if($.inArray(el, uniqueInds) === -1) uniqueInds.push(el);
+            });
             // for each span push represented features to spanOverlapping array of feature objects
-            for (var mm = 0; mm < ind.length - 1; mm++) {
+            for (var mm = 0; mm < uniqueInds.length - 1; mm++) {
                 var spanOverlapping = [];   // features represented in overlapping spans 
                 for (var nn = 0; nn < overlapping.length; nn++) {
-                    if (overlapping[nn].start >= ind[mm] && overlapping[nn].start < ind[mm + 1]) {
+                    if (overlapping[nn].start >= uniqueInds[mm] && overlapping[nn].start < uniqueInds[mm + 1]) {
                         spanOverlapping.push(overlapping[nn]);
                     }
-                    else if (overlapping[nn].end > ind[mm] && overlapping[nn].end <= ind[mm + 1]) {
+                    else if (overlapping[nn].end > uniqueInds[mm] && overlapping[nn].end <= uniqueInds[mm + 1]) {
                         spanOverlapping.push(overlapping[nn]);
                     }
-                    else if (overlapping[nn].start <= ind[mm] && overlapping[nn].end >= ind[mm + 1]) {
+                    else if (overlapping[nn].start <= uniqueInds[mm] && overlapping[nn].end >= uniqueInds[mm + 1]) {
                         spanOverlapping.push(overlapping[nn]);
                     }
                 }
+                // for (var xx=0; xx<spanOverlapping.length; xx++) {
+                //     alert(spanOverlapping[xx].sequence);
+                // }
                 // Concatenate feature names represented in current span
                 if (spanOverlapping.length > 1) {
                     var pp = 0;
@@ -1587,12 +1606,12 @@ function setSelectionRange(el, start, end) {
                         }
                         pp++;
                     }
-                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1]);
-                    toReturn.push({features: featuresRepresented, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
+                    var spanSequence = sequence.substring(uniqueInds[mm], uniqueInds[mm + 1]);
+                    toReturn.push({features: featuresRepresented, sequence: spanSequence, start: uniqueInds[mm], end: uniqueInds[mm + 1], color: spanOverlapping[spanOverlapping.length - 1].color});
                 }
                 else {
-                    var spanSequence = sequence.substring(ind[mm], ind[mm + 1]);
-                    toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: ind[mm], end: ind[mm + 1], color: spanOverlapping[0].color});
+                    var spanSequence = sequence.substring(uniqueInds[mm], uniqueInds[mm + 1]);
+                    toReturn.push({features: spanOverlapping[0].features, sequence: spanSequence, start: uniqueInds[mm], end: uniqueInds[mm + 1], color: spanOverlapping[0].color});
                 }
             }
         }
