@@ -896,83 +896,83 @@ function createNewWindow(appendToId) {
 
 
 $('#resizable_' + count).keyup(function() {
-var id = $(this).attr('id').match(/\d+/);
-var textAreaID = "#seqTextArea_" + id;
-var textArea = $(textAreaID)[0];
-var wholeSequence = textArea.innerText;
-var selection = getSelectionHtml();
-        // Grab current sequence length
-        var seqLength = wholeSequence.length;
-        var rowsTextArea = "#rowsTextArea_" + id;
-        var columnsLast = "#columnLast_" + id;
-        var posCell = "#positionCell_" + id;
-        var gcCell = "#gcCell_" + id;
-        var lengthCell = "#lengthCell_" + id;
-        // Get cursor position and selection indices (if any)
-        var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
-        var inCodonPosStart = (selectionIndices.start % 3);
-        var inCodonPosEnd = (selectionIndices.end % 3);
+    var id = $(this).attr('id').match(/\d+/);
+    var textAreaID = "#seqTextArea_" + id;
+    var textArea = $(textAreaID)[0];
+    var wholeSequence = textArea.innerText;
+    var selection = getSelectionHtml();
+    // Grab current sequence length
+    var seqLength = wholeSequence.length;
+    var rowsTextArea = "#rowsTextArea_" + id;
+    var columnsLast = "#columnLast_" + id;
+    var posCell = "#positionCell_" + id;
+    var gcCell = "#gcCell_" + id;
+    var lengthCell = "#lengthCell_" + id;
+    // Get cursor position and selection indices (if any)
+    var selectionIndices = rangy.getSelection().getRangeAt(0).toCharacterRange(document.getElementById('seqTextArea_' + id));
+    var inCodonPosStart = (selectionIndices.start % 3);
+    var inCodonPosEnd = (selectionIndices.end % 3);
 
-        // Update rows display
-        if (seqLength === 0) {
-            $(rowsTextArea).text("");
+    // Update rows display
+    if (seqLength === 0) {
+        $(rowsTextArea).text("");
+    }
+    else {
+        var hasScrollBar = 0;
+        if ($(textAreaID).hasScrollBar()) {
+            $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth - 2));
+            hasScrollBar = 1;
+        } else {
+            $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
         }
-        else {
-            var hasScrollBar = 0;
-            if ($(textAreaID).hasScrollBar()) {
-                $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth - 2));
-                hasScrollBar = 1;
-            } else {
-                $(columnsLast).text(Math.floor($(textAreaID).width() / charWidth));
+        windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - (hasScrollBar*2));
+        var kk = 0;
+        var lineNumber = "";
+        windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
+        while (kk < windows[id].numOfRows) {
+            if (kk === 0) {
+                lineNumber += "1";
+                $(rowsTextArea).text(lineNumber);
+                kk++;
             }
-            windows[id].numOfCols = Math.floor($('#seqTextArea_' + id).width() / charWidth - (hasScrollBar*2));
-            var kk = 0;
-            var lineNumber = "";
-            windows[id].numOfRows = Math.ceil(seqLength / (windows[id].numOfCols));
-            while (kk < windows[id].numOfRows) {
-                if (kk === 0) {
-                    lineNumber += "1";
-                    $(rowsTextArea).text(lineNumber);
-                    kk++;
-                }
-                else {
-                    lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
-                    $(rowsTextArea).html(lineNumber);
-                    kk++;
-                }
+            else {
+                lineNumber += "\r\n" + ((windows[id].numOfCols) * (kk));
+                $(rowsTextArea).html(lineNumber);
+                kk++;
             }
         }
+    }
 
-        var gcPattern = /[gc]/ig;
-        var gcContent = 0;
-        if (selectionIndices.start === selectionIndices.end) {
-            var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")";
-            $(posCell).html(posDisplay);
+    var gcPattern = /[gc]/ig;
+    var gcContent = 0;
+    if (selectionIndices.start === selectionIndices.end) {
+        var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")";
+        $(posCell).html(posDisplay);
 
-            while (gcPattern.test(wholeSequence)) {
-                gcContent++;
-            }
-            gcContent = Math.round((gcContent / (wholeSequence.length)) * 100);
-            $(gcCell).html(gcContent);
-
-            $(lengthCell).html(seqLength);
+        while (gcPattern.test(wholeSequence)) {
+            gcContent++;
         }
-        else {
-            var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")-" + selectionIndices.end + "(" + inCodonPosEnd + ")";
-            $(posCell).html(posDisplay);
+        gcContent = Math.round((gcContent / (wholeSequence.length)) * 100);
+        $(gcCell).html(gcContent);
 
-            while (gcPattern.test(selection)) {
-                gcContent++;
-            }
-            gcContent = Math.round((gcContent / (selection.length)) * 100);
-            $(gcCell).html(gcContent);
+        $(lengthCell).html(seqLength);
+    }
+    else {
+        var posDisplay = selectionIndices.start + "(" + inCodonPosStart + ")-" + selectionIndices.end + "(" + inCodonPosEnd + ")";
+        $(posCell).html(posDisplay);
 
-            var lengthDisplay = seqLength + "(" + selection.length + ")";
-            $(lengthCell).html(lengthDisplay);
+        while (gcPattern.test(selection)) {
+            gcContent++;
         }
+        gcContent = Math.round((gcContent / (selection.length)) * 100);
+        $(gcCell).html(gcContent);
 
-        windows[id].needToResetORFList = 1;
-    });
+        var lengthDisplay = seqLength + "(" + selection.length + ")";
+        $(lengthCell).html(lengthDisplay);
+    }
+
+    windows[id].needToResetORFList = 1;
+});
 
 /***************************************************************************************/
 /* Hotkey Event Handlers */
